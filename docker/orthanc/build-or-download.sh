@@ -40,6 +40,9 @@ echo "commitId           = $commitId"
 echo "extraArg1          = $extraArg1"
 echo "version            = $version"
 
+# TODO revisit this... always cloning the latest version
+commitId=tip
+
 # while debugging the script on your local machine, you might want to change these paths
 # buildRootPath=/tmp/build
 # sourcesRootPath=/tmp/sources
