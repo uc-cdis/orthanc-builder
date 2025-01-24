@@ -192,8 +192,10 @@ if [[ $step == "push" ]]; then
     fi
 
     # tag previously built images and push them
-    docker tag orthancteam/orthanc:$currentTag orthancteam/orthanc-pre-release:$final_tag
-    docker push orthancteam/orthanc-pre-release:$final_tag
+    # docker tag orthancteam/orthanc:$currentTag orthancteam/orthanc-pre-release:$final_tag
+    # docker push orthancteam/orthanc-pre-release:$final_tag
+    docker tag orthancteam/orthanc:$currentTag quay.io/cdis/orthanc:$currentTag
+    docker push quay.io/cdis/orthanc:$currentTag
 
     exit 0
 else
