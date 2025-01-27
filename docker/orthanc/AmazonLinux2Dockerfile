@@ -145,11 +145,17 @@ RUN wget https://public-files.orthanc.team/third-party-downloads/zlib-1.3.1.tar.
 
 
 COPY build-or-download.sh /scripts
+RUN chmod +x /scripts/build-or-download.sh
+
+# RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf
+RUN apt-get install -y dnsutils && nslookup orthanc.uclouvain.be
+RUN echo "deb http://deb.debian.org/debian/ bookworm main" > /etc/apt/sources.list
 
 # ARG STONE_INTERMEDIATE_TARGET=build-stone-viewer-amd64
 
 # ===> https://github.com/orthanc-server/orthanc-builder/blob/11d6930/docker/orthanc/Dockerfile
 
+# TODO is this part needed?
 FROM orthanc-builder-base
 ARG ARG_AWS_ACCESS_KEY_ID
 ARG ARG_AWS_SECRET_ACCESS_KEY
