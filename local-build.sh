@@ -239,25 +239,25 @@ fi
 
 add_host_cmd=--add-host=orthanc.uclouvain.be:130.104.229.21
 
-###### runner-base
-docker $build \
-    $add_host_cmd \
-    --progress=plain --platform=$platform -t orthancteam/orthanc-runner-base:$BASE_BUILDER_IMAGE_TAG \
-    --build-arg BASE_DEBIAN_IMAGE=$BASE_DEBIAN_IMAGE \
-    $from_cache_arg_runner_base \
-    $to_cache_arg_runner_base \
-    $push_load_arg_builder_image \
-    -f docker/orthanc/Dockerfile.runner-base docker/orthanc
+# ###### runner-base
+# docker $build \
+#     $add_host_cmd \
+#     --progress=plain --platform=$platform -t orthancteam/orthanc-runner-base:$BASE_BUILDER_IMAGE_TAG \
+#     --build-arg BASE_DEBIAN_IMAGE=$BASE_DEBIAN_IMAGE \
+#     $from_cache_arg_runner_base \
+#     $to_cache_arg_runner_base \
+#     $push_load_arg_builder_image \
+#     -f docker/orthanc/Dockerfile.runner-base docker/orthanc
 
-###### builder-base
-docker $build \
-    $add_host_cmd \
-    --progress=plain --platform=$platform -t orthancteam/orthanc-builder-base:$BASE_BUILDER_IMAGE_TAG \
-    $from_cache_arg_builder_base \
-    $to_cache_arg_builder_base \
-    $push_load_arg_builder_image \
-    --build-arg BASE_IMAGE_TAG=$BASE_BUILDER_IMAGE_TAG \
-    -f docker/orthanc/Dockerfile.builder-base docker/orthanc
+# ###### builder-base
+# docker $build \
+#     $add_host_cmd \
+#     --progress=plain --platform=$platform -t orthancteam/orthanc-builder-base:$BASE_BUILDER_IMAGE_TAG \
+#     $from_cache_arg_builder_base \
+#     $to_cache_arg_builder_base \
+#     $push_load_arg_builder_image \
+#     --build-arg BASE_IMAGE_TAG=$BASE_BUILDER_IMAGE_TAG \
+#     -f docker/orthanc/Dockerfile.builder-base docker/orthanc
 
 if [[ $image == "full" ]]; then
 
@@ -342,7 +342,8 @@ for target in $buildTargets; do
         $to_cache_arg \
         $push_load_arg_final_image \
         $tag_arg \
-        --target $target \
-        -f docker/orthanc/Dockerfile  docker/orthanc/
+        # --target $target \
+        # -f docker/orthanc/Dockerfile  docker/orthanc/
+        -f docker/orthanc/AmazonLinux2Dockerfile  docker/orthanc/
 
 done

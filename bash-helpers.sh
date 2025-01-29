@@ -239,14 +239,12 @@ getCommitId() { # $1 = name, $2 = version (stable or unstable), $3 = platform (m
     repoType=$(getFromMatrix $1 repoType)
     
     if [[ $repoType == "hg" ]]; then
-
         commit_id=$(getHgCommitId $repo $revision)
+        echo $commit_id
 
     elif [[ $repoType == "git" ]]; then
-
         commit_id=$(getGitCommitId $repo $revision)
 
     fi
-
     echo $commit_id
 }
