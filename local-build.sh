@@ -122,8 +122,10 @@ if [[ $useBuildx == "true" ]]; then
     from_cache_arg_builder_vcpkg_google="--cache-from=orthancteam/orthanc-builder-base:cache-vcpkg-google-$BASE_BUILDER_IMAGE_TAG"
     to_cache_arg_builder_vcpkg_google="--cache-to=orthancteam/orthanc-builder-base:cache-vcpkg-google-$BASE_BUILDER_IMAGE_TAG"
 
-    from_cache_arg="--cache-from=orthancteam/orthanc-builder-base:cache-main-$BASE_BUILDER_IMAGE_TAG"
-    to_cache_arg="--cache-to=orthancteam/orthanc-builder-base:cache-main-$BASE_BUILDER_IMAGE_TAG"
+    # from_cache_arg="--cache-from=orthancteam/orthanc-builder-base:cache-main-$BASE_BUILDER_IMAGE_TAG"
+    # to_cache_arg="--cache-to=orthancteam/orthanc-builder-base:cache-main-$BASE_BUILDER_IMAGE_TAG"
+    from_cache_arg="--cache-from=type=registry,ref=707767160287.dkr.ecr.us-east-1.amazonaws.com/gen3/gen3-orthanc:cache"
+    to_cache_arg="--cache-to=type=registry,ref=707767160287.dkr.ecr.us-east-1.amazonaws.com/gen3/gen3-orthanc:cache,mode=max,image-manifest=true,oci-mediatypes=true"
 
     # when building in CI, use buildx
     build="buildx build"
@@ -196,6 +198,8 @@ if [[ $step == "push" ]]; then
     # docker push orthancteam/orthanc-pre-release:$final_tag
     docker tag orthancteam/orthanc:$currentTag quay.io/cdis/gen3-orthanc:$final_tag
     docker push quay.io/cdis/gen3-orthanc:$final_tag
+    docker tag orthancteam/orthanc:$currentTag 707767160287.dkr.ecr.us-east-1.amazonaws.com/gen3/gen3-orthanc:$final_tag
+    docker push 707767160287.dkr.ecr.us-east-1.amazonaws.com/gen3/gen3-orthanc:$final_tag
 
     exit 0
 else
@@ -356,6 +360,8 @@ fi
         --build-arg ORTHANC_AUTH_COMMIT_ID=$ORTHANC_AUTH_COMMIT_ID \
         --build-arg ORTHANC_TCIA_COMMIT_ID=$ORTHANC_TCIA_COMMIT_ID \
         --build-arg PLATFORM=$platform \
+        $from_cache_arg \
+        $to_cache_arg \
         $push_load_arg_final_image \
         $tag_arg \
         -f docker/orthanc/AmazonLinux2Dockerfile docker/orthanc/

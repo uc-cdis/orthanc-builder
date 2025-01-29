@@ -155,8 +155,7 @@ COPY build-or-download.sh /scripts
 
 # ===> https://github.com/orthanc-server/orthanc-builder/blob/11d6930/docker/orthanc/Dockerfile
 
-# TODO is this part needed?
-FROM orthanc-builder-base
+# FROM orthanc-builder-base
 ARG ARG_AWS_ACCESS_KEY_ID
 ARG ARG_AWS_SECRET_ACCESS_KEY
 ENV AWS_ACCESS_KEY_ID=$ARG_AWS_ACCESS_KEY_ID
@@ -167,20 +166,20 @@ ARG PLATFORM=linux/amd64
 ARG STABLE_OR_UNSTABLE=stable
 
 
-FROM jodogne/wasm-builder:3.1.49 AS wasm-builder-base-amd64
+# FROM jodogne/wasm-builder:3.1.49 AS wasm-builder-base-amd64
 
-ARG ARG_AWS_ACCESS_KEY_ID
-ARG ARG_AWS_SECRET_ACCESS_KEY
-ENV AWS_ACCESS_KEY_ID=$ARG_AWS_ACCESS_KEY_ID
-ENV AWS_SECRET_ACCESS_KEY=$ARG_AWS_SECRET_ACCESS_KEY
-ARG PREFER_DOWNLOADS=1
-ARG ENABLE_UPLOAD=0
-ARG PLATFORM=linux/amd64
-ARG STABLE_OR_UNSTABLE=stable
+# ARG ARG_AWS_ACCESS_KEY_ID
+# ARG ARG_AWS_SECRET_ACCESS_KEY
+# ENV AWS_ACCESS_KEY_ID=$ARG_AWS_ACCESS_KEY_ID
+# ENV AWS_SECRET_ACCESS_KEY=$ARG_AWS_SECRET_ACCESS_KEY
+# ARG PREFER_DOWNLOADS=1
+# ARG ENABLE_UPLOAD=0
+# ARG PLATFORM=linux/amd64
+# ARG STABLE_OR_UNSTABLE=stable
 
 
-RUN mkdir -p /.aws && echo region=eu-west-1 > /.aws/credentials
-RUN DEBIAN_FRONTEND=noninteractive && apt-get --assume-yes update && apt-get -y --fix-broken install && DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install curl awscli
+# RUN mkdir -p /.aws && echo region=eu-west-1 > /.aws/credentials
+# RUN DEBIAN_FRONTEND=noninteractive && apt-get --assume-yes update && apt-get -y --fix-broken install && DEBIAN_FRONTEND=noninteractive apt-get --assume-yes install curl awscli
 
 ########################## Orthanc
 
@@ -506,3 +505,6 @@ RUN groupadd --system orthanc --gid=999; \
     chown -R orthanc:orthanc /usr/share/orthanc/plugins-available; \
     echo not-generated > /etc/hostid; \
     chown orthanc:orthanc /etc/hostid
+
+# enable debug logging
+ENV VERBOSE_ENABLED=true
