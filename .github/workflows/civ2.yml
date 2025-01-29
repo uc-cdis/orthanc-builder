@@ -1,6 +1,10 @@
 name: Build and Push Image
 on: push
 
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
 jobs:
   ci:
     name: Build Image and Push
@@ -40,8 +44,8 @@ jobs:
       - name: Set Variables
         shell: bash
         run: |
-          echo "IMAGE_TAG=$(echo ${GITHUB_REF#refs/*/} | tr / _)"
-          echo "IMAGE_TAG=$(echo ${GITHUB_REF#refs/*/} | tr / _)" >> $GITHUB_ENV
+          echo "IMAGE_TAG=orthancteam-$(echo ${GITHUB_REF#refs/*/} | tr / _)"
+          echo "IMAGE_TAG=orthancteam-$(echo ${GITHUB_REF#refs/*/} | tr / _)" >> $GITHUB_ENV
 
 
       - name: Extract metadata
@@ -84,6 +88,7 @@ jobs:
 
       # TODO linux/arm64 image
       - name: Build linux/amd64 image
+      # TODO add image name
         run: ./local-build.sh version=stable platform=linux/amd64 image=normal type=ci step=build currentTag=${{ env.IMAGE_TAG }}
 
       - name: Push linux/amd64 image

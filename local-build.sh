@@ -64,20 +64,20 @@ echo "image            = $image"
 # get version number from build-matrix.json (stable or unstable)
 # note: we get the last commit id from a branch to detect last changes in a branch
 
-# ORTHANC_COMMIT_ID=$(getCommitId "Orthanc" $version docker $skipCommitChecks $throttle)
-# ORTHANC_GDCM_COMMIT_ID=$(getCommitId "Orthanc-gdcm" $version docker $skipCommitChecks $throttle)
-# ORTHANC_PG_COMMIT_ID=$(getCommitId "Orthanc-postgresql" $version docker $skipCommitChecks $throttle)
+ORTHANC_COMMIT_ID=$(getCommitId "Orthanc" $version docker $skipCommitChecks $throttle)
+ORTHANC_GDCM_COMMIT_ID=$(getCommitId "Orthanc-gdcm" $version docker $skipCommitChecks $throttle)
+ORTHANC_PG_COMMIT_ID=$(getCommitId "Orthanc-postgresql" $version docker $skipCommitChecks $throttle)
 # ORTHANC_MYSQL_COMMIT_ID=$(getCommitId "Orthanc-mysql" $version docker $skipCommitChecks $throttle)
 # ORTHANC_TRANSFERS_COMMIT_ID=$(getCommitId "Orthanc-transfers" $version docker $skipCommitChecks $throttle)
 # ORTHANC_DW_COMMIT_ID=$(getCommitId "Orthanc-dicomweb" $version docker $skipCommitChecks $throttle)
 # ORTHANC_WSI_COMMIT_ID=$(getCommitId "Orthanc-wsi" $version docker $skipCommitChecks $throttle)
 # ORTHANC_OWV_COMMIT_ID=$(getCommitId "Orthanc-webviewer" $version docker $skipCommitChecks $throttle)
-# ORTHANC_AUTH_COMMIT_ID=$(getCommitId "Orthanc-auth" $version docker $skipCommitChecks $throttle)
+ORTHANC_AUTH_COMMIT_ID=$(getCommitId "Orthanc-auth" $version docker $skipCommitChecks $throttle)
 # ORTHANC_PYTHON_COMMIT_ID=$(getCommitId "Orthanc-python" $version docker $skipCommitChecks $throttle)
 # ORTHANC_ODBC_COMMIT_ID=$(getCommitId "Orthanc-odbc" $version docker $skipCommitChecks $throttle)
 # ORTHANC_INDEXER_COMMIT_ID=$(getCommitId "Orthanc-indexer" $version docker $skipCommitChecks $throttle)
 # ORTHANC_NEURO_COMMIT_ID=$(getCommitId "Orthanc-neuro" $version docker $skipCommitChecks $throttle)
-# ORTHANC_TCIA_COMMIT_ID=$(getCommitId "Orthanc-tcia" $version docker $skipCommitChecks $throttle)
+ORTHANC_TCIA_COMMIT_ID=$(getCommitId "Orthanc-tcia" $version docker $skipCommitChecks $throttle)
 # ORTHANC_STONE_VIEWER_COMMIT_ID=$(getCommitId "Orthanc-stone" $version docker $skipCommitChecks $throttle)
 # ORTHANC_AZURE_STORAGE_COMMIT_ID=$(getCommitId "Orthanc-azure-storage" $version docker $skipCommitChecks $throttle)
 # ORTHANC_GOOGLE_STORAGE_COMMIT_ID=$(getCommitId "Orthanc-google-storage" $version docker $skipCommitChecks $throttle)
@@ -194,8 +194,8 @@ if [[ $step == "push" ]]; then
     # tag previously built images and push them
     # docker tag orthancteam/orthanc:$currentTag orthancteam/orthanc-pre-release:$final_tag
     # docker push orthancteam/orthanc-pre-release:$final_tag
-    docker tag orthancteam/orthanc:$currentTag quay.io/cdis/gen3-orthancteam-orthanc:$final_tag
-    docker push quay.io/cdis/gen3-orthancteam-orthanc:$final_tag
+    docker tag orthancteam/orthanc:$currentTag quay.io/cdis/gen3-orthanc:$final_tag
+    docker push quay.io/cdis/gen3-orthanc:$final_tag
 
     exit 0
 else
@@ -301,52 +301,63 @@ fi
     #     tag_arg=
     # fi
 
-    # TODO add cache
-    docker buildx build --add-host=orthanc.uclouvain.be:130.104.229.21 --progress=plain --platform=linux/amd64 $push_load_arg_final_image $tag_arg -f docker/orthanc/AmazonLinux2Dockerfile docker/orthanc/
-
     # sleep 5
     ###### orthancteam/orthanc
     # docker $build \
     #     $add_host_cmd \
     #     --progress=plain --platform=$platform \
-    #     # --build-arg ORTHANC_COMMIT_ID=$ORTHANC_COMMIT_ID \
-    #     # --build-arg ORTHANC_GDCM_COMMIT_ID=$ORTHANC_GDCM_COMMIT_ID \
-    #     # --build-arg ORTHANC_PG_COMMIT_ID=$ORTHANC_PG_COMMIT_ID \
-    #     # --build-arg ORTHANC_MYSQL_COMMIT_ID=$ORTHANC_MYSQL_COMMIT_ID \
-    #     # --build-arg ORTHANC_TRANSFERS_COMMIT_ID=$ORTHANC_TRANSFERS_COMMIT_ID \
-    #     # --build-arg ORTHANC_DW_COMMIT_ID=$ORTHANC_DW_COMMIT_ID \
-    #     # --build-arg ORTHANC_WSI_COMMIT_ID=$ORTHANC_WSI_COMMIT_ID \
-    #     # --build-arg ORTHANC_OWV_COMMIT_ID=$ORTHANC_OWV_COMMIT_ID \
-    #     # --build-arg ORTHANC_AUTH_COMMIT_ID=$ORTHANC_AUTH_COMMIT_ID \
-    #     # --build-arg ORTHANC_PYTHON_COMMIT_ID=$ORTHANC_PYTHON_COMMIT_ID \
-    #     # --build-arg ORTHANC_ODBC_COMMIT_ID=$ORTHANC_ODBC_COMMIT_ID \
-    #     # --build-arg ORTHANC_INDEXER_COMMIT_ID=$ORTHANC_INDEXER_COMMIT_ID \
-    #     # --build-arg ORTHANC_NEURO_COMMIT_ID=$ORTHANC_NEURO_COMMIT_ID \
-    #     # --build-arg ORTHANC_TCIA_COMMIT_ID=$ORTHANC_TCIA_COMMIT_ID \
-    #     # --build-arg ORTHANC_STONE_VIEWER_COMMIT_ID=$ORTHANC_STONE_VIEWER_COMMIT_ID \
-    #     # --build-arg ORTHANC_AZURE_STORAGE_COMMIT_ID=$ORTHANC_AZURE_STORAGE_COMMIT_ID \
-    #     # --build-arg ORTHANC_GOOGLE_STORAGE_COMMIT_ID=$ORTHANC_GOOGLE_STORAGE_COMMIT_ID \
-    #     # --build-arg ORTHANC_AWS_STORAGE_COMMIT_ID=$ORTHANC_AWS_STORAGE_COMMIT_ID \
-    #     # --build-arg ORTHANC_OE2_COMMIT_ID=$ORTHANC_OE2_COMMIT_ID \
-    #     # --build-arg ORTHANC_OE2_VERSION=$ORTHANC_OE2_VERSION \
-    #     # --build-arg ORTHANC_VOLVIEW_COMMIT_ID=$ORTHANC_VOLVIEW_COMMIT_ID \
-    #     # --build-arg ORTHANC_OHIF_COMMIT_ID=$ORTHANC_OHIF_COMMIT_ID \
-    #     # --build-arg ORTHANC_STL_COMMIT_ID=$ORTHANC_STL_COMMIT_ID \
-    #     # --build-arg ORTHANC_JAVA_COMMIT_ID=$ORTHANC_JAVA_COMMIT_ID \
+    #     --build-arg ORTHANC_COMMIT_ID=$ORTHANC_COMMIT_ID \
+    #     --build-arg ORTHANC_GDCM_COMMIT_ID=$ORTHANC_GDCM_COMMIT_ID \
+    #     --build-arg ORTHANC_PG_COMMIT_ID=$ORTHANC_PG_COMMIT_ID \
+    #     --build-arg ORTHANC_MYSQL_COMMIT_ID=$ORTHANC_MYSQL_COMMIT_ID \
+    #     --build-arg ORTHANC_TRANSFERS_COMMIT_ID=$ORTHANC_TRANSFERS_COMMIT_ID \
+    #     --build-arg ORTHANC_DW_COMMIT_ID=$ORTHANC_DW_COMMIT_ID \
+    #     --build-arg ORTHANC_WSI_COMMIT_ID=$ORTHANC_WSI_COMMIT_ID \
+    #     --build-arg ORTHANC_OWV_COMMIT_ID=$ORTHANC_OWV_COMMIT_ID \
+    #     --build-arg ORTHANC_AUTH_COMMIT_ID=$ORTHANC_AUTH_COMMIT_ID \
+    #     --build-arg ORTHANC_PYTHON_COMMIT_ID=$ORTHANC_PYTHON_COMMIT_ID \
+    #     --build-arg ORTHANC_ODBC_COMMIT_ID=$ORTHANC_ODBC_COMMIT_ID \
+    #     --build-arg ORTHANC_INDEXER_COMMIT_ID=$ORTHANC_INDEXER_COMMIT_ID \
+    #     --build-arg ORTHANC_NEURO_COMMIT_ID=$ORTHANC_NEURO_COMMIT_ID \
+    #     --build-arg ORTHANC_TCIA_COMMIT_ID=$ORTHANC_TCIA_COMMIT_ID \
+    #     --build-arg ORTHANC_STONE_VIEWER_COMMIT_ID=$ORTHANC_STONE_VIEWER_COMMIT_ID \
+    #     --build-arg ORTHANC_AZURE_STORAGE_COMMIT_ID=$ORTHANC_AZURE_STORAGE_COMMIT_ID \
+    #     --build-arg ORTHANC_GOOGLE_STORAGE_COMMIT_ID=$ORTHANC_GOOGLE_STORAGE_COMMIT_ID \
+    #     --build-arg ORTHANC_AWS_STORAGE_COMMIT_ID=$ORTHANC_AWS_STORAGE_COMMIT_ID \
+    #     --build-arg ORTHANC_OE2_COMMIT_ID=$ORTHANC_OE2_COMMIT_ID \
+    #     --build-arg ORTHANC_OE2_VERSION=$ORTHANC_OE2_VERSION \
+    #     --build-arg ORTHANC_VOLVIEW_COMMIT_ID=$ORTHANC_VOLVIEW_COMMIT_ID \
+    #     --build-arg ORTHANC_OHIF_COMMIT_ID=$ORTHANC_OHIF_COMMIT_ID \
+    #     --build-arg ORTHANC_STL_COMMIT_ID=$ORTHANC_STL_COMMIT_ID \
+    #     --build-arg ORTHANC_JAVA_COMMIT_ID=$ORTHANC_JAVA_COMMIT_ID \
     #     --build-arg BASE_IMAGE_TAG=$BASE_BUILDER_IMAGE_TAG \
-    #     # --build-arg ARG_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-    #     # --build-arg ARG_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+    #     --build-arg ARG_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+    #     --build-arg ARG_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
     #     --build-arg PREFER_DOWNLOADS=$prefer_downloads \
     #     --build-arg ENABLE_UPLOAD=$enable_upload \
     #     --build-arg PLATFORM=$platform \
-    #     # --build-arg STONE_INTERMEDIATE_TARGET=build-stone-viewer-$shortPlatform \
-    #     # --build-arg STABLE_OR_UNSTABLE=$version \
-    #     # $from_cache_arg \
-    #     # $to_cache_arg \
+    #     --build-arg STONE_INTERMEDIATE_TARGET=build-stone-viewer-$shortPlatform \
+    #     --build-arg STABLE_OR_UNSTABLE=$version \
+    #     $from_cache_arg \
+    #     $to_cache_arg \
     #     $push_load_arg_final_image \
     #     $tag_arg \
-    #     # --target $target \
-    #     # -f docker/orthanc/Dockerfile  docker/orthanc/
-    #     -f docker/orthanc/AmazonLinux2Dockerfile docker/orthanc/
+    #     --target $target \
+    #     -f docker/orthanc/Dockerfile  docker/orthanc/
+
+    echo $ORTHANC_COMMIT_ID
+
+    docker $build \
+        $add_host_cmd \
+        --progress=plain --platform=$platform \
+        --build-arg ORTHANC_COMMIT_ID=$ORTHANC_COMMIT_ID \
+        --build-arg ORTHANC_GDCM_COMMIT_ID=$ORTHANC_GDCM_COMMIT_ID \
+        --build-arg ORTHANC_PG_COMMIT_ID=$ORTHANC_PG_COMMIT_ID \
+        --build-arg ORTHANC_AUTH_COMMIT_ID=$ORTHANC_AUTH_COMMIT_ID \
+        --build-arg ORTHANC_TCIA_COMMIT_ID=$ORTHANC_TCIA_COMMIT_ID \
+        --build-arg PLATFORM=$platform \
+        $push_load_arg_final_image \
+        $tag_arg \
+        -f docker/orthanc/AmazonLinux2Dockerfile docker/orthanc/
 
 # done
