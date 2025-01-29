@@ -201,8 +201,8 @@ RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc com
 FROM orthanc-builder-base AS build-plugin-pg
 
 ARG ORTHANC_PG_COMMIT_ID
-RUN echo debughere
-RUN hg --debug clone "https://bitbucket.org/sjodogne/orthanc"
+# RUN echo debughere
+# RUN hg --debug clone "https://bitbucket.org/sjodogne/orthanc"
 RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-pg commitId=$ORTHANC_PG_COMMIT_ID baseImage=$PLATFORM/$BASE_IMAGE_TAG preferDownloads=$PREFER_DOWNLOADS enableUploads=$ENABLE_UPLOAD
 
 # ########################## Orthanc MySQL
