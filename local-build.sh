@@ -194,8 +194,8 @@ if [[ $step == "push" ]]; then
     # tag previously built images and push them
     # docker tag orthancteam/orthanc:$currentTag orthancteam/orthanc-pre-release:$final_tag
     # docker push orthancteam/orthanc-pre-release:$final_tag
-    docker tag orthancteam/orthanc:$currentTag quay.io/cdis/orthanc:$currentTag
-    docker push quay.io/cdis/orthanc:$currentTag
+    docker tag orthancteam/orthanc:$currentTag quay.io/cdis/gen3-orthancteam-orthanc:$final_tag
+    docker push quay.io/cdis/gen3-orthancteam-orthanc:$final_tag
 
     exit 0
 else
@@ -301,8 +301,8 @@ fi
     #     tag_arg=
     # fi
 
+    # TODO add cache
     docker buildx build --add-host=orthanc.uclouvain.be:130.104.229.21 --progress=plain --platform=linux/amd64 $push_load_arg_final_image $tag_arg -f docker/orthanc/AmazonLinux2Dockerfile docker/orthanc/
-
 
     # sleep 5
     ###### orthancteam/orthanc
