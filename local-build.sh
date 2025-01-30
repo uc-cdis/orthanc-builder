@@ -182,7 +182,8 @@ if [[ $step == "push" ]]; then
 
     # push to orthancteam/orthanc-pre-release only.  The manifest will be pushed to orthancteam/orthanc
     if [[ $isTag == "true" ]] && [[ $version == "stable" ]]; then
-        final_tag=$pushTag-$arch
+        # final_tag=$pushTag-$arch
+        final_tag=$pushTag
     else
         # otherwise we push to orthancteam/orthanc-pre-release
 
