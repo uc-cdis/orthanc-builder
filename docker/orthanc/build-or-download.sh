@@ -97,6 +97,7 @@ if [[ $target == "orthanc" ]]; then
         # also force latest OpenSSL (and therefore, we need to force static libcurl)
         cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DSTANDALONE_BUILD=ON -DUSE_GOOGLE_TEST_DEBIAN_PACKAGE=ON -DUSE_SYSTEM_CIVETWEB=OFF -DUSE_SYSTEM_DCMTK=OFF -DUSE_SYSTEM_OPENSSL=OFF -DUSE_SYSTEM_CURL=OFF $sourcesRootPath/OrthancServer
         make -j 4
+        # HttpClient.Ssl and HttpClient.SslNoVerification are failing
         # $buildRootPath/UnitTests
 
         upload Orthanc
