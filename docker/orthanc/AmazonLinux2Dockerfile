@@ -48,25 +48,6 @@ RUN yum -y update && \
 # image to compile Orthanc and its plugins dynamically
 FROM orthanc-runner-base AS orthanc-builder-base
 
-# RUN yum search postgres
-#10 6.810 postgresql16.x86_64 : PostgreSQL client programs
-#10 6.810 postgresql16-contrib.x86_64 : Extension modules distributed with PostgreSQL
-#10 6.810 postgresql16-docs.x86_64 : Extra documentation for PostgreSQL
-#10 6.810 postgresql16-llvmjit.x86_64 : Just-in-time compilation support for PostgreSQL
-#10 6.810 postgresql16-plperl.x86_64 : The Perl procedural language for PostgreSQL
-#10 6.810 postgresql16-plpython3.x86_64 : The Python3 procedural language for PostgreSQL
-#10 6.810 postgresql16-pltcl.x86_64 : The Tcl procedural language for PostgreSQL
-#10 6.810 postgresql16-private-devel.x86_64 : PostgreSQL development header files for this build of PostgreSQL server
-#10 6.810 postgresql16-private-libs.x86_64 : The shared libraries required only for this build of PostgreSQL server
-#10 6.810 postgresql16-server.x86_64 : The programs needed to create and run a PostgreSQL server
-#10 6.810 postgresql16-server-devel.x86_64 : PostgreSQL development header files and libraries
-#10 6.810 postgresql16-static.x86_64 : Statically linked PostgreSQL libraries
-#10 6.810 postgresql16-test.x86_64 : The test suite distributed with PostgreSQL
-#10 6.810 postgresql16-test-rpm-macros.noarch : Convenience RPM macros for build-time testing against PostgreSQL server
-#10 6.810 postgresql16-upgrade.x86_64 : Support for upgrading from the previous major release of PostgreSQL
-#10 6.810 postgresql16-upgrade-devel.x86_64 : Support for build of extensions required for upgrade process
-#10 6.810 libpq.x86_64 : PostgreSQL client library
-#10 6.810 libpq-devel.x86_64 : Development files for building PostgreSQL client tools
 RUN yum -y update && \
     yum -y install wget unzip gcc-c++ make cmake libuuid-devel \
     ca-certificates tzdata libcurl-devel boost-devel \
@@ -82,7 +63,7 @@ RUN yum -y update && \
 # Causing issues: curl
 
 RUN yum -y install gcc readline-devel libicu-devel zlib-devel openssl-devel
-RUN wget https://ftp.postgresql.org/pub/source/v16.5/postgresql-16.5.tar.gz && tar -zxvf postgresql-16.5.tar.gz && cd postgresql-16.5 && ./configure --bindir=/usr/bin --with-openssl && make -C src/bin install && make -C src/include install &&  make -C src/interfaces install
+RUN wget https://ftp.postgresql.org/pub/source/v13.18/postgresql-13.18.tar.gz && tar -zxvf postgresql-13.18.tar.gz && cd postgresql-13.18 && ./configure --bindir=/usr/bin --with-openssl && make -C src/bin install && make -C src/include install &&  make -C src/interfaces install
 
 RUN ls /usr/lib | grep libpq || true
 # RUN postgres --version
@@ -540,8 +521,9 @@ RUN groupadd --system orthanc --gid=1000; \
 # enable debug logging
 ENV VERBOSE_ENABLED=true
 
+# reinstall so that `libpq.so.5` is available in the final image
 RUN yum -y install libpq
 # RUN yum -y install gcc readline-devel libicu-devel zlib-devel openssl-devel wget tar
 # RUN wget https://ftp.postgresql.org/pub/source/v16.5/postgresql-16.5.tar.gz && tar -zxvf postgresql-16.5.tar.gz && cd postgresql-16.5 && ./configure --bindir=/usr/bin --with-openssl && make -C src/bin install && make -C src/include install &&  make -C src/interfaces install
-RUN ls /usr/lib | grep libpq || true
-RUN ls /usr/lib64 | grep libpq || true
+# RUN ls /usr/lib | grep libpq || true
+# RUN ls /usr/lib64 | grep libpq || true
