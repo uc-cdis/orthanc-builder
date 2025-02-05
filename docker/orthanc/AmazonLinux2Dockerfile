@@ -52,7 +52,7 @@ RUN yum -y update && \
     yum -y install wget unzip gcc-c++ make cmake libuuid-devel \
     ca-certificates tzdata libcurl-devel boost-devel \
     libjpeg-turbo-devel zlib-devel git mercurial zip \
-    libpq-15.8-1.amzn2023.0.1 postgresql-libs postgresql-devel \
+    libpq postgresql-libs postgresql-devel \
     protobuf-compiler aws-cli libpng-devel sqlite-devel \
     lua-devel \
     unixODBC-devel libpq-devel \
@@ -522,7 +522,7 @@ RUN groupadd --system orthanc --gid=1000; \
 ENV VERBOSE_ENABLED=true
 
 # reinstall so that `libpq.so.5` is available in the final image
-RUN yum -y install libpq-15.8-1.amzn2023.0.1
+RUN yum -y install libpq
 # RUN yum -y install gcc readline-devel libicu-devel zlib-devel openssl-devel wget tar
 # RUN wget https://ftp.postgresql.org/pub/source/v16.5/postgresql-16.5.tar.gz && tar -zxvf postgresql-16.5.tar.gz && cd postgresql-16.5 && ./configure --bindir=/usr/bin --with-openssl && make -C src/bin install && make -C src/include install &&  make -C src/interfaces install
 RUN ls /usr/lib | grep libpq || true
