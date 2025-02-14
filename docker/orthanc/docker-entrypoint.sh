@@ -51,16 +51,6 @@ if [[ ! -z $BEFORE_ORTHANC_STARTUP_SCRIPT ]]; then
 	$BEFORE_ORTHANC_STARTUP_SCRIPT
 fi
 
-# echo "ls /usr/share/orthanc/plugins-available/"
-# ls -al /usr/share/orthanc/plugins-available/
-# echo "ls /usr/share/orthanc/plugins/"
-# ls -al /usr/share/orthanc/plugins/
-# echo "ls /usr/lib64 | grep libpq"
-# ls /usr/lib64 | grep libpq || true
-# echo "ls /usr/lib | grep libpq"
-# ls /usr/lib | grep libpq || true
-
-
 argv=(Orthanc $verbosity $logoption $jobs "$@")
 echo "Startup command: exec \"${argv[*]}\"" >&2
 exec "${argv[@]}"

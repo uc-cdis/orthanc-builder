@@ -5,41 +5,22 @@
 # base image to build and execute orthanc.
 # This image should contain only the packages that are common to both !
 # The purpose of this intermediate image is to benefit from Docker cache.
-FROM quay.io/cdis/amazonlinux-base:master AS orthanc-runner-base
-# FROM 707767160287.dkr.ecr.us-east-1.amazonaws.com/gen3/amazonlinux-base:master AS orthanc-runner-base
+FROM 707767160287.dkr.ecr.us-east-1.amazonaws.com/gen3/amazonlinux-base:master AS orthanc-runner-base
 
-
-
-
-# RUN yum -y update && yum -y install gcc zlib-devel bzip2-devel readline-devel sqlite-devel \
-# openssl-devel tk-devel libffi-devel git tar
-# RUN curl https://pyenv.run | bash && export PATH="$HOME/.pyenv/bin:$PATH" && eval "$(pyenv init --path)" && eval "$(pyenv init -)" && pyenv install 3.11.0 && pyenv global 3.11
-# RUN python -V || true
-# RUN python3 -V || true
-# RUN alias python=python3
-RUN dnf -y update && dnf -y install python3.11-devel
-
-
-
-# we had some issues with one of the mirror -> force it to the Belgian mirror
-# RUN rm /etc/apt/sources.list.d/debian.sources
-# RUN echo "deb http://ftp.be.debian.org/debian/ bookworm main" | tee /etc/apt/sources.list.d/belgium.mirror.list
-
-RUN yum -y update && \
-    yum -y install ca-certificates tzdata \
+RUN dnf -y update && \
+    dnf -y install python3.11-devel \
+    ca-certificates tzdata \
     libcurl-devel boost-devel libjpeg-turbo-devel \
     jsoncpp-devel lua-devel libpng-devel sqlite-devel \
     openssl-devel libuuid-devel unixODBC-devel \
     protobuf-devel && \
-    yum clean all
-# removed since installed separately: python3 python3-pip
-# Not found: libdcmtk-devel pugixml-devel lsb-core openslide-devel crypto++-devel cpprest-devel
+    dnf clean all
 
 # Make sure the en_US locale has been generated (required for
 # case-insensitive comparison of strings with accents)
-# RUN yum -y install glibc-locale-source glibc-langpack-en
+# (pauline 02/2025) The lines below don't work, but everything seems to work fine without this
+# RUN dnf -y install glibc-locale-source glibc-langpack-en
 # RUN localedef -i en_US -f UTF-8 en_US.UTF-8
-
 
 ##################
 # The dockerfile below is copied+adapted from docker/orthanc/Dockerfile.builder-base
@@ -48,45 +29,24 @@ RUN yum -y update && \
 # image to compile Orthanc and its plugins dynamically
 FROM orthanc-runner-base AS orthanc-builder-base
 
-RUN yum -y update && \
-    yum -y install wget unzip gcc-c++ make cmake libuuid-devel \
-    ca-certificates tzdata libcurl-devel boost-devel \
-    libjpeg-turbo-devel zlib-devel git mercurial zip \
-    libpq postgresql-libs postgresql-devel \
-    protobuf-compiler aws-cli libpng-devel sqlite-devel \
-    lua-devel \
-    unixODBC-devel libpq-devel \
-    tar python-pip && \
-    yum clean all
-# removed since installed separately: python3 python3-pip
-# Not found: libgtest-devel libboost-all-devel libwrap0-devel libjsoncpp-devel libpugixml-devel
-# Causing issues: curl
-
-RUN yum -y install gcc readline-devel libicu-devel zlib-devel openssl-devel
-RUN wget https://ftp.postgresql.org/pub/source/v15.10/postgresql-15.10.tar.gz && tar -zxvf postgresql-15.10.tar.gz && cd postgresql-15.10 && ./configure --bindir=/usr/bin --with-openssl && make -C src/bin install && make -C src/include install &&  make -C src/interfaces install
-
-RUN ls /usr/lib | grep libpq || true
-# RUN postgres --version
-# RUN psql -V
-
-# yum install java-11-amazon-corretto
 RUN dnf -y update && \
-    dnf -y install \
+    dnf -y install wget unzip gcc gcc-c++ make cmake \
+    zlib-devel git mercurial zip \
+    libpq libpq-devel postgresql-libs postgresql-devel \
+    protobuf-compiler aws-cli \
+    tar python-pip \
+    readline-devel libicu-devel \
     java-11-amazon-corretto \
     patch gtest gtest-devel && \
     dnf clean all
 
+RUN wget https://ftp.postgresql.org/pub/source/v16.5/postgresql-16.5.tar.gz && tar -zxvf postgresql-16.5.tar.gz && cd postgresql-16.5 && ./configure --bindir=/usr/bin --with-openssl && make -C src/bin install && make -C src/include install &&  make -C src/interfaces install
+
+# install googletest, pugixml and cryptopp from source because the package are not available
+# in this amazon linux 2 base image
 RUN git clone https://github.com/google/googletest.git && cd googletest && mkdir build && cd build && cmake .. && make && make install
 RUN git clone https://github.com/zeux/pugixml.git && cd pugixml && mkdir build && cd build && cmake .. && make && make install
 RUN git clone https://github.com/weidai11/cryptopp.git && cd cryptopp && make && make install
-
-# RUN yum -y groupinstall "Development Tools"
-# RUN wget http://mirror.yandex.ru/altlinux/p11/branch/x86_64/SRPMS.classic/libpugixml-1.14-alt1.src.rpm && yum install libpugixml-1.14-alt1.src.rpm --skip-broken
-# RUN yum search openjdk
-# RUN yum -y install amazon-linux-extras
-# RUN amazon-linux-extras enable java-openjdk11
-# RUN yum -y install java-11-openjdk-devel
-# RUN amazon-linux-extras install java-openjdk11
 
 # # install a recent cmake version (required later by recent vcpkg versions that we don't use now !)
 # WORKDIR /tmp
@@ -203,13 +163,6 @@ RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-gdc
 FROM orthanc-builder-base AS build-plugin-pg
 
 ARG ORTHANC_PG_COMMIT_ID
-# ENV CMAKE_INCLUDE_PATH=/usr/include
-# ENV CMAKE_LIBRARY_PATH=/usr/lib64
-# ENV PostgreSQL_INCLUDE_DIR=/usr/include
-# ENV PostgreSQL_LIBRARY_DIR=/usr/lib64
-# ENV PostgreSQL_TYPE_INCLUDE_DIR=/usr/include
-# RUN postgres --version
-# RUN psql -V
 RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-pg commitId=$ORTHANC_PG_COMMIT_ID baseImage=$PLATFORM/$BASE_IMAGE_TAG preferDownloads=$PREFER_DOWNLOADS enableUploads=$ENABLE_UPLOAD
 
 ########################## Orthanc MySQL
@@ -221,10 +174,10 @@ RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-pg 
 
 ########################## Orthanc Transfers
 
-FROM orthanc-builder-base AS build-plugin-transfers
+# FROM orthanc-builder-base AS build-plugin-transfers
 
-ARG ORTHANC_TRANSFERS_COMMIT_ID
-RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-transfers commitId=$ORTHANC_TRANSFERS_COMMIT_ID baseImage=$PLATFORM/$BASE_IMAGE_TAG preferDownloads=$PREFER_DOWNLOADS enableUploads=$ENABLE_UPLOAD
+# ARG ORTHANC_TRANSFERS_COMMIT_ID
+# RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-transfers commitId=$ORTHANC_TRANSFERS_COMMIT_ID baseImage=$PLATFORM/$BASE_IMAGE_TAG preferDownloads=$PREFER_DOWNLOADS enableUploads=$ENABLE_UPLOAD
 
 ########################## Orthanc Dicomweb
 
@@ -477,11 +430,10 @@ RUN if [[ ! -z "$TARGETPLATFORM" ]] && [[ "$TARGETPLATFORM" != "linux/amd64" ]];
 RUN chmod +x /usr/share/orthanc/plugins-available/*
 RUN chmod +x /usr/local/bin/*
 
-RUN yum -y update && \
-    yum -y install python-pip vim git
+RUN dnf -y update && \
+    dnf -y install python-pip vim git libpq && \
+    dnf clean all
 RUN pip install envsubst==0.1.5
-# RUN yum install -y gettext && \
-#     yum clean all
 
 # configure SSL for azure rest sdk (azure object storage plugin)
 ENV SSL_CERT_DIR=/etc/ssl/certs
@@ -500,10 +452,6 @@ COPY *.lua /lua-scripts/
 COPY test-aliveness.py /probes/
 
 
-# cleanup unnecessary packages that can trigger errors during security scan
-# RUN yum -y remove build-essential perl bzip2 gnupg xdg-user-dirs && yum -y autoremove
-
-
 # always create an 'orthanc' group (gid=1000) and an orthanc user (uid=1000)
 # and grants him all permissions on files that can be modified by the docker-entrypoint.sh
 # The default root users can still access these files too.
@@ -520,10 +468,3 @@ RUN groupadd --system orthanc --gid=1000; \
 
 # enable debug logging
 ENV VERBOSE_ENABLED=true
-
-# reinstall so that `libpq.so.5` is available in the final image
-RUN yum -y install libpq
-# RUN yum -y install gcc readline-devel libicu-devel zlib-devel openssl-devel wget tar
-# RUN wget https://ftp.postgresql.org/pub/source/v16.5/postgresql-16.5.tar.gz && tar -zxvf postgresql-16.5.tar.gz && cd postgresql-16.5 && ./configure --bindir=/usr/bin --with-openssl && make -C src/bin install && make -C src/include install &&  make -C src/interfaces install
-RUN ls /usr/lib | grep libpq || true
-RUN ls /usr/lib64 | grep libpq || true
