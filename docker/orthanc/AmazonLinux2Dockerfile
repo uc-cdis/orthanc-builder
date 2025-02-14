@@ -30,19 +30,22 @@ RUN dnf -y update && \
 FROM orthanc-runner-base AS orthanc-builder-base
 
 RUN dnf -y update && \
-    dnf -y install wget unzip gcc gcc-c++ make cmake \
-    zlib-devel git mercurial zip \
+    dnf -y install wget unzip gcc gcc-c++ make cmake libuuid-devel \
+    ca-certificates tzdata libcurl-devel boost-devel \
+    libjpeg-turbo-devel zlib-devel git mercurial zip \
     libpq libpq-devel postgresql-libs postgresql-devel \
-    protobuf-compiler aws-cli \
+    protobuf-compiler aws-cli libpng-devel sqlite-devel \
+    lua-devel \
+    unixODBC-devel \
     tar python-pip \
-    readline-devel libicu-devel \
+    readline-devel libicu-devel openssl-devel \
     java-11-amazon-corretto \
     patch gtest gtest-devel && \
     dnf clean all
 
 RUN wget https://ftp.postgresql.org/pub/source/v16.5/postgresql-16.5.tar.gz && tar -zxvf postgresql-16.5.tar.gz && cd postgresql-16.5 && ./configure --bindir=/usr/bin --with-openssl && make -C src/bin install && make -C src/include install &&  make -C src/interfaces install
 
-# install googletest, pugixml and cryptopp from source because the package are not available
+# install googletest, pugixml and cryptopp from source because the packages are not available
 # in this amazon linux 2 base image
 RUN git clone https://github.com/google/googletest.git && cd googletest && mkdir build && cd build && cmake .. && make && make install
 RUN git clone https://github.com/zeux/pugixml.git && cd pugixml && mkdir build && cd build && cmake .. && make && make install
