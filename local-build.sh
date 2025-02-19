@@ -81,7 +81,8 @@ BASE_DEBIAN_IMAGE=bookworm-20240311-slim
 BASE_BUILDER_IMAGE_TAG=$BASE_DEBIAN_IMAGE-$version
 
 # list all intermediate targets.  It allows us to "slow down" the build and see what's going wrong (which is not possible with 10 parallel builds)
-buildTargets="build-plugin-auth build-orthanc build-gdcm build-plugin-pg build-plugin-mysql build-plugin-transfers build-plugin-dicomweb build-plugin-wsi build-plugin-owv build-plugin-python build-plugin-odbc build-plugin-indexer build-plugin-neuro build-plugin-tcia build-stone-viewer build-s3-object-storage build-oe2 build-plugin-volview build-plugin-ohif"
+# buildTargets="build-plugin-auth build-orthanc build-gdcm build-plugin-pg build-plugin-mysql build-plugin-transfers build-plugin-dicomweb build-plugin-wsi build-plugin-owv build-plugin-python build-plugin-odbc build-plugin-indexer build-plugin-neuro build-plugin-tcia build-stone-viewer build-s3-object-storage build-oe2 build-plugin-volview build-plugin-ohif"
+buildTargets="orthanc-runner-base orthanc-builder-base build-plugin-auth build-orthanc build-gdcm build-plugin-pg build-plugin-dicomweb build-plugin-python build-plugin-indexer build-plugin-tcia build-s3-object-storage"
 
 # by default, we try to build only the normal image (oposed to the full image with vcpkg and MSSQL drivers)
 finalImageTarget=orthanc-no-vcpkg
@@ -285,73 +286,33 @@ if [[ $image == "full" ]]; then
 fi
 
 
-# for target in $buildTargets; do
+for target in $buildTargets; do
 
-#     if [[ $target == $finalImageTarget ]]; then
-#         tag_arg="--tag orthancteam/orthanc:$final_tag"
-#     else
-#         tag_arg=
-#     fi
+    if [[ $target == $finalImageTarget ]]; then
+        tag_arg="--tag orthancteam/orthanc:$final_tag"
+    else
+        tag_arg=
+    fi
 
-#     # sleep 5
-#     ###### orthancteam/orthanc
-#     docker $build \
-#         $add_host_cmd \
-#         --progress=plain --platform=$platform \
-#         --build-arg ORTHANC_COMMIT_ID=$ORTHANC_COMMIT_ID \
-#         --build-arg ORTHANC_GDCM_COMMIT_ID=$ORTHANC_GDCM_COMMIT_ID \
-#         --build-arg ORTHANC_PG_COMMIT_ID=$ORTHANC_PG_COMMIT_ID \
-#         --build-arg ORTHANC_MYSQL_COMMIT_ID=$ORTHANC_MYSQL_COMMIT_ID \
-#         --build-arg ORTHANC_TRANSFERS_COMMIT_ID=$ORTHANC_TRANSFERS_COMMIT_ID \
-#         --build-arg ORTHANC_DW_COMMIT_ID=$ORTHANC_DW_COMMIT_ID \
-#         --build-arg ORTHANC_WSI_COMMIT_ID=$ORTHANC_WSI_COMMIT_ID \
-#         --build-arg ORTHANC_OWV_COMMIT_ID=$ORTHANC_OWV_COMMIT_ID \
-#         --build-arg ORTHANC_AUTH_COMMIT_ID=$ORTHANC_AUTH_COMMIT_ID \
-#         --build-arg ORTHANC_PYTHON_COMMIT_ID=$ORTHANC_PYTHON_COMMIT_ID \
-#         --build-arg ORTHANC_ODBC_COMMIT_ID=$ORTHANC_ODBC_COMMIT_ID \
-#         --build-arg ORTHANC_INDEXER_COMMIT_ID=$ORTHANC_INDEXER_COMMIT_ID \
-#         --build-arg ORTHANC_NEURO_COMMIT_ID=$ORTHANC_NEURO_COMMIT_ID \
-#         --build-arg ORTHANC_TCIA_COMMIT_ID=$ORTHANC_TCIA_COMMIT_ID \
-#         --build-arg ORTHANC_STONE_VIEWER_COMMIT_ID=$ORTHANC_STONE_VIEWER_COMMIT_ID \
-#         --build-arg ORTHANC_AZURE_STORAGE_COMMIT_ID=$ORTHANC_AZURE_STORAGE_COMMIT_ID \
-#         --build-arg ORTHANC_GOOGLE_STORAGE_COMMIT_ID=$ORTHANC_GOOGLE_STORAGE_COMMIT_ID \
-#         --build-arg ORTHANC_AWS_STORAGE_COMMIT_ID=$ORTHANC_AWS_STORAGE_COMMIT_ID \
-#         --build-arg ORTHANC_OE2_COMMIT_ID=$ORTHANC_OE2_COMMIT_ID \
-#         --build-arg ORTHANC_OE2_VERSION=$ORTHANC_OE2_VERSION \
-#         --build-arg ORTHANC_VOLVIEW_COMMIT_ID=$ORTHANC_VOLVIEW_COMMIT_ID \
-#         --build-arg ORTHANC_OHIF_COMMIT_ID=$ORTHANC_OHIF_COMMIT_ID \
-#         --build-arg BASE_IMAGE_TAG=$BASE_BUILDER_IMAGE_TAG \
-#         --build-arg ARG_AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-#         --build-arg ARG_AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
-#         --build-arg PREFER_DOWNLOADS=$prefer_downloads \
-#         --build-arg ENABLE_UPLOAD=$enable_upload \
-#         --build-arg PLATFORM=$platform \
-#         --build-arg STABLE_OR_UNSTABLE=$version \
-#         $from_cache_arg \
-#         $to_cache_arg \
-#         $push_load_arg_final_image \
-#         $tag_arg \
-#         --target $target \
-#         -f docker/orthanc/Dockerfile  docker/orthanc/
+    # sleep 5
+    ###### orthancteam/orthanc
+    docker $build \
+        $add_host_cmd \
+        --progress=plain --platform=$platform \
+        --build-arg ORTHANC_COMMIT_ID=$ORTHANC_COMMIT_ID \
+        --build-arg ORTHANC_GDCM_COMMIT_ID=$ORTHANC_GDCM_COMMIT_ID \
+        --build-arg ORTHANC_PG_COMMIT_ID=$ORTHANC_PG_COMMIT_ID \
+        --build-arg ORTHANC_DW_COMMIT_ID=$ORTHANC_DW_COMMIT_ID \
+        --build-arg ORTHANC_AUTH_COMMIT_ID=$ORTHANC_AUTH_COMMIT_ID \
+        --build-arg ORTHANC_PYTHON_COMMIT_ID=$ORTHANC_PYTHON_COMMIT_ID \
+        --build-arg ORTHANC_INDEXER_COMMIT_ID=$ORTHANC_INDEXER_COMMIT_ID \
+        --build-arg ORTHANC_TCIA_COMMIT_ID=$ORTHANC_TCIA_COMMIT_ID \
+        --build-arg ORTHANC_AWS_STORAGE_COMMIT_ID=$ORTHANC_AWS_STORAGE_COMMIT_ID \
+        --build-arg PLATFORM=$platform \
+        $from_cache_arg \
+        $to_cache_arg \
+        $push_load_arg_final_image \
+        $tag_arg \
+        -f docker/orthanc/AmazonLinux2Dockerfile docker/orthanc/
 
-# done
-
-tag_arg="--tag orthancteam/orthanc:$final_tag"
-docker $build \
-    $add_host_cmd \
-    --progress=plain --platform=$platform \
-    --build-arg ORTHANC_COMMIT_ID=$ORTHANC_COMMIT_ID \
-    --build-arg ORTHANC_GDCM_COMMIT_ID=$ORTHANC_GDCM_COMMIT_ID \
-    --build-arg ORTHANC_PG_COMMIT_ID=$ORTHANC_PG_COMMIT_ID \
-    --build-arg ORTHANC_DW_COMMIT_ID=$ORTHANC_DW_COMMIT_ID \
-    --build-arg ORTHANC_AUTH_COMMIT_ID=$ORTHANC_AUTH_COMMIT_ID \
-    --build-arg ORTHANC_PYTHON_COMMIT_ID=$ORTHANC_PYTHON_COMMIT_ID \
-    --build-arg ORTHANC_INDEXER_COMMIT_ID=$ORTHANC_INDEXER_COMMIT_ID \
-    --build-arg ORTHANC_TCIA_COMMIT_ID=$ORTHANC_TCIA_COMMIT_ID \
-    --build-arg ORTHANC_AWS_STORAGE_COMMIT_ID=$ORTHANC_AWS_STORAGE_COMMIT_ID \
-    --build-arg PLATFORM=$platform \
-    $from_cache_arg \
-    $to_cache_arg \
-    $push_load_arg_final_image \
-    $tag_arg \
-    -f docker/orthanc/AmazonLinux2Dockerfile docker/orthanc/
+done
