@@ -313,6 +313,7 @@ for target in $buildTargets; do
         $to_cache_arg \
         $push_load_arg_final_image \
         $tag_arg \
+        --target $target \
         -f docker/orthanc/AmazonLinux2Dockerfile docker/orthanc/
 
 done
