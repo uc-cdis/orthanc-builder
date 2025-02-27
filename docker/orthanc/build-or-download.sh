@@ -91,10 +91,9 @@ if [[ $target == "orthanc" ]]; then
     if [[ $dl != 0 ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc/ -r $commitId $sourcesRootPath
-        echo $PWD
-        ls
-        cp SystemToolbox.cpp $sourcesRootPath/orthanc/OrthancFramework/Sources/SystemToolbox.cpp
-        cp FilesystemStorage.cpp $sourcesRootPath/orthanc/OrthancFramework/Sources/FileStorage/FilesystemStorage.cpp
+        ls $sourcesRootPath
+        cp SystemToolbox.cpp $sourcesRootPath/OrthancFramework/Sources/SystemToolbox.cpp
+        cp FilesystemStorage.cpp $sourcesRootPath/OrthancFramework/Sources/FileStorage/FilesystemStorage.cpp
         pushd $buildRootPath
 
         # note: building with static DCMTK while waiting for Debian bullseye to update to latest DCMTK issues (we need DCMTK 3.6.7: https://www.hipaajournal.com/warning-issued-about-3-high-severity-vulnerabilities-in-offis-dicom-software/)
