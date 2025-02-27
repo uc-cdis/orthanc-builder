@@ -34,7 +34,7 @@
 #include <stdio.h>
 #include <string>
 
-#include <exception>
+// #include <exception>
 #include <iostream>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -125,8 +125,9 @@ static OrthancPluginErrorCode StorageCreate(const char* uuid,
   }
   catch (...)
   {
-    std::exception_ptr p = std::current_exception();
-    OrthancPlugins::LogInfo("Error writing file: " + (p ? p.__cxa_exception_type()->name() : "unknown"));
+    OrthancPlugins::LogInfo("Error writing file");
+    // std::exception_ptr p = std::current_exception();
+    // OrthancPlugins::LogInfo("Error writing file: " + (p ? p.__cxa_exception_type()->name() : "unknown"));
   }
 
   return OrthancPluginErrorCode_Success;
