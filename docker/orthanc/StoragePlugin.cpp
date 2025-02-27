@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <string>
 
+#include <exception>
 #include <iostream>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -99,7 +100,6 @@ static OrthancPluginErrorCode StorageCreate(const char* uuid,
 
       try
       {
-        OrthancPlugins::LogInfo("Encrypting file");
         crypto->Encrypt(encryptedFile, (const char*)content, size);
       }
       catch (EncryptionException& ex)
@@ -108,13 +108,13 @@ static OrthancPluginErrorCode StorageCreate(const char* uuid,
         return OrthancPluginErrorCode_StorageAreaPlugin;
       }
 
-      OrthancPlugins::LogInfo("Writing encrypted file");
       writer->Write(encryptedFile.data(), encryptedFile.size());
     }
     else
     {
       OrthancPlugins::LogInfo("Writing non-encrypted file");
       writer->Write(reinterpret_cast<const char*>(content), size);
+      OrthancPlugins::LogInfo("Done writing");
     }
     OrthancPlugins::LogInfo(primaryStorage->GetNameForLogs() + ": created attachment " + std::string(uuid) + " (" + timer.GetHumanTransferSpeed(true, size) + ")");
   }
@@ -122,6 +122,11 @@ static OrthancPluginErrorCode StorageCreate(const char* uuid,
   {
     OrthancPlugins::LogInfo(primaryStorage->GetNameForLogs() + ": error while creating object " + std::string(uuid) + ": " + ex.what());
     return OrthancPluginErrorCode_StorageAreaPlugin;
+  }
+  catch (...)
+  {
+    std::exception_ptr p = std::current_exception();
+    OrthancPlugins::LogInfo("Error writing file: " + (p ? p.__cxa_exception_type()->name() : "unknown"));
   }
 
   return OrthancPluginErrorCode_Success;

@@ -18,8 +18,6 @@ RUN dnf -y update && \
 
 # Make sure the en_US locale has been generated (required for
 # case-insensitive comparison of strings with accents)
-# (pauline 02/2025) The lines below don't work, but everything seems to work fine without this
-# Logs: `Cannot set globale locale to en_US.UTF-8: locale::facet::_S_create_c_locale name not valid`
 RUN echo "LANG=en_US.UTF-8" >> /etc/environment
 RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment
 
@@ -335,6 +333,9 @@ RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-tci
 FROM orthanc-builder-base AS build-s3-object-storage
 
 ARG ORTHANC_AWS_STORAGE_COMMIT_ID
+RUN mkdir -p /sources/orthanc-object-storage
+RUN hg clone https://orthanc.uclouvain.be/hg/orthanc-object-storage/ -r $commitId /sources/orthanc-object-storage
+RUN cp StoragePlugin.cpp /sources/orthanc-object-storage/Common/StoragePlugin.cpp
 RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-s3 commitId=$ORTHANC_AWS_STORAGE_COMMIT_ID baseImage=$PLATFORM/$BASE_IMAGE_TAG preferDownloads=$PREFER_DOWNLOADS enableUploads=$ENABLE_UPLOAD
 
 ########################## Orthanc Explorer 2
