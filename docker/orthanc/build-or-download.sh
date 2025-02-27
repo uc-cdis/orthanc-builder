@@ -91,6 +91,8 @@ if [[ $target == "orthanc" ]]; then
     if [[ $dl != 0 ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc/ -r $commitId $sourcesRootPath
+        echo $PWD
+        ls
         cp SystemToolbox.cpp $sourcesRootPath/orthanc/OrthancFramework/Sources/SystemToolbox.cpp
         cp FilesystemStorage.cpp $sourcesRootPath/orthanc/OrthancFramework/Sources/FileStorage/FilesystemStorage.cpp
         pushd $buildRootPath
