@@ -92,7 +92,7 @@ static OrthancPluginErrorCode StorageCreate(const char* uuid,
     OrthancPlugins::LogInfo(primaryStorage->GetNameForLogs() + ": creating attachment " + std::string(uuid) + " of type " + boost::lexical_cast<std::string>(type));
     std::unique_ptr<IStorage::IWriter> writer(primaryStorage->GetWriterForObject(uuid, type, cryptoEnabled));
 
-    OrthancPlugins::LogInfo("cryptoEnabled = " + std::string(cryptoEnabled));
+    OrthancPlugins::LogInfo("cryptoEnabled = " + cryptoEnabled);
     if (cryptoEnabled)
     {
       std::string encryptedFile;
