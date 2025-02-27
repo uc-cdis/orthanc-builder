@@ -13,14 +13,15 @@ RUN dnf -y update && \
     libcurl-devel boost-devel libjpeg-turbo-devel \
     jsoncpp-devel lua-devel libpng-devel sqlite-devel \
     openssl-devel libuuid-devel unixODBC-devel \
-    protobuf-devel && \
+    protobuf-devel glibc-langpack-en && \
     dnf clean all
 
 # Make sure the en_US locale has been generated (required for
 # case-insensitive comparison of strings with accents)
 # (pauline 02/2025) The lines below don't work, but everything seems to work fine without this
 # Logs: `Cannot set globale locale to en_US.UTF-8: locale::facet::_S_create_c_locale name not valid`
-RUN echo 'LANG="en_US.UTF-8"' >> /etc/environment
+RUN echo "LANG=en_US.UTF-8" >> /etc/environment
+RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment
 
 ##################
 # The dockerfile below is copied+adapted from docker/orthanc/Dockerfile.builder-base
