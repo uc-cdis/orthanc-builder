@@ -334,7 +334,7 @@ FROM orthanc-builder-base AS build-s3-object-storage
 
 ARG ORTHANC_AWS_STORAGE_COMMIT_ID
 RUN mkdir -p /sources/orthanc-object-storage
-RUN hg clone https://orthanc.uclouvain.be/hg/orthanc-object-storage/ -r $commitId /sources/orthanc-object-storage
+RUN hg clone https://orthanc.uclouvain.be/hg/orthanc-object-storage/ -r f90d4e573ace /sources/orthanc-object-storage
 RUN cp StoragePlugin.cpp /sources/orthanc-object-storage/Common/StoragePlugin.cpp
 RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-s3 commitId=$ORTHANC_AWS_STORAGE_COMMIT_ID baseImage=$PLATFORM/$BASE_IMAGE_TAG preferDownloads=$PREFER_DOWNLOADS enableUploads=$ENABLE_UPLOAD
 
