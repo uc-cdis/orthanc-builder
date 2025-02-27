@@ -91,7 +91,6 @@ if [[ $target == "orthanc" ]]; then
     if [[ $dl != 0 ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc/ -r $commitId $sourcesRootPath
-        ls $sourcesRootPath
         cp SystemToolbox.cpp $sourcesRootPath/OrthancFramework/Sources/SystemToolbox.cpp
         cp FilesystemStorage.cpp $sourcesRootPath/OrthancFramework/Sources/FileStorage/FilesystemStorage.cpp
         pushd $buildRootPath
@@ -382,6 +381,8 @@ elif [[ $target == "orthanc-s3" ]]; then
         cd $sourcesRootPath
         hg clone https://orthanc.uclouvain.be/hg/orthanc-object-storage/ -r $commitId
         ln -s /third-party-downloads $sourcesRootPath/orthanc-object-storage/Aws/ThirdPartyDownloads
+
+        cp StoragePlugin.cpp $sourcesRootPath/Common/StoragePlugin.cpp
 
         pushd $buildRootPath
 
