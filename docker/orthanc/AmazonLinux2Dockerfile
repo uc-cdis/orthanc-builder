@@ -67,6 +67,11 @@ RUN mkdir -p /build
 RUN mkdir -p /scripts
 RUN mkdir -p /third-party-downloads
 
+RUN dnf list aws-sdk-cpp --showduplicates
+RUN dnf -y update && \
+    dnf -y install aws-sdk-cpp\aws-cpp-sdk-s3  && \
+    dnf clean all
+
 # download most commonly used third-party files to avoid downloading too many files from UCLouvain servers when building
 WORKDIR /third-party-downloads
 RUN wget https://public-files.orthanc.team/third-party-downloads/VolView-4.1.1.tar.gz
@@ -82,7 +87,7 @@ RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-s3-0.
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-sdkutils-0.1.11.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-checksums-0.1.17.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-crt-cpp-0.24.1.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-sdk-cpp-1.11.517.tar.gz
+# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-sdk-cpp-1.11.517.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_83_0_bcpdigest-1.12.2.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_84_0_bcpdigest-1.12.3.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_85_0_bcpdigest-1.12.4.tar.gz
