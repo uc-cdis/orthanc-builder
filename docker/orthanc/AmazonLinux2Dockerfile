@@ -71,7 +71,7 @@ RUN mkdir -p /third-party-downloads
 # RUN dnf -y update && \
 #     dnf -y install aws-sdk-cpp\aws-cpp-sdk-s3  && \
 #     dnf clean all
-RUN git clone --recurse-submodules https://github.com/aws/aws-sdk-cpp.git && cd aws-sdk-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_ONLY="s3" && make -j$(nproc) && sudo make install
+RUN git clone --recurse-submodules https://github.com/aws/aws-sdk-cpp.git && cd aws-sdk-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_ONLY="s3" && make -j$(nproc) && make install
 
 
 # download most commonly used third-party files to avoid downloading too many files from UCLouvain servers when building
