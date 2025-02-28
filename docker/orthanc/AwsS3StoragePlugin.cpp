@@ -112,8 +112,16 @@ public:
     // putObjectRequest.SetContentMD5(Aws::Utils::HashingUtils::Base64Encode(Aws::Utils::HashingUtils::CalculateMD5(*stream)));
     OrthancPlugins::LogInfo("after SetContentMD5");
 
-    auto result = client_->PutObject(putObjectRequest);
-    OrthancPlugins::LogInfo("after PutObject");
+    try
+    {
+      OrthancPlugins::LogInfo("before PutObject");
+      auto result = client_->PutObject(putObjectRequest);
+      OrthancPlugins::LogInfo("after PutObject");
+    }
+    catch (...)
+    {
+      throw StoragePluginException(std::string("PutObject error while writing file ") + path_);
+    }
 
     OrthancPlugins::LogInfo(std::string("PutObject result = ") + path_ + ": response code = " + boost::lexical_cast<std::string>((int)result.GetError().GetResponseCode()) + " " + result.GetError().GetExceptionName().c_str() + " " + result.GetError().GetMessage().c_str());
     if (!result.IsSuccess())
@@ -546,6 +554,8 @@ IStorage* AwsS3StoragePluginFactory::CreateStorage(const std::string& nameForLog
     configuration.connectTimeoutMs = connectTimeout * 1000;
     configuration.requestTimeoutMs  = requestTimeout * 1000;
     configuration.httpRequestTimeoutMs = requestTimeout * 1000;
+    configuration.checksumConfig.requestChecksumCalculation =
+    Aws::Client::RequestChecksumCalculation::WHEN_REQUIRED; // instead of default `WHEN_SUPPORTED`
 
     if (!endpoint.empty())
     {
