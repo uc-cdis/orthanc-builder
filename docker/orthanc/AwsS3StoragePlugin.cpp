@@ -109,7 +109,7 @@ public:
 
     putObjectRequest.SetBody(stream);
     OrthancPlugins::LogInfo("before SetContentMD5");
-    putObjectRequest.SetContentMD5(Aws::Utils::HashingUtils::Base64Encode(Aws::Utils::HashingUtils::CalculateMD5(*stream)));
+    // putObjectRequest.SetContentMD5(Aws::Utils::HashingUtils::Base64Encode(Aws::Utils::HashingUtils::CalculateMD5(*stream)));
     OrthancPlugins::LogInfo("after SetContentMD5");
 
     auto result = client_->PutObject(putObjectRequest);
