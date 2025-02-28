@@ -94,8 +94,8 @@ public:
     OrthancPlugins::LogInfo("in DirectWriter.Write");
     Aws::S3::Model::PutObjectRequest putObjectRequest;
 
-    OrthancPlugins::LogInfo("bucketName =" + bucketName);
-    OrthancPlugins::LogInfo("path =" + path);
+    OrthancPlugins::LogInfo("bucketName =" + bucketName_.c_str());
+    OrthancPlugins::LogInfo("path =" + path_.c_str());
     putObjectRequest.SetBucket(bucketName_.c_str());
     putObjectRequest.SetKey(path_.c_str());
 
@@ -113,6 +113,7 @@ public:
     OrthancPlugins::LogInfo("after SetContentMD5");
 
     auto result = client_->PutObject(putObjectRequest);
+    OrthancPlugins::LogInfo("after PutObject");
 
     if (!result.IsSuccess())
     {
