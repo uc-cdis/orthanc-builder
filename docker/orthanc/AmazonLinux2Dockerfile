@@ -82,7 +82,7 @@ RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-s3-0.
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-sdkutils-0.1.11.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-checksums-0.1.17.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-crt-cpp-0.24.1.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-sdk-cpp-1.11.178.tar.gz
+RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-sdk-cpp-1.11.517.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_83_0_bcpdigest-1.12.2.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_84_0_bcpdigest-1.12.3.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_85_0_bcpdigest-1.12.4.tar.gz
