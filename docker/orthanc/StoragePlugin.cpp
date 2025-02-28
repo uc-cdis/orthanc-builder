@@ -113,8 +113,8 @@ static OrthancPluginErrorCode StorageCreate(const char* uuid,
     else
     {
       OrthancPlugins::LogInfo("Writing non-encrypted file");
-      OrthancPlugins::LogInfo("size =" + size);
-      OrthancPlugins::LogInfo("content =" + content);
+      OrthancPlugins::LogInfo("size =" + (size ? size : "null"));
+      OrthancPlugins::LogInfo("content =" + (content ? content : "null"));
       writer->Write(reinterpret_cast<const char*>(content), size);
       OrthancPlugins::LogInfo("Done writing");
     }
