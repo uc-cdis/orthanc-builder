@@ -115,6 +115,7 @@ public:
     auto result = client_->PutObject(putObjectRequest);
     OrthancPlugins::LogInfo("after PutObject");
 
+    OrthancPlugins::LogInfo(std::string("PutObject result = ") + path_ + ": response code = " + boost::lexical_cast<std::string>((int)result.GetError().GetResponseCode()) + " " + result.GetError().GetExceptionName().c_str() + " " + result.GetError().GetMessage().c_str());
     if (!result.IsSuccess())
     {
       throw StoragePluginException(std::string("error while writing file ") + path_ + ": response code = " + boost::lexical_cast<std::string>((int)result.GetError().GetResponseCode()) + " " + result.GetError().GetExceptionName().c_str() + " " + result.GetError().GetMessage().c_str());
