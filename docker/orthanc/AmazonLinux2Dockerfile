@@ -350,7 +350,7 @@ COPY *.cmake /third-party-downloads
 RUN cp StoragePlugin.cpp /sources/orthanc-object-storage/Common/StoragePlugin.cpp
 RUN cp AwsS3StoragePlugin.cpp /sources/orthanc-object-storage/Aws/AwsS3StoragePlugin.cpp
 RUN cp AwsStaticConfiguration.cmake /sources/orthanc-object-storage/Aws/AwsStaticConfiguration.cmake
-RUN cp DownloadPackage.cmake /sources/OrthancFramework/Resources/CMake/DownloadPackage.cmake
+# RUN cp DownloadPackage.cmake /sources/OrthancFramework/Resources/CMake/DownloadPackage.cmake
 RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-s3 commitId=$ORTHANC_AWS_STORAGE_COMMIT_ID baseImage=$PLATFORM/$BASE_IMAGE_TAG preferDownloads=$PREFER_DOWNLOADS enableUploads=$ENABLE_UPLOAD
 
 ########################## Orthanc Explorer 2
