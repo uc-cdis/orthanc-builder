@@ -77,6 +77,7 @@ SET(AWS_CRT_CPP_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-crt-cp
 SET(AWS_CRT_CPP_MD5 "fa2cda44386bd56f1d4609c6a54a59f9")
 DownloadPackage(${AWS_CRT_CPP_MD5} ${AWS_CRT_CPP_URL} "${AWS_CRT_CPP_SOURCES_DIR}")
 
+# TODO try changing the name/version here instead of renaming the version we download from source
 SET(AWS_SDK_CPP_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-sdk-cpp-1.11.178)  # source =  https://github.com/aws/aws-sdk-cpp/archive/refs/tags/1.11.178.tar.gz
 SET(AWS_SDK_CPP_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-sdk-cpp-1.11.178.tar.gz")
 SET(AWS_SDK_CPP_MD5 "no-check")
