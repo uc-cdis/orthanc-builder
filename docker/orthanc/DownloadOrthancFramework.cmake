@@ -423,7 +423,8 @@ if (ORTHANC_FRAMEWORK_SOURCE STREQUAL "archive" OR
         COMMAND sh -c "${ORTHANC_FRAMEWORK_TAR} xfz ${ORTHANC_FRAMEWORK_ARCHIVE}"
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         RESULT_VARIABLE Failure
-        )ocess(
+        )
+        execute_process(
           COMMAND sh -c "sed -i 's/The MD5 hash/The MD5 hash \\${ActualMD5} (expected \\${MD5})/g' Orthanc-1.12.2/OrthancFramework/Resources/CMake/DownloadPackage.cmake"
           WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
           RESULT_VARIABLE Failure
