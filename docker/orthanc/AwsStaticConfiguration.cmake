@@ -79,7 +79,7 @@ DownloadPackage(${AWS_CRT_CPP_MD5} ${AWS_CRT_CPP_URL} "${AWS_CRT_CPP_SOURCES_DIR
 
 SET(AWS_SDK_CPP_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-sdk-cpp-1.11.178)  # source =  https://github.com/aws/aws-sdk-cpp/archive/refs/tags/1.11.178.tar.gz
 SET(AWS_SDK_CPP_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-sdk-cpp-1.11.178.tar.gz")
-SET(AWS_SDK_CPP_MD5 "5753e3acbc45b7ba938b70fd54a30540")
+SET(AWS_SDK_CPP_MD5 "d2476b9e796e339ac320b5333489bdb3")
 DownloadPackage(${AWS_SDK_CPP_MD5} ${AWS_SDK_CPP_URL} "${AWS_SDK_CPP_SOURCES_DIR}")
 
 
