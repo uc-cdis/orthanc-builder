@@ -42,7 +42,7 @@ RUN dnf -y update && \
     patch gtest gtest-devel && \
     dnf clean all
 
-RUN wget https://ftp.postgresql.org/pub/source/v16.5/postgresql-16.5.tar.gz && tar -zxvf postgresql-16.5.tar.gz && cd postgresql-16.5 && ./configure --bindir=/usr/bin --with-openssl && make -C src/bin install && make -C src/include install &&  make -C src/interfaces install
+RUN wget https://ftp.postgresql.org/pub/source/v16.5/postgresql-16.5.tar.gz && tar -zxvf postgresql-16.5.tar.gz && cd postgresql-16.5 && ./configure --bindir=/usr/bin --with-openssl && make -C src/bin install && make -C src/include install && make -C src/interfaces install
 
 # install googletest, pugixml and cryptopp from source because the packages are not available
 # in this amazon linux 2 base image
@@ -80,7 +80,7 @@ RUN git clone --recurse-submodules https://github.com/aws/aws-sdk-cpp.git
 # RUN ls /usr/local/include/aws
 RUN ls aws-sdk-cpp
 RUN mv aws-sdk-cpp aws-sdk-cpp-1.11.178
-RUN tar zcf aws-sdk-cpp-1.11.178.tar.gz -C aws-sdk-cpp-1.11.178 .
+RUN tar zcf aws-sdk-cpp-1.11.178.tar.gz aws-sdk-cpp-1.11.178
 
 RUN wget https://public-files.orthanc.team/third-party-downloads/VolView-4.1.1.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-auth-0.7.1.tar.gz
