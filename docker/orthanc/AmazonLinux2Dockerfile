@@ -82,7 +82,7 @@ RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-mqtt-
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-s3-0.3.14.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-sdkutils-0.1.11.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-checksums-0.1.17.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-crt-cpp-0.24.1.tar.gz
+# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-crt-cpp-0.24.1.tar.gz
 # RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-sdk-cpp-1.11.178.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_83_0_bcpdigest-1.12.2.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_84_0_bcpdigest-1.12.3.tar.gz
@@ -111,12 +111,16 @@ RUN wget https://public-files.orthanc.team/third-party-downloads/zlib-1.3.1.tar.
 #     dnf -y install aws-sdk-cpp\aws-cpp-sdk-s3  && \
 #     dnf clean all
 # TODO pin version
-RUN git clone --recurse-submodules --depth 1 --branch 1.11.496 https://github.com/aws/aws-sdk-cpp.git
+RUN git clone --recurse-submodules --depth 1 --branch 1.11.520 https://github.com/aws/aws-sdk-cpp.git
 # && cd aws-sdk-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_ONLY="s3" && make -j$(nproc) && make install
 # RUN ls /usr/local/include/aws
-RUN ls aws-sdk-cpp
+# RUN ls aws-sdk-cpp
 RUN mv aws-sdk-cpp aws-sdk-cpp-1.11.178
 RUN tar zcf aws-sdk-cpp-1.11.178.tar.gz aws-sdk-cpp-1.11.178
+
+RUN git clone --recurse-submodules --depth 1 --branch v0.30.1 https://github.com/awslabs/aws-crt-cpp.git
+RUN mv aws-crt-cpp aws-crt-cpp-0.24.1
+RUN tar zcf aws-crt-cpp-0.24.1.tar.gz aws-crt-cpp-0.24.1
 
 
 COPY build-or-download.sh /scripts
