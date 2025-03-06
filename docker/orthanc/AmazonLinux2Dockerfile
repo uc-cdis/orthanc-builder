@@ -164,10 +164,10 @@ RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc com
 
 ######################### Orthanc GDCM
 
-FROM orthanc-builder-base AS build-gdcm
+# FROM orthanc-builder-base AS build-gdcm
 
-ARG ORTHANC_GDCM_COMMIT_ID
-RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-gdcm commitId=$ORTHANC_GDCM_COMMIT_ID baseImage=$PLATFORM/$BASE_IMAGE_TAG preferDownloads=$PREFER_DOWNLOADS enableUploads=$ENABLE_UPLOAD
+# ARG ORTHANC_GDCM_COMMIT_ID
+# RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-gdcm commitId=$ORTHANC_GDCM_COMMIT_ID baseImage=$PLATFORM/$BASE_IMAGE_TAG preferDownloads=$PREFER_DOWNLOADS enableUploads=$ENABLE_UPLOAD
 
 ########################## Orthanc PG
 
@@ -350,7 +350,7 @@ RUN cp StoragePlugin.cpp /sources/orthanc-object-storage/Common/StoragePlugin.cp
 RUN cp AwsS3StoragePlugin.cpp /sources/orthanc-object-storage/Aws/AwsS3StoragePlugin.cpp
 RUN cp AwsStaticConfiguration.cmake /sources/orthanc-object-storage/Aws/AwsStaticConfiguration.cmake
 RUN cp DownloadOrthancFramework.cmake /sources/orthanc-object-storage/Common/Resources/Orthanc/CMake/DownloadOrthancFramework.cmake
-RUN md5sum aws-sdk-cpp-1.11.178.tar.gz || (yum install -y coreutils && md5sum aws-sdk-cpp-1.11.178.tar.gz)
+# RUN md5sum aws-sdk-cpp-1.11.178.tar.gz || (yum install -y coreutils && md5sum aws-sdk-cpp-1.11.178.tar.gz)
 # RUN cp DownloadPackage.cmake /sources/OrthancFramework/Resources/CMake/DownloadPackage.cmake
 RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-s3 commitId=$ORTHANC_AWS_STORAGE_COMMIT_ID baseImage=$PLATFORM/$BASE_IMAGE_TAG preferDownloads=$PREFER_DOWNLOADS enableUploads=$ENABLE_UPLOAD
 
@@ -425,7 +425,7 @@ COPY --from=build-plugin-dicomweb /build/libOrthancDicomWeb.so /usr/share/orthan
 COPY --from=build-plugin-auth /build/libOrthancAuthorization.so /usr/share/orthanc/plugins-available/
 # COPY --from=build-plugin-owv /build/libOrthancWebViewer.so /usr/share/orthanc/plugins-available/
 COPY --from=build-plugin-python /build/libOrthancPython.so /usr/share/orthanc/plugins-available/
-COPY --from=build-gdcm /build/libOrthancGdcm.so /usr/share/orthanc/plugins-available/
+# COPY --from=build-gdcm /build/libOrthancGdcm.so /usr/share/orthanc/plugins-available/
 # COPY --from=build-plugin-odbc /build/libOrthancOdbcIndex.so /usr/share/orthanc/plugins-available/
 # COPY --from=build-plugin-odbc /build/libOrthancOdbcStorage.so /usr/share/orthanc/plugins-available/
 COPY --from=build-plugin-tcia /build/libOrthancTcia.so /usr/share/orthanc/plugins-available/
@@ -453,7 +453,7 @@ RUN chmod +x /usr/share/orthanc/plugins-available/*
 RUN chmod +x /usr/local/bin/*
 
 RUN dnf -y update && \
-    dnf -y install python-pip vim git libpq java-11-amazon-corretto && \
+    dnf -y install python-pip vim git libpq && \
     dnf clean all
 RUN pip install envsubst==0.1.5
 
