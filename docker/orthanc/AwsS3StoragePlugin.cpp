@@ -556,7 +556,7 @@ IStorage* AwsS3StoragePluginFactory::CreateStorage(const std::string& nameForLog
     configuration.requestTimeoutMs  = requestTimeout * 1000;
     configuration.httpRequestTimeoutMs = requestTimeout * 1000;
     configuration.checksumConfig.requestChecksumCalculation =
-    Aws::Client::RequestChecksumCalculation::WHEN_REQUIRED; // instead of default `WHEN_SUPPORTED`
+    // Aws::Client::RequestChecksumCalculation::WHEN_REQUIRED; // instead of default `WHEN_SUPPORTED`
 
     if (!endpoint.empty())
     {
