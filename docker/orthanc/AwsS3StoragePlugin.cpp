@@ -105,7 +105,7 @@ public:
     //     OrthancPlugins::LogInfo("Failed");
     //     std::cerr << "Failed with error: " << outcome.GetError() << std::endl;
     // } else {
-    //     OrthancPlugins::LogInfo("Suceeded");
+    //     OrthancPlugins::LogInfo("Succeeded");
     //     std::cout << "Found " << outcome.GetResult().GetBuckets().size() << " buckets\n";
     //     for (auto &&b: outcome.GetResult().GetBuckets()) {
     //         std::cout << b.GetName() << std::endl;
@@ -184,6 +184,10 @@ public:
     OrthancPlugins::LogInfo(putObjectRequest.GetKey());
     OrthancPlugins::LogInfo(putObjectRequest.GetSSECustomerKey());
     OrthancPlugins::LogInfo(putObjectRequest.GetContentType());
+    const Aws::Map<Aws::String, Aws::String>& metadata = request.GetMetadata();
+    for (const auto& pair : metadata) {
+        OrthancPlugins::LogInfo(std::string(pair.first) + " = " + std:string(pair.second));
+    }
     OrthancPlugins::LogInfo("   done describing putObjectRequest");
 
     try
