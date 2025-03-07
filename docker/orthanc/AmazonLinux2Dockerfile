@@ -453,7 +453,8 @@ RUN chmod +x /usr/share/orthanc/plugins-available/*
 RUN chmod +x /usr/local/bin/*
 
 RUN dnf -y update && \
-    dnf -y install python-pip vim git libpq && \
+    dnf -y install python-pip vim git libpq \
+    glibc glibc-devel libstdc++ libstdc++-devel && \
     dnf clean all
 RUN pip install envsubst==0.1.5
 
