@@ -83,7 +83,7 @@ RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-s3-0.
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-sdkutils-0.1.11.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-checksums-0.1.17.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-crt-cpp-0.24.1.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-sdk-cpp-1.11.178.tar.gz
+# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-sdk-cpp-1.11.178.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_83_0_bcpdigest-1.12.2.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_84_0_bcpdigest-1.12.3.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_85_0_bcpdigest-1.12.4.tar.gz
@@ -106,7 +106,15 @@ RUN wget https://public-files.orthanc.team/third-party-downloads/VolView-4.1.1.t
 RUN wget https://public-files.orthanc.team/third-party-downloads/VTK-7.1.1.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/zlib-1.3.1.tar.gz
 
-# RUN git clone --recurse-submodules --depth 1 --branch 1.11.520 https://github.com/aws/aws-sdk-cpp.git
+RUN git clone --recurse-submodules --depth 1 --branch 1.11.520 https://github.com/aws/aws-sdk-cpp.git
+RUN git clone --recurse-submodules --branch 1.11.520 git@github.com:aws/aws-sdk-cpp.git
+# RUN mkdir sdk_build
+# RUN cd sdk_build
+
+# RUN cmake ../aws-sdk-cpp -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/usr/local/ -DCMAKE_INSTALL_PREFIX=/usr/local/ -DBUILD_ONLY="s3"
+RUN mv aws-sdk-cpp aws-sdk-cpp-1.11.520
+RUN tar zcf aws-sdk-cpp-1.11.520.tar.gz aws-sdk-cpp-1.11.520
+
 # # && cd aws-sdk-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_ONLY="s3" && make -j$(nproc) && make install
 # RUN mv aws-sdk-cpp aws-sdk-cpp-1.11.178
 # RUN tar zcf aws-sdk-cpp-1.11.178.tar.gz aws-sdk-cpp-1.11.178
