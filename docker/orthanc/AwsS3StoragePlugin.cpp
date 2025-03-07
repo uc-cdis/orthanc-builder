@@ -184,7 +184,7 @@ public:
     OrthancPlugins::LogInfo(putObjectRequest.GetKey());
     OrthancPlugins::LogInfo(putObjectRequest.GetSSECustomerKey());
     OrthancPlugins::LogInfo(putObjectRequest.GetContentType());
-    const Aws::Map<Aws::String, Aws::String>& metadata = request.GetMetadata();
+    const Aws::Map<Aws::String, Aws::String>& metadata = putObjectRequest.GetMetadata();
     for (const auto& pair : metadata) {
         OrthancPlugins::LogInfo(std::string(pair.first) + " = " + std:string(pair.second));
     }
