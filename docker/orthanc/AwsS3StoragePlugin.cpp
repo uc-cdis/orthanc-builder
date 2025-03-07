@@ -127,10 +127,10 @@ public:
     request.SetBody(inputData);
 
     OrthancPlugins::LogInfo("before PutObject");
-    Aws::S3::Model::PutObjectOutcome outcome = client_->PutObject(request);
+    Aws::S3::Model::PutObjectOutcome outcome2 = client_->PutObject(request);
     OrthancPlugins::LogInfo("after PutObject");
 
-    if (!outcome.IsSuccess()) {
+    if (!outcome2.IsSuccess()) {
       OrthancPlugins::LogInfo("Error unable to upload file");
     } else {
       OrthancPlugins::LogInfo("Successful file upload");
