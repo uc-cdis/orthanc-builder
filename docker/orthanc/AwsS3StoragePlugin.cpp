@@ -118,8 +118,6 @@ public:
     } else {
       OrthancPlugins::LogInfo("Successful file upload");
     }
-
-    return outcome.IsSuccess();
   }
 
   virtual void WriteOld(const char* data, size_t size)
