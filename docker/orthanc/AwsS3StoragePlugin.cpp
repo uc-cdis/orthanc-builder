@@ -205,8 +205,20 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
 
     result = curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
     if (result != CURLE_OK) {
-      OrthancPlugins::LogInfo("Failed to set CURLOPT_PUT");
-      throw StoragePluginException("Failed to set CURLOPT_PUT")
+      OrthancPlugins::LogInfo("Failed to set CURLOPT_UPLOAD");
+      throw StoragePluginException("Failed to set CURLOPT_UPLOAD")
+    }
+
+    result = curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 300L); // default = 300s. Orthanc seems to set it to 60s
+    if (result != CURLE_OK) {
+      OrthancPlugins::LogInfo("Failed to set CURLOPT_CONNECTTIMEOUT");
+      throw StoragePluginException("Failed to set CURLOPT_CONNECTTIMEOUT")
+    }
+
+    result = curl_easy_setopt(curl, CURLOPT_TIMEOUT, 0L); // default = 0 (== never times out)
+    if (result != CURLE_OK) {
+      OrthancPlugins::LogInfo("Failed to set CURLOPT_TIMEOUT");
+      throw StoragePluginException("Failed to set CURLOPT_TIMEOUT")
     }
 
     result = curl_easy_perform(curl);
