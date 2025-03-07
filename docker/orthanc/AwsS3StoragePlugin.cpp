@@ -99,6 +99,20 @@ public:
     // clientConfig.region = "us-east-1";
     // Aws::S3::S3Client client(clientConfig);
 
+    OrthancPlugins::LogInfo("calling ListBuckets");
+    auto outcome = client_->ListBuckets();
+    if (!outcome.IsSuccess()) {
+        OrthancPlugins::LogInfo("Failed");
+        std::cerr << "Failed with error: " << outcome.GetError() << std::endl;
+    } else {
+        OrthancPlugins::LogInfo("Suceeded");
+        std::cout << "Found " << outcome.GetResult().GetBuckets().size() << " buckets\n";
+        for (auto &&b: outcome.GetResult().GetBuckets()) {
+            std::cout << b.GetName() << std::endl;
+        }
+    }
+
+    OrthancPlugins::LogInfo("calling PutObject");
     Aws::S3::Model::PutObjectRequest request;
     request.SetBucket("pauline-planx-pla-net-orthanc-storage");
     request.SetKey("filefromcpp.txt");
@@ -112,7 +126,9 @@ public:
 
     request.SetBody(inputData);
 
+    OrthancPlugins::LogInfo("before PutObject");
     Aws::S3::Model::PutObjectOutcome outcome = client_->PutObject(request);
+    OrthancPlugins::LogInfo("after PutObject");
 
     if (!outcome.IsSuccess()) {
       OrthancPlugins::LogInfo("Error unable to upload file");
