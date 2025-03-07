@@ -352,6 +352,11 @@ RUN cp AwsS3StoragePlugin.cpp /sources/orthanc-object-storage/Aws/AwsS3StoragePl
 # RUN cp DownloadOrthancFramework.cmake /sources/orthanc-object-storage/Common/Resources/Orthanc/CMake/DownloadOrthancFramework.cmake
 # RUN md5sum aws-sdk-cpp-1.11.178.tar.gz || (yum install -y coreutils && md5sum aws-sdk-cpp-1.11.178.tar.gz)
 # RUN cp DownloadPackage.cmake /sources/OrthancFramework/Resources/CMake/DownloadPackage.cmake
+
+RUN dnf -y update && \
+    dnf -y install glibc glibc-devel libstdc++ libstdc++-devel && \
+    dnf clean all
+
 RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-s3 commitId=$ORTHANC_AWS_STORAGE_COMMIT_ID baseImage=$PLATFORM/$BASE_IMAGE_TAG preferDownloads=$PREFER_DOWNLOADS enableUploads=$ENABLE_UPLOAD
 
 ########################## Orthanc Explorer 2
