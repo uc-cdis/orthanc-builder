@@ -82,8 +82,8 @@ RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-mqtt-
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-s3-0.3.14.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-sdkutils-0.1.11.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-checksums-0.1.17.tar.gz
-# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-crt-cpp-0.24.1.tar.gz
-# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-sdk-cpp-1.11.178.tar.gz
+RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-crt-cpp-0.24.1.tar.gz
+RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-sdk-cpp-1.11.178.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_83_0_bcpdigest-1.12.2.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_84_0_bcpdigest-1.12.3.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_85_0_bcpdigest-1.12.4.tar.gz
@@ -106,14 +106,14 @@ RUN wget https://public-files.orthanc.team/third-party-downloads/VolView-4.1.1.t
 RUN wget https://public-files.orthanc.team/third-party-downloads/VTK-7.1.1.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/zlib-1.3.1.tar.gz
 
-RUN git clone --recurse-submodules --depth 1 --branch 1.11.520 https://github.com/aws/aws-sdk-cpp.git
-# && cd aws-sdk-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_ONLY="s3" && make -j$(nproc) && make install
-RUN mv aws-sdk-cpp aws-sdk-cpp-1.11.178
-RUN tar zcf aws-sdk-cpp-1.11.178.tar.gz aws-sdk-cpp-1.11.178
+# RUN git clone --recurse-submodules --depth 1 --branch 1.11.520 https://github.com/aws/aws-sdk-cpp.git
+# # && cd aws-sdk-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_ONLY="s3" && make -j$(nproc) && make install
+# RUN mv aws-sdk-cpp aws-sdk-cpp-1.11.178
+# RUN tar zcf aws-sdk-cpp-1.11.178.tar.gz aws-sdk-cpp-1.11.178
 
-RUN git clone --recurse-submodules --depth 1 --branch v0.30.1 https://github.com/awslabs/aws-crt-cpp.git
-RUN mv aws-crt-cpp aws-crt-cpp-0.24.1
-RUN tar zcf aws-crt-cpp-0.24.1.tar.gz aws-crt-cpp-0.24.1
+# RUN git clone --recurse-submodules --depth 1 --branch v0.30.1 https://github.com/awslabs/aws-crt-cpp.git
+# RUN mv aws-crt-cpp aws-crt-cpp-0.24.1
+# RUN tar zcf aws-crt-cpp-0.24.1.tar.gz aws-crt-cpp-0.24.1
 
 
 COPY build-or-download.sh /scripts
@@ -348,8 +348,8 @@ COPY *.cpp /third-party-downloads
 COPY *.cmake /third-party-downloads
 RUN cp StoragePlugin.cpp /sources/orthanc-object-storage/Common/StoragePlugin.cpp
 RUN cp AwsS3StoragePlugin.cpp /sources/orthanc-object-storage/Aws/AwsS3StoragePlugin.cpp
-RUN cp AwsStaticConfiguration.cmake /sources/orthanc-object-storage/Aws/AwsStaticConfiguration.cmake
-RUN cp DownloadOrthancFramework.cmake /sources/orthanc-object-storage/Common/Resources/Orthanc/CMake/DownloadOrthancFramework.cmake
+# RUN cp AwsStaticConfiguration.cmake /sources/orthanc-object-storage/Aws/AwsStaticConfiguration.cmake
+# RUN cp DownloadOrthancFramework.cmake /sources/orthanc-object-storage/Common/Resources/Orthanc/CMake/DownloadOrthancFramework.cmake
 # RUN md5sum aws-sdk-cpp-1.11.178.tar.gz || (yum install -y coreutils && md5sum aws-sdk-cpp-1.11.178.tar.gz)
 # RUN cp DownloadPackage.cmake /sources/OrthancFramework/Resources/CMake/DownloadPackage.cmake
 RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-s3 commitId=$ORTHANC_AWS_STORAGE_COMMIT_ID baseImage=$PLATFORM/$BASE_IMAGE_TAG preferDownloads=$PREFER_DOWNLOADS enableUploads=$ENABLE_UPLOAD
