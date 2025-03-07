@@ -55,7 +55,7 @@ echo "image            = $image"
 # note: we get the last commit id from a branch to detect last changes in a branch
 
 ORTHANC_COMMIT_ID=$(getCommitId "Orthanc" $version docker $skipCommitChecks)
-# ORTHANC_GDCM_COMMIT_ID=$(getCommitId "Orthanc-gdcm" $version docker $skipCommitChecks)
+ORTHANC_GDCM_COMMIT_ID=$(getCommitId "Orthanc-gdcm" $version docker $skipCommitChecks)
 ORTHANC_PG_COMMIT_ID=$(getCommitId "Orthanc-postgresql" $version docker $skipCommitChecks)
 # ORTHANC_MYSQL_COMMIT_ID=$(getCommitId "Orthanc-mysql" $version docker $skipCommitChecks)
 # ORTHANC_TRANSFERS_COMMIT_ID=$(getCommitId "Orthanc-transfers" $version docker $skipCommitChecks)
@@ -82,7 +82,7 @@ BASE_BUILDER_IMAGE_TAG=$BASE_DEBIAN_IMAGE-$version
 
 # list all intermediate targets.  It allows us to "slow down" the build and see what's going wrong (which is not possible with 10 parallel builds)
 # buildTargets="build-plugin-auth build-orthanc build-gdcm build-plugin-pg build-plugin-mysql build-plugin-transfers build-plugin-dicomweb build-plugin-wsi build-plugin-owv build-plugin-python build-plugin-odbc build-plugin-indexer build-plugin-neuro build-plugin-tcia build-stone-viewer build-s3-object-storage build-oe2 build-plugin-volview build-plugin-ohif"
-buildTargets="orthanc-runner-base orthanc-builder-base build-plugin-auth build-orthanc build-plugin-pg build-plugin-dicomweb build-plugin-python build-plugin-indexer build-plugin-tcia build-s3-object-storage"
+buildTargets="orthanc-runner-base orthanc-builder-base build-plugin-auth build-orthanc build-gdcm build-plugin-pg build-plugin-dicomweb build-plugin-python build-plugin-indexer build-plugin-tcia build-s3-object-storage"
 
 # by default, we try to build only the normal image (oposed to the full image with vcpkg and MSSQL drivers)
 finalImageTarget=orthanc-no-vcpkg
@@ -300,6 +300,7 @@ for target in $buildTargets; do
         $add_host_cmd \
         --progress=plain --platform=$platform \
         --build-arg ORTHANC_COMMIT_ID=$ORTHANC_COMMIT_ID \
+        --build-arg ORTHANC_GDCM_COMMIT_ID=$ORTHANC_GDCM_COMMIT_ID \
         --build-arg ORTHANC_PG_COMMIT_ID=$ORTHANC_PG_COMMIT_ID \
         --build-arg ORTHANC_DW_COMMIT_ID=$ORTHANC_DW_COMMIT_ID \
         --build-arg ORTHANC_AUTH_COMMIT_ID=$ORTHANC_AUTH_COMMIT_ID \
