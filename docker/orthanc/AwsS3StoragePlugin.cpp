@@ -186,7 +186,7 @@ public:
     OrthancPlugins::LogInfo(putObjectRequest.GetContentType());
     const Aws::Map<Aws::String, Aws::String>& metadata = putObjectRequest.GetMetadata();
     for (const auto& pair : metadata) {
-        OrthancPlugins::LogInfo(std::string(pair.first) + " = " + std:string(pair.second));
+        OrthancPlugins::LogInfo(std::string(pair.first) + " = " + std::string(pair.second));
     }
     OrthancPlugins::LogInfo("   done describing putObjectRequest");
 
