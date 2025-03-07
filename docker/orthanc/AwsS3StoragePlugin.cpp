@@ -174,6 +174,8 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
       OrthancPlugins::LogInfo("Failed to set CURLOPT_READDATA");
     }
 
+    OrthancPlugins::LogInfo(std::string("size = ") + std::to_string(size));
+    OrthancPlugins::LogInfo(std::string("strlen(data) = ") + std::to_string(strlen(data)));
     result = curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t) size);
     if (result != CURLE_OK) {
       OrthancPlugins::LogInfo("Failed to set CURLOPT_INFILESIZE_LARGE");
