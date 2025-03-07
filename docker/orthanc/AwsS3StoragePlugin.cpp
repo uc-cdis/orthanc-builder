@@ -187,7 +187,7 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
     CURLcode result;
 
     Aws::StringStream readStringStream;
-    Aws::String awsstringdata(data.c_str(), data.size());
+    Aws::String awsstringdata(data);
     readStringStream << awsstringdata;
     result = curl_easy_setopt(curl, CURLOPT_READFUNCTION, myCurlReadBack);
 
@@ -200,7 +200,7 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
       OrthancPlugins::LogInfo("Failed to set CURLOPT_READDATA");
     }
 
-    result = curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t) data.size());
+    result = curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t) strlen(data));
     if (result != CURLE_OK) {
       OrthancPlugins::LogInfo("Failed to set CURLOPT_INFILESIZE_LARGE");
     }
