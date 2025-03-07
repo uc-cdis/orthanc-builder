@@ -135,27 +135,41 @@ public:
     }
   }
 
-  virtual size_t read_callback(void *ptr, size_t size, size_t nmemb, void *userdata) {
-    std::pair<const char *, size_t> *upload_data = static_cast<std::pair<const char *, size_t> *>(userdata);
-    size_t buffer_size = size * nmemb;
+  // virtual size_t read_callback(void *ptr, size_t size, size_t nmemb, void *userdata) {
+  //   std::pair<const char *, size_t> *upload_data = static_cast<std::pair<const char *, size_t> *>(userdata);
+  //   size_t buffer_size = size * nmemb;
 
-    // Check if we have more data to send
-    if (upload_data->second == 0) {
-      return 0; // No more data
-    }
+  //   // Check if we have more data to send
+  //   if (upload_data->second == 0) {
+  //     return 0; // No more data
+  //   }
 
-    // Determine how much to copy
-    size_t copy_size = (upload_data->second < buffer_size) ? upload_data->second : buffer_size;
-    std::memcpy(ptr, upload_data->first, copy_size);
+  //   // Determine how much to copy
+  //   size_t copy_size = (upload_data->second < buffer_size) ? upload_data->second : buffer_size;
+  //   std::memcpy(ptr, upload_data->first, copy_size);
 
-    // Move pointer forward
-    upload_data->first += copy_size;
-    upload_data->second -= copy_size;
+  //   // Move pointer forward
+  //   upload_data->first += copy_size;
+  //   upload_data->second -= copy_size;
 
-    return copy_size;
-  }
+  //   return copy_size;
+  // }
 
-  virtual void Write(const char* data, size_t size)
+//   static size_t myCurlReadBack(char *buffer, size_t size, size_t nitems, void *userdata) {
+//     Aws::StringStream *str = (Aws::StringStream *) userdata;
+//     str->read(buffer, size * nitems);
+//     return str->gcount();
+//   }
+
+// static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *userdata) {
+//     Aws::StringStream *str = (Aws::StringStream *) userdata;
+//     if (nitems > 0) {
+//       str->write(buffer, size * nitems);
+//     }
+//     return size * nitems;
+//   }
+
+  virtual void WritePresignUrl(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
 
@@ -168,42 +182,101 @@ public:
     OrthancPlugins::LogInfo("presigned_url");
     OrthancPlugins::LogInfo(presigned_url);
 
-    CURL *curl = curl_easy_init();
-    if (!curl) {
-      OrthancPlugins::LogInfo("Failed to initialize libcurl");
-    }
 
-    // Prepare the memory data structure
-    std::pair<const char *, size_t> upload_data = {data, size};
+    // CURL *curl = curl_easy_init();
+    // CURLcode result;
 
-    // Set cURL options
-    curl_easy_setopt(curl, CURLOPT_URL, presigned_url.c_str());
-    curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
-    curl_easy_setopt(curl, CURLOPT_READDATA, &upload_data);
-    curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
-    curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)data_size);
+    // Aws::StringStream readStringStream;
+    // Aws::String awsstringdata(data.c_str(), data.size());
+    // readStringStream << awsstringdata;
+    // result = curl_easy_setopt(curl, CURLOPT_READFUNCTION, myCurlReadBack);
 
-    // Set headers (Content-Type is needed for S3)
-    struct curl_slist *headers = nullptr;
-    headers = curl_slist_append(headers, "Content-Type: application/octet-stream");
-    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+    // if (result != CURLE_OK) {
+    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_READFUNCTION");
+    // }
 
-    // Perform upload
-    CURLcode res = curl_easy_perform(curl);
-    if (res != CURLE_OK) {
-      OrthancPlugins::LogInfo("Upload failed");
-        std::cerr << "Upload failed: " << curl_easy_strerror(res) << std::endl;
-    } else {
-      OrthancPlugins::LogInfo("Upload successful");
-        std::cout << "Upload successful!" << std::endl;
-    }
+    // result = curl_easy_setopt(curl, CURLOPT_READDATA, &readStringStream);
+    // if (result != CURLE_OK) {
+    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_READDATA");
+    // }
 
-    // Cleanup
-    curl_slist_free_all(headers);
-    curl_easy_cleanup(curl);
+    // result = curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t) data.size());
+    // if (result != CURLE_OK) {
+    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_INFILESIZE_LARGE");
+    // }
+
+    // result = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, myCurlWriteBack);
+    // if (result != CURLE_OK) {
+    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_WRITEFUNCTION");
+    // }
+
+    // std::stringstream outWriteString;
+    // result = curl_easy_setopt(curl, CURLOPT_WRITEDATA, &outWriteString);
+    // if (result != CURLE_OK) {
+    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_WRITEDATA");
+    // }
+
+    // result = curl_easy_setopt(curl, CURLOPT_URL, presigned_url.c_str());
+    // if (result != CURLE_OK) {
+    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_URL");
+    // }
+
+    // result = curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+    // if (result != CURLE_OK) {
+    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_PUT");
+    // }
+
+    // result = curl_easy_perform(curl);
+    // if (result != CURLE_OK) {
+    //   OrthancPlugins::LogInfo("Failed to perform CURL request");
+    // }
+
+    // std::string outString = outWriteString.str();
+    // if (outString.empty()) {
+    //   OrthancPlugins::LogInfo("Successfully put object");
+    // } else {
+    //   OrthancPlugins::LogInfo("Failed to put object");
+    //     std::cout << "A server error was encountered, output:\n" << outString << std::endl;
+    // }
+
+
+    
+    // CURL *curl = curl_easy_init();
+    // if (!curl) {
+    //   OrthancPlugins::LogInfo("Failed to initialize libcurl");
+    // }
+
+    // // Prepare the memory data structure
+    // std::pair<const char *, size_t> upload_data = {data, size};
+
+    // // Set cURL options
+    // curl_easy_setopt(curl, CURLOPT_URL, presigned_url.c_str());
+    // curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+    // curl_easy_setopt(curl, CURLOPT_READDATA, &upload_data);
+    // curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
+    // curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)data_size);
+
+    // // Set headers (Content-Type is needed for S3)
+    // struct curl_slist *headers = nullptr;
+    // headers = curl_slist_append(headers, "Content-Type: application/octet-stream");
+    // curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+
+    // // Perform upload
+    // CURLcode res = curl_easy_perform(curl);
+    // if (res != CURLE_OK) {
+    //   OrthancPlugins::LogInfo("Upload failed");
+    //     std::cerr << "Upload failed: " << curl_easy_strerror(res) << std::endl;
+    // } else {
+    //   OrthancPlugins::LogInfo("Upload successful");
+    //     std::cout << "Upload successful!" << std::endl;
+    // }
+
+    // // Cleanup
+    // curl_slist_free_all(headers);
+    // curl_easy_cleanup(curl);
   }
 
-  virtual void WriteOld(const char* data, size_t size)
+  virtual void Write(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
     Aws::S3::Model::PutObjectRequest putObjectRequest;
