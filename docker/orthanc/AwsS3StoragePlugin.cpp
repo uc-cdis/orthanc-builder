@@ -595,7 +595,7 @@ IStorage* AwsS3StoragePluginFactory::CreateStorage(const std::string& nameForLog
     Aws::Client::ClientConfiguration configuration;
 
     configuration.region = region.c_str();
-    OrthancPlugins::LogInfo(accessKey.c_str());
+    OrthancPlugins::LogInfo(region.c_str());
     configuration.scheme = Aws::Http::Scheme::HTTPS;
     configuration.connectTimeoutMs = connectTimeout * 1000;
     configuration.requestTimeoutMs  = requestTimeout * 1000;
