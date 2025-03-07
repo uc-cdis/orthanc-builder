@@ -95,6 +95,9 @@ public:
   virtual void Write(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
+    // Aws::S3::S3ClientConfiguration clientConfig;
+    // clientConfig.region = "us-east-1";
+    // Aws::S3::S3Client client(clientConfig);
 
     Aws::S3::Model::PutObjectRequest request;
     request.SetBucket("gen3wf-pauline-planx-pla-net-16");
@@ -592,6 +595,7 @@ IStorage* AwsS3StoragePluginFactory::CreateStorage(const std::string& nameForLog
     Aws::Client::ClientConfiguration configuration;
 
     configuration.region = region.c_str();
+    OrthancPlugins::LogInfo(accessKey.c_str());
     configuration.scheme = Aws::Http::Scheme::HTTPS;
     configuration.connectTimeoutMs = connectTimeout * 1000;
     configuration.requestTimeoutMs  = requestTimeout * 1000;
@@ -601,11 +605,13 @@ IStorage* AwsS3StoragePluginFactory::CreateStorage(const std::string& nameForLog
     if (!endpoint.empty())
     {
       configuration.endpointOverride = endpoint.c_str();
+      OrthancPlugins::LogInfo(endpoint.c_str());
     }
 
     if (!caFile.empty())
     {
       configuration.caFile = caFile;
+      OrthancPlugins::LogInfo("caFile");
     }
     
     bool useTransferManager = false; // new in v 2.3.0
@@ -623,6 +629,8 @@ IStorage* AwsS3StoragePluginFactory::CreateStorage(const std::string& nameForLog
     {
       OrthancPlugins::LogInfo("AWS S3 Storage: using credentials from the configuration file");
       Aws::Auth::AWSCredentials credentials(accessKey.c_str(), secretKey.c_str());
+      OrthancPlugins::LogInfo(accessKey.c_str());
+      OrthancPlugins::LogInfo(secretKey.c_str());
       
       client = Aws::MakeShared<Aws::S3::S3Client>(ALLOCATION_TAG, credentials, configuration, Aws::Client::AWSAuthV4Signer::PayloadSigningPolicy::Never, virtualAddressing);
     } 
