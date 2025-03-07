@@ -44,6 +44,7 @@
 #include <boost/interprocess/streams/bufferstream.hpp>
 #include <iostream>
 #include <fstream>
+#include <curl/curl.h>
 
 const char* ALLOCATION_TAG = "OrthancS3";
 
@@ -89,9 +90,6 @@ public:
   {
   }
 
-// bool AwsDoc::S3::putObject(const Aws::String &bucketName,
-//   const Aws::String &fileName,
-//   const Aws::S3::S3ClientConfiguration &clientConfig) {
   virtual void WriteNew(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
@@ -138,6 +136,52 @@ public:
   }
 
   virtual void Write(const char* data, size_t size)
+  {
+    OrthancPlugins::LogInfo("in DirectWriter.Write");
+    // Generate pre-signed URL
+    Aws::Http::HttpMethod method = Aws::Http::HttpMethod::HTTP_PUT;
+    auto expiry_time = std::chrono::seconds(60);
+
+    std::string presigned_url = client_.GeneratePresignedUrl("pauline-planx-pla-net-orthanc-storage", "filewithpresignedurl.txt", method, expiry_time);
+    OrthancPlugins::LogInfo("presigned_url");
+    OrthancPlugins::LogInfo(presigned_url);
+
+    CURL *curl = curl_easy_init();
+    if (!curl) {
+      OrthancPlugins::LogInfo("Failed to initialize libcurl");
+    }
+
+    // Prepare the memory data structure
+    std::pair<const char *, size_t> upload_data = {data, size};
+
+    // Set cURL options
+    curl_easy_setopt(curl, CURLOPT_URL, presigned_url.c_str());
+    curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+    curl_easy_setopt(curl, CURLOPT_READDATA, &upload_data);
+    curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
+    curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)data_size);
+
+    // Set headers (Content-Type is needed for S3)
+    struct curl_slist *headers = nullptr;
+    headers = curl_slist_append(headers, "Content-Type: application/octet-stream");
+    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+
+    // Perform upload
+    CURLcode res = curl_easy_perform(curl);
+    if (res != CURLE_OK) {
+      OrthancPlugins::LogInfo("Upload failed");
+        std::cerr << "Upload failed: " << curl_easy_strerror(res) << std::endl;
+    } else {
+      OrthancPlugins::LogInfo("Upload successful");
+        std::cout << "Upload successful!" << std::endl;
+    }
+
+    // Cleanup
+    curl_slist_free_all(headers);
+    curl_easy_cleanup(curl);
+  }
+
+  virtual void WriteOld(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
     Aws::S3::Model::PutObjectRequest putObjectRequest;
