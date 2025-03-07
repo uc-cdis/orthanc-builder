@@ -115,7 +115,7 @@ public:
     request.SetBucket("pauline-planx-pla-net-orthanc-storage");
     request.SetKey("filefromcpp.txt");
 
-    auto inputData = Aws::MakeShared<Aws::StringStream>("ALLOCATION_TAG");
+    auto inputData = Aws::MakeShared<Aws::StringStream>(ALLOCATION_TAG);
     *inputData << "file contents";
 
     if (!*inputData || !inputData->good()) {
@@ -135,7 +135,7 @@ public:
     }
   }
 
-  // virtual size_t read_callback(void *ptr, size_t size, size_t nmemb, void *userdata) {
+  // static size_t read_callback(void *ptr, size_t size, size_t nmemb, void *userdata) {
   //   std::pair<const char *, size_t> *upload_data = static_cast<std::pair<const char *, size_t> *>(userdata);
   //   size_t buffer_size = size * nmemb;
 
@@ -155,21 +155,21 @@ public:
   //   return copy_size;
   // }
 
-//   static size_t myCurlReadBack(char *buffer, size_t size, size_t nitems, void *userdata) {
-//     Aws::StringStream *str = (Aws::StringStream *) userdata;
-//     str->read(buffer, size * nitems);
-//     return str->gcount();
-//   }
+  static size_t myCurlReadBack(char *buffer, size_t size, size_t nitems, void *userdata) {
+    Aws::StringStream *str = (Aws::StringStream *) userdata;
+    str->read(buffer, size * nitems);
+    return str->gcount();
+  }
 
-// static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *userdata) {
-//     Aws::StringStream *str = (Aws::StringStream *) userdata;
-//     if (nitems > 0) {
-//       str->write(buffer, size * nitems);
-//     }
-//     return size * nitems;
-//   }
+static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *userdata) {
+    Aws::StringStream *str = (Aws::StringStream *) userdata;
+    if (nitems > 0) {
+      str->write(buffer, size * nitems);
+    }
+    return size * nitems;
+  }
 
-  virtual void WritePresignUrl(const char* data, size_t size)
+  virtual void Write(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
 
@@ -183,62 +183,61 @@ public:
     OrthancPlugins::LogInfo(presigned_url);
 
 
-    // CURL *curl = curl_easy_init();
-    // CURLcode result;
+    CURL *curl = curl_easy_init();
+    CURLcode result;
 
-    // Aws::StringStream readStringStream;
-    // Aws::String awsstringdata(data.c_str(), data.size());
-    // readStringStream << awsstringdata;
-    // result = curl_easy_setopt(curl, CURLOPT_READFUNCTION, myCurlReadBack);
+    Aws::StringStream readStringStream;
+    Aws::String awsstringdata(data.c_str(), data.size());
+    readStringStream << awsstringdata;
+    result = curl_easy_setopt(curl, CURLOPT_READFUNCTION, myCurlReadBack);
 
-    // if (result != CURLE_OK) {
-    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_READFUNCTION");
-    // }
+    if (result != CURLE_OK) {
+      OrthancPlugins::LogInfo("Failed to set CURLOPT_READFUNCTION");
+    }
 
-    // result = curl_easy_setopt(curl, CURLOPT_READDATA, &readStringStream);
-    // if (result != CURLE_OK) {
-    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_READDATA");
-    // }
+    result = curl_easy_setopt(curl, CURLOPT_READDATA, &readStringStream);
+    if (result != CURLE_OK) {
+      OrthancPlugins::LogInfo("Failed to set CURLOPT_READDATA");
+    }
 
-    // result = curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t) data.size());
-    // if (result != CURLE_OK) {
-    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_INFILESIZE_LARGE");
-    // }
+    result = curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t) data.size());
+    if (result != CURLE_OK) {
+      OrthancPlugins::LogInfo("Failed to set CURLOPT_INFILESIZE_LARGE");
+    }
 
-    // result = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, myCurlWriteBack);
-    // if (result != CURLE_OK) {
-    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_WRITEFUNCTION");
-    // }
+    result = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, myCurlWriteBack);
+    if (result != CURLE_OK) {
+      OrthancPlugins::LogInfo("Failed to set CURLOPT_WRITEFUNCTION");
+    }
 
-    // std::stringstream outWriteString;
-    // result = curl_easy_setopt(curl, CURLOPT_WRITEDATA, &outWriteString);
-    // if (result != CURLE_OK) {
-    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_WRITEDATA");
-    // }
+    std::stringstream outWriteString;
+    result = curl_easy_setopt(curl, CURLOPT_WRITEDATA, &outWriteString);
+    if (result != CURLE_OK) {
+      OrthancPlugins::LogInfo("Failed to set CURLOPT_WRITEDATA");
+    }
 
-    // result = curl_easy_setopt(curl, CURLOPT_URL, presigned_url.c_str());
-    // if (result != CURLE_OK) {
-    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_URL");
-    // }
+    result = curl_easy_setopt(curl, CURLOPT_URL, presigned_url.c_str());
+    if (result != CURLE_OK) {
+      OrthancPlugins::LogInfo("Failed to set CURLOPT_URL");
+    }
 
-    // result = curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
-    // if (result != CURLE_OK) {
-    //   OrthancPlugins::LogInfo("Failed to set CURLOPT_PUT");
-    // }
+    result = curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
+    if (result != CURLE_OK) {
+      OrthancPlugins::LogInfo("Failed to set CURLOPT_PUT");
+    }
 
-    // result = curl_easy_perform(curl);
-    // if (result != CURLE_OK) {
-    //   OrthancPlugins::LogInfo("Failed to perform CURL request");
-    // }
+    result = curl_easy_perform(curl);
+    if (result != CURLE_OK) {
+      OrthancPlugins::LogInfo("Failed to perform CURL request");
+    }
 
-    // std::string outString = outWriteString.str();
-    // if (outString.empty()) {
-    //   OrthancPlugins::LogInfo("Successfully put object");
-    // } else {
-    //   OrthancPlugins::LogInfo("Failed to put object");
-    //     std::cout << "A server error was encountered, output:\n" << outString << std::endl;
-    // }
-
+    std::string outString = outWriteString.str();
+    if (outString.empty()) {
+      OrthancPlugins::LogInfo("Successfully put object");
+    } else {
+      OrthancPlugins::LogInfo("Failed to put object");
+        std::cout << "A server error was encountered, output:\n" << outString << std::endl;
+    }
 
     
     // CURL *curl = curl_easy_init();
@@ -254,7 +253,7 @@ public:
     // curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
     // curl_easy_setopt(curl, CURLOPT_READDATA, &upload_data);
     // curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
-    // curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)data_size);
+    // curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)size);
 
     // // Set headers (Content-Type is needed for S3)
     // struct curl_slist *headers = nullptr;
@@ -276,7 +275,7 @@ public:
     // curl_easy_cleanup(curl);
   }
 
-  virtual void Write(const char* data, size_t size)
+  virtual void WriteOld(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
     Aws::S3::Model::PutObjectRequest putObjectRequest;
