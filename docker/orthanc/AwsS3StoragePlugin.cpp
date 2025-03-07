@@ -167,11 +167,13 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
     result = curl_easy_setopt(curl, CURLOPT_READFUNCTION, myCurlReadBack);
     if (result != CURLE_OK) {
       OrthancPlugins::LogInfo("Failed to set CURLOPT_READFUNCTION");
+      throw StoragePluginException("Failed to set CURLOPT_READFUNCTION")
     }
 
     result = curl_easy_setopt(curl, CURLOPT_READDATA, &readStringStream);
     if (result != CURLE_OK) {
       OrthancPlugins::LogInfo("Failed to set CURLOPT_READDATA");
+      throw StoragePluginException("Failed to set CURLOPT_READDATA")
     }
 
     OrthancPlugins::LogInfo(std::string("size = ") + std::to_string(size));
@@ -179,32 +181,38 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
     result = curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t) size);
     if (result != CURLE_OK) {
       OrthancPlugins::LogInfo("Failed to set CURLOPT_INFILESIZE_LARGE");
+      throw StoragePluginException("Failed to set CURLOPT_INFILESIZE_LARGE")
     }
 
     result = curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, myCurlWriteBack);
     if (result != CURLE_OK) {
       OrthancPlugins::LogInfo("Failed to set CURLOPT_WRITEFUNCTION");
+      throw StoragePluginException("Failed to set CURLOPT_WRITEFUNCTION")
     }
 
     std::stringstream outWriteString;
     result = curl_easy_setopt(curl, CURLOPT_WRITEDATA, &outWriteString);
     if (result != CURLE_OK) {
       OrthancPlugins::LogInfo("Failed to set CURLOPT_WRITEDATA");
+      throw StoragePluginException("Failed to set CURLOPT_WRITEDATA")
     }
 
     result = curl_easy_setopt(curl, CURLOPT_URL, presigned_url.c_str());
     if (result != CURLE_OK) {
       OrthancPlugins::LogInfo("Failed to set CURLOPT_URL");
+      throw StoragePluginException("Failed to set CURLOPT_URL")
     }
 
     result = curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
     if (result != CURLE_OK) {
       OrthancPlugins::LogInfo("Failed to set CURLOPT_PUT");
+      throw StoragePluginException("Failed to set CURLOPT_PUT")
     }
 
     result = curl_easy_perform(curl);
     if (result != CURLE_OK) {
       OrthancPlugins::LogInfo("Failed to perform CURL request");
+      throw StoragePluginException("Failed to perform CURL request")
     }
 
     std::string outString = outWriteString.str();
@@ -212,7 +220,8 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
       OrthancPlugins::LogInfo("Successfully put object");
     } else {
       OrthancPlugins::LogInfo("Failed to put object");
-        std::cout << "A server error was encountered, output:\n" << outString << std::endl;
+      std::cout << "A server error was encountered, output:\n" << outString << std::endl;
+      throw StoragePluginException("Failed to put object")
     }
   }
 
