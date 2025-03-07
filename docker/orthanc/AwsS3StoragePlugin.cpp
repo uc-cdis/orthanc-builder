@@ -135,26 +135,6 @@ public:
     }
   }
 
-  // static size_t read_callback(void *ptr, size_t size, size_t nmemb, void *userdata) {
-  //   std::pair<const char *, size_t> *upload_data = static_cast<std::pair<const char *, size_t> *>(userdata);
-  //   size_t buffer_size = size * nmemb;
-
-  //   // Check if we have more data to send
-  //   if (upload_data->second == 0) {
-  //     return 0; // No more data
-  //   }
-
-  //   // Determine how much to copy
-  //   size_t copy_size = (upload_data->second < buffer_size) ? upload_data->second : buffer_size;
-  //   std::memcpy(ptr, upload_data->first, copy_size);
-
-  //   // Move pointer forward
-  //   upload_data->first += copy_size;
-  //   upload_data->second -= copy_size;
-
-  //   return copy_size;
-  // }
-
   static size_t myCurlReadBack(char *buffer, size_t size, size_t nitems, void *userdata) {
     Aws::StringStream *str = (Aws::StringStream *) userdata;
     str->read(buffer, size * nitems);
@@ -171,26 +151,20 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
 
   virtual void Write(const char* data, size_t size)
   {
-    OrthancPlugins::LogInfo("in DirectWriter.Write");
-
-    // Generate pre-signed URL for upload
-    std::string s{"pauline-planx-pla-net-orthanc-storage"};
-    Aws::String bucket(s.c_str(), s.size());
-    std::string s2{"filewithpresignedurl.txt"};
-    Aws::String key(s2.c_str(), s2.size());
-    std::string presigned_url = client_->GeneratePresignedUrl(bucket, key, Aws::Http::HttpMethod::HTTP_PUT, 60);
-    OrthancPlugins::LogInfo("presigned_url");
-    OrthancPlugins::LogInfo(presigned_url);
-
+    std::string presigned_url = client_->GeneratePresignedUrl(
+      bucketName_.c_str(),
+      path_.c_str(),
+      Aws::Http::HttpMethod::HTTP_PUT,
+      60
+    );
 
     CURL *curl = curl_easy_init();
     CURLcode result;
 
     Aws::StringStream readStringStream;
-    Aws::String awsstringdata(data);
-    readStringStream << awsstringdata;
+    Aws::String awsStringData(data);
+    readStringStream << awsStringData;
     result = curl_easy_setopt(curl, CURLOPT_READFUNCTION, myCurlReadBack);
-
     if (result != CURLE_OK) {
       OrthancPlugins::LogInfo("Failed to set CURLOPT_READFUNCTION");
     }
@@ -238,41 +212,6 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
       OrthancPlugins::LogInfo("Failed to put object");
         std::cout << "A server error was encountered, output:\n" << outString << std::endl;
     }
-
-    
-    // CURL *curl = curl_easy_init();
-    // if (!curl) {
-    //   OrthancPlugins::LogInfo("Failed to initialize libcurl");
-    // }
-
-    // // Prepare the memory data structure
-    // std::pair<const char *, size_t> upload_data = {data, size};
-
-    // // Set cURL options
-    // curl_easy_setopt(curl, CURLOPT_URL, presigned_url.c_str());
-    // curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
-    // curl_easy_setopt(curl, CURLOPT_READDATA, &upload_data);
-    // curl_easy_setopt(curl, CURLOPT_READFUNCTION, read_callback);
-    // curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)size);
-
-    // // Set headers (Content-Type is needed for S3)
-    // struct curl_slist *headers = nullptr;
-    // headers = curl_slist_append(headers, "Content-Type: application/octet-stream");
-    // curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
-
-    // // Perform upload
-    // CURLcode res = curl_easy_perform(curl);
-    // if (res != CURLE_OK) {
-    //   OrthancPlugins::LogInfo("Upload failed");
-    //     std::cerr << "Upload failed: " << curl_easy_strerror(res) << std::endl;
-    // } else {
-    //   OrthancPlugins::LogInfo("Upload successful");
-    //     std::cout << "Upload successful!" << std::endl;
-    // }
-
-    // // Cleanup
-    // curl_slist_free_all(headers);
-    // curl_easy_cleanup(curl);
   }
 
   virtual void WriteOld(const char* data, size_t size)
