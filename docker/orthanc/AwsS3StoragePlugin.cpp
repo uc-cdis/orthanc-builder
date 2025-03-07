@@ -89,7 +89,40 @@ public:
   {
   }
 
-  virtual void Write(const char* data, size_t size) // HERE
+// bool AwsDoc::S3::putObject(const Aws::String &bucketName,
+//   const Aws::String &fileName,
+//   const Aws::S3::S3ClientConfiguration &clientConfig) {
+  virtual void Write(const char* data, size_t size)
+  {
+    OrthancPlugins::LogInfo("in DirectWriter.Write");
+    Aws::S3::S3Client s3Client(clientConfig);
+
+    Aws::S3::Model::PutObjectRequest request;
+    request.SetBucket("gen3wf-pauline-planx-pla-net-16");
+    request.SetKey("filefromcpp.txt");
+
+    auto inputData = Aws::MakeShared<Aws::StringStream>("ALLOCATION_TAG");
+    *inputData << "file contents";
+
+    if (!*inputData || !inputData->good()) {
+      OrthancPlugins::LogInfo("Error unable to read file");
+    }
+
+    request.SetBody(inputData);
+
+    Aws::S3::Model::PutObjectOutcome outcome =
+      s3Client.PutObject(request);
+
+    if (!outcome.IsSuccess()) {
+      OrthancPlugins::LogInfo("Error unable to upload file");
+    } else {
+      OrthancPlugins::LogInfo("Successful file upload");
+    }
+
+    return outcome.IsSuccess();
+  }
+
+  virtual void WriteOld(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
     Aws::S3::Model::PutObjectRequest putObjectRequest;
