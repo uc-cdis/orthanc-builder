@@ -100,7 +100,7 @@ public:
     // Aws::S3::S3Client client(clientConfig);
 
     Aws::S3::Model::PutObjectRequest request;
-    request.SetBucket("gen3wf-pauline-planx-pla-net-16");
+    request.SetBucket("pauline-planx-pla-net-orthanc-storage");
     request.SetKey("filefromcpp.txt");
 
     auto inputData = Aws::MakeShared<Aws::StringStream>("ALLOCATION_TAG");
