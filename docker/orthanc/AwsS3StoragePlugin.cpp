@@ -160,9 +160,11 @@ public:
     OrthancPlugins::LogInfo("in DirectWriter.Write");
 
     // Generate pre-signed URL for upload
-    auto expiry_time = std::chrono::seconds(60);
-
-    std::string presigned_url = client_->GeneratePresignedUrl("pauline-planx-pla-net-orthanc-storage", "filewithpresignedurl.txt", Aws::Http::HttpMethod::HTTP_PUT, expiry_time);
+    std::string s{"pauline-planx-pla-net-orthanc-storage"};
+    Aws::String bucket(s.c_str(), s.size());
+    std::string s2{"filewithpresignedurl.txt"};
+    Aws::String key(s2.c_str(), s2.size());
+    std::string presigned_url = client_->GeneratePresignedUrl(bucket, key, Aws::Http::HttpMethod::HTTP_PUT, 60);
     OrthancPlugins::LogInfo("presigned_url");
     OrthancPlugins::LogInfo(presigned_url);
 
