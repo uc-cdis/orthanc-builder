@@ -135,6 +135,26 @@ public:
     }
   }
 
+  virtual size_t read_callback(void *ptr, size_t size, size_t nmemb, void *userdata) {
+    std::pair<const char *, size_t> *upload_data = static_cast<std::pair<const char *, size_t> *>(userdata);
+    size_t buffer_size = size * nmemb;
+
+    // Check if we have more data to send
+    if (upload_data->second == 0) {
+        return 0; // No more data
+    }
+
+    // Determine how much to copy
+    size_t copy_size = (upload_data->second < buffer_size) ? upload_data->second : buffer_size;
+    std::memcpy(ptr, upload_data->first, copy_size);
+
+    // Move pointer forward
+    upload_data->first += copy_size;
+    upload_data->second -= copy_size;
+
+    return copy_size;
+}
+
   virtual void Write(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
