@@ -102,20 +102,32 @@ public:
     OrthancPlugins::LogInfo("before stream");
     std::shared_ptr<Aws::StringStream> stream = Aws::MakeShared<Aws::StringStream>(ALLOCATION_TAG, std::ios_base::in | std::ios_base::binary);
 
+    if (!data || size == 0)
+    {
+      OrthancPlugins::LogInfo("!data || size == 0");
+    }
     stream->rdbuf()->pubsetbuf(const_cast<char*>(data), size);
     stream->rdbuf()->pubseekpos(size);
     stream->seekg(0);
     OrthancPlugins::LogInfo("after stream");
+    if (!stream->good())
+    {
+      OrthancPlugins::LogInfo("!stream->good()");
+    }
 
     putObjectRequest.SetBody(stream);
-    OrthancPlugins::LogInfo("before SetContentMD5");
+    // OrthancPlugins::LogInfo("before SetContentMD5");
     // putObjectRequest.SetContentMD5(Aws::Utils::HashingUtils::Base64Encode(Aws::Utils::HashingUtils::CalculateMD5(*stream)));
-    OrthancPlugins::LogInfo("after SetContentMD5");
+    // OrthancPlugins::LogInfo("after SetContentMD5");
 
     OrthancPlugins::LogInfo("before try block");
     try
     {
       OrthancPlugins::LogInfo("before PutObject");
+      if (!client_)
+      {
+        OrthancPlugins::LogInfo("!client_");
+      }
       auto result = client_->PutObject(putObjectRequest);
       OrthancPlugins::LogInfo("after PutObject");
 
@@ -539,7 +551,7 @@ IStorage* AwsS3StoragePluginFactory::CreateStorage(const std::string& nameForLog
   if (enableAwsSdkLogs)
   {
     // Set up logging
-    Aws::Utils::Logging::InitializeAWSLogging(Aws::MakeShared<AwsOrthancLogger>(ALLOCATION_TAG));
+    Aws::Utils::Logging::InitializeAWSLogging(Aws::MakeShared<AwsOrthancLogger>(ALLOCATION_TAG, Aws::Utils::Logging::LogLevel::Debug));
     // strangely, this seems to disable logging !!!! sdkOptions_->loggingOptions.logLevel = Aws::Utils::Logging::LogLevel::Trace;
   }
 
