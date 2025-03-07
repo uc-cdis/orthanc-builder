@@ -551,7 +551,7 @@ IStorage* AwsS3StoragePluginFactory::CreateStorage(const std::string& nameForLog
   if (enableAwsSdkLogs)
   {
     // Set up logging
-    Aws::Utils::Logging::InitializeAWSLogging(Aws::MakeShared<AwsOrthancLogger>(ALLOCATION_TAG, Aws::Utils::Logging::LogLevel::Debug));
+    Aws::Utils::Logging::InitializeAWSLogging(Aws::MakeShared<AwsOrthancLogger>(ALLOCATION_TAG));
     // strangely, this seems to disable logging !!!! sdkOptions_->loggingOptions.logLevel = Aws::Utils::Logging::LogLevel::Trace;
   }
 
