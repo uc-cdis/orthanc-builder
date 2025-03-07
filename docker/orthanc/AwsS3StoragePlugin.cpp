@@ -95,7 +95,6 @@ public:
   virtual void Write(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
-    Aws::S3::S3Client s3Client(clientConfig);
 
     Aws::S3::Model::PutObjectRequest request;
     request.SetBucket("gen3wf-pauline-planx-pla-net-16");
@@ -110,8 +109,7 @@ public:
 
     request.SetBody(inputData);
 
-    Aws::S3::Model::PutObjectOutcome outcome =
-      s3Client.PutObject(request);
+    Aws::S3::Model::PutObjectOutcome outcome = client_.PutObject(request);
 
     if (!outcome.IsSuccess()) {
       OrthancPlugins::LogInfo("Error unable to upload file");
