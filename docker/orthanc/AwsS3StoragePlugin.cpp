@@ -92,25 +92,25 @@ public:
 // bool AwsDoc::S3::putObject(const Aws::String &bucketName,
 //   const Aws::String &fileName,
 //   const Aws::S3::S3ClientConfiguration &clientConfig) {
-  virtual void Write(const char* data, size_t size)
+  virtual void WriteNew(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
     // Aws::S3::S3ClientConfiguration clientConfig;
     // clientConfig.region = "us-east-1";
     // Aws::S3::S3Client client(clientConfig);
 
-    OrthancPlugins::LogInfo("calling ListBuckets");
-    auto outcome = client_->ListBuckets();
-    if (!outcome.IsSuccess()) {
-        OrthancPlugins::LogInfo("Failed");
-        std::cerr << "Failed with error: " << outcome.GetError() << std::endl;
-    } else {
-        OrthancPlugins::LogInfo("Suceeded");
-        std::cout << "Found " << outcome.GetResult().GetBuckets().size() << " buckets\n";
-        for (auto &&b: outcome.GetResult().GetBuckets()) {
-            std::cout << b.GetName() << std::endl;
-        }
-    }
+    // OrthancPlugins::LogInfo("calling ListBuckets");
+    // auto outcome = client_->ListBuckets();
+    // if (!outcome.IsSuccess()) {
+    //     OrthancPlugins::LogInfo("Failed");
+    //     std::cerr << "Failed with error: " << outcome.GetError() << std::endl;
+    // } else {
+    //     OrthancPlugins::LogInfo("Suceeded");
+    //     std::cout << "Found " << outcome.GetResult().GetBuckets().size() << " buckets\n";
+    //     for (auto &&b: outcome.GetResult().GetBuckets()) {
+    //         std::cout << b.GetName() << std::endl;
+    //     }
+    // }
 
     OrthancPlugins::LogInfo("calling PutObject");
     Aws::S3::Model::PutObjectRequest request;
@@ -137,7 +137,7 @@ public:
     }
   }
 
-  virtual void WriteOld(const char* data, size_t size)
+  virtual void Write(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
     Aws::S3::Model::PutObjectRequest putObjectRequest;
@@ -167,6 +167,8 @@ public:
     // OrthancPlugins::LogInfo("before SetContentMD5");
     // putObjectRequest.SetContentMD5(Aws::Utils::HashingUtils::Base64Encode(Aws::Utils::HashingUtils::CalculateMD5(*stream)));
     // OrthancPlugins::LogInfo("after SetContentMD5");
+    OrthancPlugins::LogInfo("before SetChecksumCRC32");
+    putObjectRequest.SetChecksumCRC32(Aws::Utils::HashingUtils::Base64Encode(Aws::Utils::HashingUtils::CalculateCRC32(*stream)));
 
     OrthancPlugins::LogInfo("before try block");
     try
