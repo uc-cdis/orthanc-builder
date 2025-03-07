@@ -141,7 +141,7 @@ public:
 
     // Check if we have more data to send
     if (upload_data->second == 0) {
-        return 0; // No more data
+      return 0; // No more data
     }
 
     // Determine how much to copy
@@ -153,16 +153,16 @@ public:
     upload_data->second -= copy_size;
 
     return copy_size;
-}
+  }
 
   virtual void Write(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
-    // Generate pre-signed URL
-    Aws::Http::HttpMethod method = Aws::Http::HttpMethod::HTTP_PUT;
+
+    // Generate pre-signed URL for upload
     auto expiry_time = std::chrono::seconds(60);
 
-    std::string presigned_url = client_.GeneratePresignedUrl("pauline-planx-pla-net-orthanc-storage", "filewithpresignedurl.txt", method, expiry_time);
+    std::string presigned_url = client_->GeneratePresignedUrl("pauline-planx-pla-net-orthanc-storage", "filewithpresignedurl.txt", Aws::Http::HttpMethod::HTTP_PUT, expiry_time);
     OrthancPlugins::LogInfo("presigned_url");
     OrthancPlugins::LogInfo(presigned_url);
 
