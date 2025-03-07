@@ -170,7 +170,21 @@ public:
     OrthancPlugins::LogInfo("before SetChecksumCRC32");
     putObjectRequest.SetChecksumCRC32(Aws::Utils::HashingUtils::Base64Encode(Aws::Utils::HashingUtils::CalculateCRC32(*stream)));
 
-    OrthancPlugins::LogInfo("before try block");
+    OrthancPlugins::LogInfo("describing putObjectRequest");
+    OrthancPlugins::LogInfo(putObjectRequest.GetBucket());
+    OrthancPlugins::LogInfo(putObjectRequest.GetCacheControl());
+    OrthancPlugins::LogInfo(putObjectRequest.GetContentDisposition());
+    OrthancPlugins::LogInfo(putObjectRequest.GetContentEncoding());
+    OrthancPlugins::LogInfo(putObjectRequest.GetContentLanguage());
+    OrthancPlugins::LogInfo(putObjectRequest.GetContentMD5());
+    OrthancPlugins::LogInfo(putObjectRequest.GetGrantFullControl());
+    OrthancPlugins::LogInfo(putObjectRequest.GetGrantRead());
+    OrthancPlugins::LogInfo(putObjectRequest.GetGrantReadACP());
+    OrthancPlugins::LogInfo(putObjectRequest.GetGrantWriteACP());
+    OrthancPlugins::LogInfo(putObjectRequest.GetKey());
+    OrthancPlugins::LogInfo(putObjectRequest.GetSSECustomerKey());
+    OrthancPlugins::LogInfo(putObjectRequest.GetContentType());
+
     try
     {
       OrthancPlugins::LogInfo("before PutObject");
