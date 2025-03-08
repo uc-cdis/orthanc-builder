@@ -497,3 +497,4 @@ RUN groupadd --system orthanc --gid=1000; \
 
 # enable debug logging
 ENV VERBOSE_ENABLED=true
+ENV TRACE_ENABLED=true

@@ -99,7 +99,7 @@ if [[ $target == "orthanc" ]]; then
         # also force latest OpenSSL (and therefore, we need to force static libcurl)
         # (pauline 02/2025) Setting `DUSE_GOOGLE_TEST_DEBIAN_PACKAGE` to `OFF` to fix error when
         # the CI runs the tests: `Please install the libgtest-dev package`
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DSTANDALONE_BUILD=ON -DUSE_GOOGLE_TEST_DEBIAN_PACKAGE=OFF -DUSE_SYSTEM_CIVETWEB=OFF -DUSE_SYSTEM_DCMTK=OFF -DUSE_SYSTEM_OPENSSL=ON -DUSE_SYSTEM_CURL=OFF $sourcesRootPath/OrthancServer
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DSTANDALONE_BUILD=ON -DUSE_GOOGLE_TEST_DEBIAN_PACKAGE=OFF -DUSE_SYSTEM_CIVETWEB=OFF -DUSE_SYSTEM_DCMTK=OFF -DUSE_SYSTEM_OPENSSL=OFF -DUSE_SYSTEM_CURL=OFF $sourcesRootPath/OrthancServer
         make -j 4
         # (pauline 02/2025) Commenting out unit tests to fix error when the CI runs the tests:
         # `HttpClient.Ssl and HttpClient.SslNoVerification are failing`
