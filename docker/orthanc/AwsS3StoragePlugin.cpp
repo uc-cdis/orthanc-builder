@@ -151,7 +151,7 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
     return size * nitems;
   }
 
-  virtual void Write(const char* data, size_t size)
+  virtual void WriteOld2(const char* data, size_t size)
   {
     // TODO: if the data is >5gb, we have to do a multipart upload
     std::string presigned_url = client_->GeneratePresignedUrl(
@@ -284,7 +284,7 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
     }
   }
 
-  virtual void WriteOld(const char* data, size_t size)
+  virtual void Write(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
     Aws::S3::Model::PutObjectRequest putObjectRequest;
@@ -317,25 +317,28 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
     OrthancPlugins::LogInfo("before SetChecksumCRC32");
     putObjectRequest.SetChecksumCRC32(Aws::Utils::HashingUtils::Base64Encode(Aws::Utils::HashingUtils::CalculateCRC32(*stream)));
 
-    OrthancPlugins::LogInfo("   describing putObjectRequest");
-    OrthancPlugins::LogInfo(putObjectRequest.GetBucket());
-    OrthancPlugins::LogInfo(putObjectRequest.GetCacheControl());
-    OrthancPlugins::LogInfo(putObjectRequest.GetContentDisposition());
-    OrthancPlugins::LogInfo(putObjectRequest.GetContentEncoding());
-    OrthancPlugins::LogInfo(putObjectRequest.GetContentLanguage());
-    OrthancPlugins::LogInfo(putObjectRequest.GetContentMD5());
-    OrthancPlugins::LogInfo(putObjectRequest.GetGrantFullControl());
-    OrthancPlugins::LogInfo(putObjectRequest.GetGrantRead());
-    OrthancPlugins::LogInfo(putObjectRequest.GetGrantReadACP());
-    OrthancPlugins::LogInfo(putObjectRequest.GetGrantWriteACP());
-    OrthancPlugins::LogInfo(putObjectRequest.GetKey());
-    OrthancPlugins::LogInfo(putObjectRequest.GetSSECustomerKey());
-    OrthancPlugins::LogInfo(putObjectRequest.GetContentType());
-    const Aws::Map<Aws::String, Aws::String>& metadata = putObjectRequest.GetMetadata();
-    for (const auto& pair : metadata) {
-        OrthancPlugins::LogInfo(std::string(pair.first) + " = " + std::string(pair.second));
-    }
-    OrthancPlugins::LogInfo("   done describing putObjectRequest");
+    // do i need to rewind the stream here? who knows
+    stream->seekg(0);
+
+    // OrthancPlugins::LogInfo("   describing putObjectRequest");
+    // OrthancPlugins::LogInfo(putObjectRequest.GetBucket());
+    // OrthancPlugins::LogInfo(putObjectRequest.GetCacheControl());
+    // OrthancPlugins::LogInfo(putObjectRequest.GetContentDisposition());
+    // OrthancPlugins::LogInfo(putObjectRequest.GetContentEncoding());
+    // OrthancPlugins::LogInfo(putObjectRequest.GetContentLanguage());
+    // OrthancPlugins::LogInfo(putObjectRequest.GetContentMD5());
+    // OrthancPlugins::LogInfo(putObjectRequest.GetGrantFullControl());
+    // OrthancPlugins::LogInfo(putObjectRequest.GetGrantRead());
+    // OrthancPlugins::LogInfo(putObjectRequest.GetGrantReadACP());
+    // OrthancPlugins::LogInfo(putObjectRequest.GetGrantWriteACP());
+    // OrthancPlugins::LogInfo(putObjectRequest.GetKey());
+    // OrthancPlugins::LogInfo(putObjectRequest.GetSSECustomerKey());
+    // OrthancPlugins::LogInfo(putObjectRequest.GetContentType());
+    // const Aws::Map<Aws::String, Aws::String>& metadata = putObjectRequest.GetMetadata();
+    // for (const auto& pair : metadata) {
+    //     OrthancPlugins::LogInfo(std::string(pair.first) + " = " + std::string(pair.second));
+    // }
+    // OrthancPlugins::LogInfo("   done describing putObjectRequest");
 
     try
     {
