@@ -158,7 +158,7 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
       bucketName_.c_str(),
       path_.c_str(), // object key
       Aws::Http::HttpMethod::HTTP_PUT,
-      300, // expiration in seconds
+      300 // expiration in seconds
     );
     OrthancPlugins::LogInfo("presigned_url:");
     OrthancPlugins::LogInfo(presigned_url);
@@ -183,7 +183,7 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
 
     try
     {
-      OrthancPlugins::LogInfo(std::string("Data = ") + data, size);
+      OrthancPlugins::LogInfo(std::string("Data = ") + data);
     }
     catch (...)
     {
@@ -244,7 +244,7 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
 
     result = curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
     if (result != CURLE_OK) {
-      LogInfo("Failed to set CURLOPT_VERBOSE");
+      OrthancPlugins::LogInfo("Failed to set CURLOPT_VERBOSE");
       throw StoragePluginException("Failed to set CURLOPT_VERBOSE");
     }
 
