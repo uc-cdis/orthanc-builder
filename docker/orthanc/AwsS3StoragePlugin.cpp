@@ -197,6 +197,24 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
     {
       OrthancPlugins::LogInfo("Can't log 'std::string(data, size)'");
     }
+
+    try
+    {
+      OrthancPlugins::LogInfo(std::string("awsStringData = ") + awsStringData);
+    }
+    catch (...)
+    {
+      OrthancPlugins::LogInfo("Can't log 'awsStringData'");
+    }
+    try
+    {
+      OrthancPlugins::LogInfo(std::string("awsStringData = ") + std::string(awsStringData, size));
+    }
+    catch (...)
+    {
+      OrthancPlugins::LogInfo("Can't log 'std::string(awsStringData, size)'");
+    }
+
     OrthancPlugins::LogInfo(std::string("size = ") + std::to_string(size));
     OrthancPlugins::LogInfo(std::string("strlen(data) = ") + std::to_string(strlen(data)));
     result = curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t) size);
