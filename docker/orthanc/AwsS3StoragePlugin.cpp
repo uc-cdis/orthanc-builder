@@ -136,12 +136,14 @@ public:
   }
 
   static size_t myCurlReadBack(char *buffer, size_t size, size_t nitems, void *userdata) {
+    OrthancPlugins::LogInfo("in myCurlReadBack");
     Aws::StringStream *str = (Aws::StringStream *) userdata;
     str->read(buffer, size * nitems);
     return str->gcount();
   }
 
 static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *userdata) {
+  OrthancPlugins::LogInfo("in myCurlWriteBack");
     Aws::StringStream *str = (Aws::StringStream *) userdata;
     if (nitems > 0) {
       str->write(buffer, size * nitems);
@@ -151,12 +153,15 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
 
   virtual void Write(const char* data, size_t size)
   {
+    // TODO: if the data is >5gb, we have to do a multipart upload
     std::string presigned_url = client_->GeneratePresignedUrl(
       bucketName_.c_str(),
-      path_.c_str(),
+      path_.c_str(), // object key
       Aws::Http::HttpMethod::HTTP_PUT,
-      60
+      300, // expiration in seconds
     );
+    OrthancPlugins::LogInfo("presigned_url:");
+    OrthancPlugins::LogInfo(presigned_url);
 
     CURL *curl = curl_easy_init();
     CURLcode result;
@@ -176,6 +181,22 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
       throw StoragePluginException("Failed to set CURLOPT_READDATA");
     }
 
+    try
+    {
+      OrthancPlugins::LogInfo(std::string("Data = ") + data, size);
+    }
+    catch (...)
+    {
+      OrthancPlugins::LogInfo("Can't log 'data'");
+    }
+    try
+    {
+      OrthancPlugins::LogInfo(std::string("Data = ") + std::string(data, size));
+    }
+    catch (...)
+    {
+      OrthancPlugins::LogInfo("Can't log 'std::string(data, size)'");
+    }
     OrthancPlugins::LogInfo(std::string("size = ") + std::to_string(size));
     OrthancPlugins::LogInfo(std::string("strlen(data) = ") + std::to_string(strlen(data)));
     result = curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t) size);
@@ -221,12 +242,20 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
       throw StoragePluginException("Failed to set CURLOPT_TIMEOUT");
     }
 
+    result = curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+    if (result != CURLE_OK) {
+      LogInfo("Failed to set CURLOPT_VERBOSE");
+      throw StoragePluginException("Failed to set CURLOPT_VERBOSE");
+    }
+
+    OrthancPlugins::LogInfo("before curl_easy_perform");
     result = curl_easy_perform(curl);
     if (result != CURLE_OK) {
       OrthancPlugins::LogInfo("Failed to perform CURL request");
       throw StoragePluginException("Failed to perform CURL request");
     }
 
+    OrthancPlugins::LogInfo("before outWriteString.str()");
     std::string outString = outWriteString.str();
     if (outString.empty()) {
       OrthancPlugins::LogInfo("Successfully put object");
