@@ -73,15 +73,20 @@ WORKDIR /third-party-downloads
 RUN wget https://public-files.orthanc.team/third-party-downloads/VolView-4.1.1.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-auth-0.7.1.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-cal-0.6.1.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-common-0.9.3.tar.gz
+#RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-common-0.9.3.tar.gz
+RUN wget https://github.com/awslabs/aws-c-common/archive/refs/tags/v0.11.0.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-compression-0.2.17.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-event-stream-0.3.1.tar.gz
+#RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-event-stream-0.3.1.tar.gz
+RUN wget https://github.com/awslabs/aws-c-event-stream/archive/refs/tags/v0.5.3.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-http-0.7.11.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-io-0.13.31.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-mqtt-0.9.5.tar.gz
+#RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-io-0.13.31.tar.gz
+RUN wget https://github.com/awslabs/aws-c-io/archive/refs/tags/v0.17.0.tar.gz
+#RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-mqtt-0.9.5.tar.gz
+RUN wget https://github.com/awslabs/aws-c-mqtt/archive/refs/tags/v0.12.2.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-s3-0.3.14.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-sdkutils-0.1.11.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-checksums-0.1.17.tar.gz
+#RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-checksums-0.1.17.tar.gz
+RUN wget https://github.com/awslabs/aws-checksums/archive/refs/tags/v0.2.3.tar.gz
 #RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-crt-cpp-0.24.1.tar.gz
 RUN wget https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.31.0.tar.gz
 #RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-sdk-cpp-1.11.178.tar.gz
@@ -99,7 +104,8 @@ RUN wget https://public-files.orthanc.team/third-party-downloads/jsoncpp-1.9.5.t
 RUN wget https://public-files.orthanc.team/third-party-downloads/libcsv-3.0.3.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/libpng-1.6.40.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/nifti_clib-3.0.0.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/openssl-3.1.4.tar.gz
+#Why do we need to download openssl?
+#RUN wget https://public-files.orthanc.team/third-party-downloads/openssl-3.1.4.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/protobuf-cpp-3.5.1.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/pugixml-1.14.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/sqlite-amalgamation-3460100.zip
