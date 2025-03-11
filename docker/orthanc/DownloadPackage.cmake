@@ -108,6 +108,7 @@ macro(DownloadFile MD5 Url)
           SHOW_PROGRESS TIMEOUT 30 INACTIVITY_TIMEOUT 10
           STATUS Failure)
       else()
+        message("Should not be here ${MD5} value should be no-check")
         file(DOWNLOAD "${Url}" "${TMP_PATH}"
           SHOW_PROGRESS TIMEOUT 30 INACTIVITY_TIMEOUT 10
           EXPECTED_MD5 "${MD5}" STATUS Failure)
