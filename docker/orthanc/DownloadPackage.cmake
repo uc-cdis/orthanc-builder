@@ -129,7 +129,7 @@ macro(DownloadFile MD5 Url)
     message("Using local copy of ${Url}")
 
     if ("${MD5}" STREQUAL "no-check")
-      message(WARNING "Not checking the MD5 of: ${Url}")
+      message(WARNING "Not checking the MD5 of: ${Url}, and downloading it now...")
     else()
       file(MD5 ${TMP_PATH} ActualMD5)
       if (NOT "${ActualMD5}" STREQUAL "${MD5}")
