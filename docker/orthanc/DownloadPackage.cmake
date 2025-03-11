@@ -103,7 +103,7 @@ macro(DownloadFile MD5 Url)
 
     foreach (retry RANGE 1 5)   # Retries 5 times
       if ("${MD5}" STREQUAL "no-check")
-        message(WARNING "Not checking the MD5 of: ${Url}")
+        message(WARNING "Not checking the MD5 of: ${Url}, and downloading it now...")
         file(DOWNLOAD "${Url}" "${TMP_PATH}"
           SHOW_PROGRESS TIMEOUT 30 INACTIVITY_TIMEOUT 10
           STATUS Failure)
@@ -129,7 +129,7 @@ macro(DownloadFile MD5 Url)
     message("Using local copy of ${Url}")
 
     if ("${MD5}" STREQUAL "no-check")
-      message(WARNING "Not checking the MD5 of: ${Url}, and downloading it now...")
+      message(WARNING "Not checking the MD5 of: ${Url}")
     else()
       file(MD5 ${TMP_PATH} ActualMD5)
       if (NOT "${ActualMD5}" STREQUAL "${MD5}")
@@ -146,7 +146,7 @@ macro(DownloadPackage MD5 Url TargetDirectory)
     
     GetUrlExtension(TMP_EXTENSION "${Url}")
     #message(${TMP_EXTENSION})
-    message("Uncompressing ${TMP_FILENAME}")
+    message("Uncompressing ${TMP_FILENAME} to ${TargetDirectory}")
 
     if ("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
       # How to silently extract files using 7-zip
@@ -227,7 +227,11 @@ macro(DownloadPackage MD5 Url TargetDirectory)
     endif()
 
     if (NOT IS_DIRECTORY "${TargetDirectory}")
-      message(FATAL_ERROR "The package was not uncompressed at the proper location. Check the CMake instructions.")
+      file(GLOB files "*.*")  # This pattern will match files (excluding directories)
+      foreach(file ${files})
+        message(STATUS "Found file: ${file}")
+      endforeach()
+      message(FATAL_ERROR "The package was not uncompressed at the proper location (${TargetDirectory}). Check the CMake instructions.")
     endif()
   endif()
 endmacro()

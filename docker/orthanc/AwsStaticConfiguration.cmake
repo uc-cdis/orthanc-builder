@@ -84,11 +84,12 @@ DownloadPackage(${AWS_C_S3_MD5} ${AWS_C_S3_URL} "${AWS_C_S3_SOURCES_DIR}")
 SET(AWS_C_SDKUTILS_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-c-sdkutils-${AWS_C_SDKUTILS_VERSION})  # source =  https://github.com/awslabs/aws-c-sdkutils/archive/refs/tags/v0.1.11.tar.gz
 SET(AWS_C_SDKUTILS_URL "https://github.com/awslabs/aws-c-sdkutils/archive/refs/tags/v${AWS_C_SDKUTILS_VERSION}.tar.gz")
 SET(AWS_C_SDKUTILS_MD5 "no-check")
+message("Downloading ${AWS_C_SDKUTILS_URL} to ${AWS_C_SDKUTILS_SOURCES_DIR}")
 DownloadPackage(${AWS_C_SDKUTILS_MD5} ${AWS_C_SDKUTILS_URL} "${AWS_C_SDKUTILS_SOURCES_DIR}")
 
 SET(AWS_CRT_CPP_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-crt-cpp-${AWS_CRT_CPP_VERSION})  # source =  https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.24.1.tar.gz
 #SET(AWS_CRT_CPP_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-crt-cpp-0.24.1.tar.gz")
-SET(AWS_CRT_CPP_URL "https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.31.0.tar.gz")
+SET(AWS_CRT_CPP_URL "https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v${AWS_CRT_CPP_VERSION}.tar.gz")
 SET(AWS_CRT_CPP_MD5 "no-check")
 DownloadPackage(${AWS_CRT_CPP_MD5} ${AWS_CRT_CPP_URL} "${AWS_CRT_CPP_SOURCES_DIR}")
 
