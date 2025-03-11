@@ -72,14 +72,14 @@ SET(AWS_C_SDKUTILS_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-c-s
 SET(AWS_C_SDKUTILS_MD5 "713cac3392aa20d5dda852cf21ac1957")
 DownloadPackage(${AWS_C_SDKUTILS_MD5} ${AWS_C_SDKUTILS_URL} "${AWS_C_SDKUTILS_SOURCES_DIR}")
 
-SET(AWS_CRT_CPP_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-crt-cpp-0.24.1)  # source =  https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.24.1.tar.gz
+SET(AWS_CRT_CPP_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-crt-cpp-0.31.0)  # source =  https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.24.1.tar.gz
 #SET(AWS_CRT_CPP_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-crt-cpp-0.24.1.tar.gz")
 SET(AWS_CRT_CPP_URL "https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.31.0.tar.gz")
 SET(AWS_CRT_CPP_MD5 "no-check")
 DownloadPackage(${AWS_CRT_CPP_MD5} ${AWS_CRT_CPP_URL} "${AWS_CRT_CPP_SOURCES_DIR}")
 
 # TODO try changing the name/version here instead of renaming the version we download from source
-SET(AWS_SDK_CPP_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-sdk-cpp-1.11.178)  # source =  https://github.com/aws/aws-sdk-cpp/archive/refs/tags/1.11.178.tar.gz
+SET(AWS_SDK_CPP_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-sdk-cpp-1.11.522)  # source =  https://github.com/aws/aws-sdk-cpp/archive/refs/tags/1.11.178.tar.gz
 #SET(AWS_SDK_CPP_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-sdk-cpp-1.11.178.tar.gz")
 SET(AWS_SDK_CPP_URL "https://github.com/aws/aws-sdk-cpp/archive/refs/tags/1.11.522.tar.gz")
 SET(AWS_SDK_CPP_MD5 "no-check")
