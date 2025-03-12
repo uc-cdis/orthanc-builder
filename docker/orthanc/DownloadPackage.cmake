@@ -126,7 +126,7 @@ macro(DownloadFile MD5 Url)
     endif()
     
   else()
-    message("Using local copy of ${Url}")
+    message("Using local copy of ${Url}, path: ${TMP_PATH}, filename: ${TMP_FILENAME}")
 
     if ("${MD5}" STREQUAL "no-check")
       message(WARNING "Not checking the MD5 of: ${Url}")
@@ -147,6 +147,10 @@ macro(DownloadPackage MD5 Url TargetDirectory)
     GetUrlExtension(TMP_EXTENSION "${Url}")
     #message(${TMP_EXTENSION})
     message("Uncompressing ${TMP_FILENAME} to ${TargetDirectory}")
+    file(GLOB files "*")  # This pattern will match files (excluding directories)
+    foreach(file ${files})
+      message(STATUS "Found file: ${file}")
+    endforeach()
 
     if ("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
       # How to silently extract files using 7-zip
@@ -227,7 +231,7 @@ macro(DownloadPackage MD5 Url TargetDirectory)
     endif()
 
     if (NOT IS_DIRECTORY "${TargetDirectory}")
-      file(GLOB files "*.*")  # This pattern will match files (excluding directories)
+      file(GLOB files "*")  # This pattern will match files (excluding directories)
       foreach(file ${files})
         message(STATUS "Found file: ${file}")
       endforeach()
@@ -244,7 +248,7 @@ macro(DownloadCompressedFile MD5 Url TargetFile)
     
     GetUrlExtension(TMP_EXTENSION "${Url}")
     #message(${TMP_EXTENSION})
-    message("Uncompressing ${TMP_FILENAME}")
+    message("Uncompressing compressed file to ${TargetFile}")
 
     if ("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
       # How to silently extract files using 7-zip
