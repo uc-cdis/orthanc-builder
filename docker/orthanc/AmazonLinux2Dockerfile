@@ -353,6 +353,8 @@ RUN cp AwsStaticConfiguration.cmake /sources/orthanc-object-storage/Aws/AwsStati
 # RUN cp DownloadOrthancFramework.cmake /sources/orthanc-object-storage/Common/Resources/Orthanc/CMake/DownloadOrthancFramework.cmake
 RUN mkdir -p /sources/OrthancFramework/Resources/CMake
 RUN cp DownloadPackage.cmake /sources/OrthancFramework/Resources/CMake/DownloadPackage.cmake
+RUN cp DownloadPackage.cmake /sources/orthanc-object-storage/Common/Resources/Orthanc/CMake/DownloadPackage.cmake
+RUN ls -lR ./
 
 RUN dnf -y update && \
     dnf -y install glibc glibc-devel libstdc++ libstdc++-devel && \
