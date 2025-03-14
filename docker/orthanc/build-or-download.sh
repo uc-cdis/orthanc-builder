@@ -384,7 +384,6 @@ elif [[ $target == "orthanc-s3" ]]; then
         ln -s /third-party-downloads $sourcesRootPath/orthanc-object-storage/Aws/ThirdPartyDownloads
 
         pushd $buildRootPath
-        ls -la $sourcesRootPath/orthanc-object-storage/Aws/
 
         cmake -DCMAKE_BUILD_TYPE:STRING=Debug -DALLOW_DOWNLOADS=ON -DUSE_VCPKG_PACKAGES=OFF $sourcesRootPath/orthanc-object-storage/Aws/
         make -j 4

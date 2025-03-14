@@ -327,10 +327,10 @@ if (ORTHANC_FRAMEWORK_SOURCE STREQUAL "archive" OR
         )
       # We need to copy the DownloadPackage.cmake from the Common/Resources/Orthanc/CMake/DownloadPackage.cmake to the ${ORTHANC_FRAMEMORK_FILENAME}/ uncompressed folder
       # The local DownloadPackage.cmake was copied to the ${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/ in the Dockerfile already.
-      message("Copying DownloadPackage.cmake to ${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/Orthanc-1.12.2/OrthancFramework/Resources/CMake/")
+      message("Copying DownloadPackage.cmake to ${CMAKE_BINARY_DIR}/Orthanc-1.12.2/OrthancFramework/Resources/CMake/")
       file(COPY "${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/DownloadPackage.cmake"
-       DESTINATION "${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/Orthanc-1.12.2/OrthancFramework/Resources/CMake/")
-      file(READ "${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/Orthanc-1.12.2/OrthancFramework/Resources/CMake/DownloadPackage.cmake" DownloadPackageContent)
+       DESTINATION "${CMAKE_BINARY_DIR}/Orthanc-1.12.2/OrthancFramework/Resources/CMake/")
+      file(READ "${CMAKE_BINARY_DIR}/Orthanc-1.12.2/OrthancFramework/Resources/CMake/DownloadPackage.cmake" DownloadPackageContent)
       message("DownloadPackageContent: ${DownloadPackageContent}")
 
     endif()

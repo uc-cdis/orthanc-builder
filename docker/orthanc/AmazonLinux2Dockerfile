@@ -351,7 +351,6 @@ RUN cp StoragePlugin.cpp /sources/orthanc-object-storage/Common/StoragePlugin.cp
 RUN cp AwsS3StoragePlugin.cpp /sources/orthanc-object-storage/Aws/AwsS3StoragePlugin.cpp
 RUN cp AwsStaticConfiguration.cmake /sources/orthanc-object-storage/Aws/AwsStaticConfiguration.cmake
 RUN cp DownloadOrthancFramework.cmake /sources/orthanc-object-storage/Common/Resources/Orthanc/CMake/DownloadOrthancFramework.cmake
-RUN cat /sources/orthanc-object-storage/Common/Resources/Orthanc/CMake/DownloadOrthancFramework.cmake
 
 RUN dnf -y update && \
     dnf -y install glibc glibc-devel libstdc++ libstdc++-devel && \

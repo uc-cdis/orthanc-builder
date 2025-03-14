@@ -145,12 +145,6 @@ macro(DownloadPackage MD5 Url TargetDirectory)
     DownloadFile("${MD5}" "${Url}")
     
     GetUrlExtension(TMP_EXTENSION "${Url}")
-    #message(${TMP_EXTENSION})
-    message("Uncompressing ${TMP_FILENAME} to ${TargetDirectory}")
-    file(GLOB files "*")  # This pattern will match files (excluding directories)
-    foreach(file ${files})
-      message(STATUS "Found file: ${file}")
-    endforeach()
 
     if ("${CMAKE_HOST_SYSTEM_NAME}" STREQUAL "Windows")
       # How to silently extract files using 7-zip
@@ -237,6 +231,7 @@ macro(DownloadPackage MD5 Url TargetDirectory)
       endforeach()
       message(FATAL_ERROR "The package was not uncompressed at the proper location (${TargetDirectory}). Check the CMake instructions.")
     endif()
+    file(REMOVE ${TMP_PATH})
   endif()
 endmacro()
 
