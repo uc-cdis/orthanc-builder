@@ -231,5 +231,5 @@ endforeach()
 
 list(APPEND AWS_SOURCES
   ${AWS_C_COMMON_SOURCES_DIR}/source/arch/generic/cpuid.c
-  ${AWS_CHECKSUMS_SOURCES_DIR}/source/generic/crc.c
+  ${AWS_CHECKSUMS_SOURCES_DIR}/source/crc.c
   )
