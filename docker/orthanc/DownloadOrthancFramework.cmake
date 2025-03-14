@@ -79,119 +79,9 @@ if (ORTHANC_FRAMEWORK_SOURCE STREQUAL "hg" OR
       endif()
 
       if (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.3.1")
-        set(ORTHANC_FRAMEWORK_MD5 "dac95bd6cf86fb19deaf4e612961f378")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.3.2")
-        set(ORTHANC_FRAMEWORK_MD5 "d0ccdf68e855d8224331f13774992750")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.4.0")
-        set(ORTHANC_FRAMEWORK_MD5 "81e15f34d97ac32bbd7d26e85698835a")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.4.1")
-        set(ORTHANC_FRAMEWORK_MD5 "9b6f6114264b17ed421b574cd6476127")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.4.2")
-        set(ORTHANC_FRAMEWORK_MD5 "d1ee84927dcf668e60eb5868d24b9394")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.5.0")
-        set(ORTHANC_FRAMEWORK_MD5 "4429d8d9dea4ff6648df80ec3c64d79e")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.5.1")
-        set(ORTHANC_FRAMEWORK_MD5 "099671538865e5da96208b37494d6718")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.5.2")
-        set(ORTHANC_FRAMEWORK_MD5 "8867050f3e9a1ce6157c1ea7a9433b1b")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.5.3")
-        set(ORTHANC_FRAMEWORK_MD5 "bf2f5ed1adb8b0fc5f10d278e68e1dfe")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.5.4")
-        set(ORTHANC_FRAMEWORK_MD5 "404baef5d4c43e7c5d9410edda8ef5a5")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.5.5")
-        set(ORTHANC_FRAMEWORK_MD5 "cfc437e0687ae4bd725fd93dc1f08bc4")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.5.6")
-        set(ORTHANC_FRAMEWORK_MD5 "3c29de1e289b5472342947168f0105c0")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.5.7")
-        set(ORTHANC_FRAMEWORK_MD5 "e1b76f01116d9b5d4ac8cc39980560e3")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.5.8")
-        set(ORTHANC_FRAMEWORK_MD5 "82323e8c49a667f658a3639ea4dbc336")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.6.0")
-        set(ORTHANC_FRAMEWORK_MD5 "eab428d6e53f61e847fa360bb17ebe25")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.6.1")
-        set(ORTHANC_FRAMEWORK_MD5 "3971f5de96ba71dc9d3f3690afeaa7c0")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.7.0")
-        set(ORTHANC_FRAMEWORK_MD5 "ce5f689e852b01d3672bd3d2f952a5ef")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.7.1")
-        set(ORTHANC_FRAMEWORK_MD5 "3c171217f930abe80246997bdbcaf7cc")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.7.2")
-        set(ORTHANC_FRAMEWORK_MD5 "328f94dcbd78c169655a13f7ad58a2c2")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.7.3")
-        set(ORTHANC_FRAMEWORK_MD5 "3f1ba9502ec7c5449971d3b56087bcde")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.7.4")
-        set(ORTHANC_FRAMEWORK_MD5 "19fcb7c21876af86546baa048a22c6c0")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.8.0")
-        set(ORTHANC_FRAMEWORK_MD5 "f8ec7554ef5d23ea4ce474b1e8214de9")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.8.1")
-        set(ORTHANC_FRAMEWORK_MD5 "db094f96399cbe8b9bbdbce34884c220")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.8.2")
-        set(ORTHANC_FRAMEWORK_MD5 "8bfa10e66c9931e74111be0bfb1f4548")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.9.0")
-        set(ORTHANC_FRAMEWORK_MD5 "cea0b02ce184671eaf1bd668beefbf28")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.9.1")
-        set(ORTHANC_FRAMEWORK_MD5 "08eebc66ef93c3b40115c38501db5fbd")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.9.2")
-        set(ORTHANC_FRAMEWORK_MD5 "3ea66c09f64aca990016683b6375734e")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.9.3")
-        set(ORTHANC_FRAMEWORK_MD5 "9b86e6f00e03278293cd15643cc0233f")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.9.4")
-        set(ORTHANC_FRAMEWORK_MD5 "6d5ca4a73ac7d42445041ca79de1624d")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.9.5")
-        set(ORTHANC_FRAMEWORK_MD5 "10fc64de1254a095e5d3ed3931f0cfbb")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.9.6")
-        set(ORTHANC_FRAMEWORK_MD5 "4b5d05683d747c29b2860ad79d11e62e")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.9.7")
-        set(ORTHANC_FRAMEWORK_MD5 "c912bbb860d640d3ae3003b5c9698205")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.10.0")
-        set(ORTHANC_FRAMEWORK_MD5 "8610c82d9153f22e929f2110f8f60279")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.10.1")
-        set(ORTHANC_FRAMEWORK_MD5 "caf667fc5ea452b3d0c2f70bfd02599c")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.11.0")
-        set(ORTHANC_FRAMEWORK_MD5 "962c4a4a706a2ef28b390d8515dd7091")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.11.1")
-        set(ORTHANC_FRAMEWORK_MD5 "a39661c406adf22cf574fde290cf4bbf")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.11.2")
-        set(ORTHANC_FRAMEWORK_MD5 "ede3de356493a8868545f8cb4b8bc8b5")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.11.3")
-        set(ORTHANC_FRAMEWORK_MD5 "f941c0f5771db7616e7b7961026a60e2")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.12.0")
-        set(ORTHANC_FRAMEWORK_MD5 "d32a0cde03b6eb603d8dd2b33d38bf1b")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.12.1")
-        set(ORTHANC_FRAMEWORK_MD5 "8a435140efc8ff4a01d8242f092f21de")
+        set(ORTHANC_FRAMEWORK_MD5 "dac95bd6cf86fb19deaf4e612961f378") # pragma: allowlist secret
       elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "1.12.2")
-        set(ORTHANC_FRAMEWORK_MD5 "d2476b9e796e339ac320b5333489bdb3")
-
-      # Below this point are development snapshots that were used to
-      # release some plugin, before an official release of the Orthanc
-      # framework was available. Here is the command to be used to
-      # generate a proper archive:
-      #
-      #   $ hg archive /tmp/Orthanc-`hg id -i | sed 's/\+//'`.tar.gz
-      #
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "ae0e3fd609df")
-        # DICOMweb 1.1 (framework pre-1.6.0)
-        set(ORTHANC_FRAMEWORK_PRE_RELEASE ON)
-        set(ORTHANC_FRAMEWORK_MD5 "7e09e9b530a2f527854f0b782d7e0645")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "82652c5fc04f")
-        # Stone Web viewer 1.0 (framework pre-1.8.1)
-        set(ORTHANC_FRAMEWORK_PRE_RELEASE ON)
-        set(ORTHANC_FRAMEWORK_MD5 "d77331d68917e66a3f4f9b807bbdab7f")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "4a3ba4bf4ba7")
-        # PostgreSQL 3.3 (framework pre-1.8.2)
-        set(ORTHANC_FRAMEWORK_PRE_RELEASE ON)
-        set(ORTHANC_FRAMEWORK_MD5 "2d82bddf06f9cfe82095495cb3b8abde")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "23ad1b9c7800")
-        # For "Toolbox::ReadJson()" and "Toolbox::Write{...}Json()" (pre-1.9.0)
-        set(ORTHANC_FRAMEWORK_PRE_RELEASE ON)
-        set(ORTHANC_FRAMEWORK_MD5 "9af92080e57c60dd288eba46ce606c00")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "b2e08d83e21d")
-        # WSI 1.1 (framework pre-1.10.0), to remove "-std=c++11"
-        set(ORTHANC_FRAMEWORK_PRE_RELEASE ON)
-        set(ORTHANC_FRAMEWORK_MD5 "2eaa073cbb4b44ffba199ad93393b2b1")
-      elseif (ORTHANC_FRAMEWORK_VERSION STREQUAL "daf4807631c5")
-        # DICOMweb 1.15 (framework pre-1.12.2)
-        set(ORTHANC_FRAMEWORK_PRE_RELEASE ON)
-        set(ORTHANC_FRAMEWORK_MD5 "ebe8bdf388319f1c9536b2b680451848")
+        set(ORTHANC_FRAMEWORK_MD5 "d2476b9e796e339ac320b5333489bdb3") # pragma: allowlist secret
       endif()
     endif()
   endif()
@@ -345,7 +235,8 @@ if (ORTHANC_FRAMEWORK_SOURCE STREQUAL "web")
     endif()
 
     message("Downloading: ${ORTHANC_FRAMEWORK_URL}")
-
+    # this is the problem. DownloadOrthancFramework.cmake downloads the https://orthanc.uclouvain.be/downloads/sources/orthanc/Orthanc-1.12.2.tar.gz and then calls the DownloadPackage.cmake that comes from it. 
+    # but the DownloadPackage.cmake is not the one in the Common/Resources/Orthanc/CMake/DownloadPackage.cmake that I copied over.
     file(DOWNLOAD
       "${ORTHANC_FRAMEWORK_URL}" "${ORTHANC_FRAMEWORK_ARCHIVE}" 
       SHOW_PROGRESS EXPECTED_MD5 "${ORTHANC_FRAMEWORK_MD5}"
@@ -434,6 +325,11 @@ if (ORTHANC_FRAMEWORK_SOURCE STREQUAL "archive" OR
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         RESULT_VARIABLE Failure
         )
+      # We need to copy the DownloadPackage.cmake from the Common/Resources/Orthanc/CMake/DownloadPackage.cmake to the ${ORTHANC_FRAMEMORK_FILENAME}/ uncompressed folder
+      # The local DownloadPackage.cmake was copied to the ${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/ in the Dockerfile already.
+      file(COPY "${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/DownloadPackage.cmake"
+       DESTINATION "${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/Orthanc-1.12.2/OrthancFramework/Resources/CMake/")
+
     endif()
    
     if (Failure)
