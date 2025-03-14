@@ -234,7 +234,7 @@ if (ORTHANC_FRAMEWORK_SOURCE STREQUAL "web")
       message(FATAL_ERROR "CMake is not allowed to download from Internet. Please set the ALLOW_DOWNLOADS option to ON")
     endif()
 
-    message("Downloading: ${ORTHANC_FRAMEWORK_URL}")
+    message("Downloading: ${ORTHANC_FRAMEWORK_URL} to ${ORTHANC_FRAMEWORK_ARCHIVE}")
     # this is the problem. DownloadOrthancFramework.cmake downloads the https://orthanc.uclouvain.be/downloads/sources/orthanc/Orthanc-1.12.2.tar.gz and then calls the DownloadPackage.cmake that comes from it. 
     # but the DownloadPackage.cmake is not the one in the Common/Resources/Orthanc/CMake/DownloadPackage.cmake that I copied over.
     file(DOWNLOAD
@@ -327,8 +327,11 @@ if (ORTHANC_FRAMEWORK_SOURCE STREQUAL "archive" OR
         )
       # We need to copy the DownloadPackage.cmake from the Common/Resources/Orthanc/CMake/DownloadPackage.cmake to the ${ORTHANC_FRAMEMORK_FILENAME}/ uncompressed folder
       # The local DownloadPackage.cmake was copied to the ${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/ in the Dockerfile already.
+      message("Copying DownloadPackage.cmake to ${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/Orthanc-1.12.2/OrthancFramework/Resources/CMake/")
       file(COPY "${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/DownloadPackage.cmake"
        DESTINATION "${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/Orthanc-1.12.2/OrthancFramework/Resources/CMake/")
+      file(READ "${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/Orthanc-1.12.2/OrthancFramework/Resources/CMake/DownloadPackage.cmake" DownloadPackageContent)
+      message("DownloadPackageContent: ${DownloadPackageContent}")
 
     endif()
    
