@@ -58,7 +58,7 @@ SET(AWS_C_IO_MD5 "9ae415cb81404e1b76d8e8267e585e34")
 DownloadPackage(${AWS_C_IO_MD5} ${AWS_C_IO_URL} "${AWS_C_IO_SOURCES_DIR}")
 
 SET(AWS_C_MQTT_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-c-mqtt-0.12.1)  # source =  https://github.com/awslabs/aws-c-mqtt/archive/refs/tags/v0.9.5.tar.gz
-SET(AWS_C_MQTT_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-c-mqtt-0.9.5.tar.gz")
+SET(AWS_C_MQTT_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-c-mqtt-0.12.1.tar.gz")
 SET(AWS_C_MQTT_MD5 "no-check")
 DownloadPackage(${AWS_C_MQTT_MD5} ${AWS_C_MQTT_URL} "${AWS_C_MQTT_SOURCES_DIR}")
 
@@ -73,12 +73,12 @@ SET(AWS_C_SDKUTILS_MD5 "713cac3392aa20d5dda852cf21ac1957")
 DownloadPackage(${AWS_C_SDKUTILS_MD5} ${AWS_C_SDKUTILS_URL} "${AWS_C_SDKUTILS_SOURCES_DIR}")
 
 SET(AWS_CRT_CPP_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-crt-cpp-0.30.1)  # source =  https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.24.1.tar.gz
-SET(AWS_CRT_CPP_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-crt-cpp-0.24.1.tar.gz")
+SET(AWS_CRT_CPP_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-crt-cpp-0.30.1.tar.gz")
 SET(AWS_CRT_CPP_MD5 "no-check")
 DownloadPackage(${AWS_CRT_CPP_MD5} ${AWS_CRT_CPP_URL} "${AWS_CRT_CPP_SOURCES_DIR}")
 
 SET(AWS_SDK_CPP_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-sdk-cpp-1.11.520)  # source =  https://github.com/aws/aws-sdk-cpp/archive/refs/tags/1.11.178.tar.gz
-SET(AWS_SDK_CPP_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-sdk-cpp-1.11.178.tar.gz")
+SET(AWS_SDK_CPP_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-sdk-cpp-1.11.520.tar.gz")
 SET(AWS_SDK_CPP_MD5 "no-check")
 DownloadPackage(${AWS_SDK_CPP_MD5} ${AWS_SDK_CPP_URL} "${AWS_SDK_CPP_SOURCES_DIR}")
 
