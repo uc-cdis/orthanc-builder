@@ -39,7 +39,7 @@ RUN dnf -y update && \
     tar python-pip \
     readline-devel libicu-devel openssl-devel \
     java-11-amazon-corretto \
-    patch gtest gtest-devel libcbor-devel && \
+    patch gtest gtest-devel && \
     dnf clean all
 
 RUN wget https://ftp.postgresql.org/pub/source/v16.5/postgresql-16.5.tar.gz && tar -zxvf postgresql-16.5.tar.gz && cd postgresql-16.5 && ./configure --bindir=/usr/bin --with-openssl && make -C src/bin install && make -C src/include install && make -C src/interfaces install
@@ -373,7 +373,7 @@ RUN cp AwsStaticConfiguration.cmake /sources/orthanc-object-storage/Aws/AwsStati
 RUN cp DownloadOrthancFramework.cmake /sources/orthanc-object-storage/Common/Resources/Orthanc/CMake/DownloadOrthancFramework.cmake
 
 RUN dnf -y update && \
-    dnf -y install glibc glibc-devel libstdc++ libstdc++-devel && \
+    dnf -y install glibc glibc-devel libstdc++ libstdc++-devel libcbor-devel && \
     dnf clean all
 
 RUN /scripts/build-or-download.sh version=$STABLE_OR_UNSTABLE target=orthanc-s3 commitId=$ORTHANC_AWS_STORAGE_COMMIT_ID baseImage=$PLATFORM/$BASE_IMAGE_TAG preferDownloads=$PREFER_DOWNLOADS enableUploads=$ENABLE_UPLOAD
