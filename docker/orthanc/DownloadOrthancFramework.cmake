@@ -424,15 +424,8 @@ if (ORTHANC_FRAMEWORK_SOURCE STREQUAL "archive" OR
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         RESULT_VARIABLE Failure
         )
-      execute_process(
-        COMMAND sh -c "sed -i 's/The MD5 hash/The MD5 hash \\${ActualMD5} (expected \\${MD5})/g' Orthanc-1.12.2/OrthancFramework/Resources/CMake/DownloadPackage.cmake"
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-        RESULT_VARIABLE Failure
-        )
-      execute_process(
-        COMMAND sh -c "sed -i 's|message(FATAL_ERROR \"The package was not uncompressed at the proper location. Check the CMake instructions.\")|execute_process(COMMAND ls . OUTPUT_VARIABLE LS_OUTPUT OUTPUT_STRIP_TRAILING_WHITESPACE)\\nmessage(FATAL_ERROR \"The package was not uncompressed at the proper location (\${TargetDirectory}). Check the CMake instructions. List: \${LS_OUTPUT}\")|g' Orthanc-1.12.2/OrthancFramework/Resources/CMake/DownloadPackage.cmake"
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-        RESULT_VARIABLE Failure
+      file(COPY "${CMAKE_SOURCE_DIR}/ThirdPartyDownloads/DownloadPackage.cmake"
+        DESTINATION "${CMAKE_BINARY_DIR}/Orthanc-1.12.2/OrthancFramework/Resources/CMake/"
         )
     endif()
    
