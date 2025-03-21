@@ -35,6 +35,8 @@ SET(AWS_C_COMMON_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-c-common-${AWS_C_COMMON_VER
 SET(AWS_C_COMMON_URL "https://github.com/awslabs/aws-c-common/archive/refs/tags/v${AWS_C_COMMON_VERSION}.tar.gz")
 SET(AWS_C_COMMON_MD5 "no-check")
 DownloadPackage(${AWS_C_COMMON_MD5} ${AWS_C_COMMON_URL} "${AWS_C_COMMON_SOURCES_DIR}")
+file(COPY ${AWS_C_COMMON_SOURCES_DIR}/source/external/libcbor/cbor/cbor_export.h ${AWS_C_COMMON_SOURCES_DIR}/source/external/libcbor/cbor/configuration.h DESTINATION ${AWS_C_COMMON_SOURCES_DIR}/source/external/libcbor/cbor/cbor/)
+file(COPY ${AWS_C_COMMON_SOURCES_DIR}/source/external/libcbor/cbor/cbor_export.h ${AWS_C_COMMON_SOURCES_DIR}/source/external/libcbor/cbor/configuration.h DESTINATION ${AWS_C_COMMON_SOURCES_DIR}/include/aws/common/cbor/)
 
 SET(AWS_CHECKSUMS_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-checksums-${AWS_CHECKSUMS_VERSION})  # source =  https://github.com/awslabs/aws-checksums/archive/refs/tags/v0.1.17.tar.gz
 SET(AWS_CHECKSUMS_URL "https://github.com/awslabs/aws-checksums/archive/refs/tags/v${AWS_CHECKSUMS_VERSION}.tar.gz")
@@ -118,6 +120,7 @@ configure_file(
 
 include_directories(
   ${AWS_C_COMMON_SOURCES_DIR}/include/
+  ${AWS_C_COMMON_SOURCES_DIR}/source/external/libcbor/
   ${AWS_C_AUTH_SOURCES_DIR}/include/
   ${AWS_C_CAL_SOURCES_DIR}/include/
   ${AWS_C_COMPRESSION_SOURCES_DIR}/include/
