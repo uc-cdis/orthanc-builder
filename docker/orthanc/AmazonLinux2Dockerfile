@@ -108,18 +108,24 @@ RUN wget https://public-files.orthanc.team/third-party-downloads/zlib-1.3.1.tar.
 
 # getting aws-sdk-cpp version 1.11.520 and the appropriate versions of dependencies according
 # to https://github.com/aws/aws-sdk-cpp/blob/1.11.520/prefetch_crt_dependency.sh
-RUN git clone --recurse-submodules --depth 1 --branch 1.11.520 https://github.com/aws/aws-sdk-cpp.git
-# && cd aws-sdk-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_ONLY="s3" && make -j$(nproc) && make install
-RUN mv aws-sdk-cpp aws-sdk-cpp-1.11.178
-RUN tar zcf aws-sdk-cpp-1.11.178.tar.gz aws-sdk-cpp-1.11.178
 
-RUN git clone --recurse-submodules --depth 1 --branch v0.30.1 https://github.com/awslabs/aws-crt-cpp.git
-RUN mv aws-crt-cpp aws-crt-cpp-0.24.1
-RUN tar zcf aws-crt-cpp-0.24.1.tar.gz aws-crt-cpp-0.24.1
+# RUN git clone --recurse-submodules --depth 1 --branch 1.11.520 https://github.com/aws/aws-sdk-cpp.git
+# # && cd aws-sdk-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_ONLY="s3" && make -j$(nproc) && make install
+# RUN mv aws-sdk-cpp aws-sdk-cpp-1.11.178
+# RUN tar zcf aws-sdk-cpp-1.11.178.tar.gz aws-sdk-cpp-1.11.178
+RUN wget https://github.com/aws/aws-sdk-cpp/archive/refs/tags/1.11.520.tar.gz
 
-RUN git clone --recurse-submodules --depth 1 --branch v0.12.1 https://github.com/awslabs/aws-c-mqtt.git
-RUN mv aws-c-mqtt aws-c-mqtt-0.9.5
-RUN tar zcf aws-c-mqtt-0.9.5.tar.gz aws-c-mqtt-0.9.5
+# RUN git clone --recurse-submodules --depth 1 --branch v0.30.1 https://github.com/awslabs/aws-crt-cpp.git
+# RUN mv aws-crt-cpp aws-crt-cpp-0.24.1
+# RUN tar zcf aws-crt-cpp-0.24.1.tar.gz aws-crt-cpp-0.24.1
+RUN wget https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.30.1.tar.gz
+
+# RUN git clone --recurse-submodules --depth 1 --branch v0.12.1 https://github.com/awslabs/aws-c-mqtt.git
+# RUN sed -i 's|if (NOT is_exact_version)|message(FATAL_ERROR "is_exact_version = \${is_exact_version}")\n        if (NOT is_exact_version)|g' aws-c-mqtt/cmake/AwsGetVersion.cmake
+# RUN sed -i 's|if (git_success)|message(FATAL_ERROR "git_success = \${git_success}")\n        if (git_success)|g' aws-c-mqtt/cmake/AwsGetVersion.cmake
+# RUN mv aws-c-mqtt aws-c-mqtt-0.9.5
+# RUN tar zcf aws-c-mqtt-0.9.5.tar.gz aws-c-mqtt-0.9.5
+RUN wget https://github.com/awslabs/aws-c-mqtt/archive/refs/tags/v0.12.1.tar.gz
 
 
 COPY build-or-download.sh /scripts
