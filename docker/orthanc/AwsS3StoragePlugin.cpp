@@ -90,7 +90,7 @@ public:
   {
   }
 
-  virtual void WriteNew(const char* data, size_t size)
+  virtual void WriteSimple(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
     // Aws::S3::S3ClientConfiguration clientConfig;
@@ -142,8 +142,8 @@ public:
     return str->gcount();
   }
 
-static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *userdata) {
-  OrthancPlugins::LogInfo("in myCurlWriteBack");
+  static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *userdata) {
+    OrthancPlugins::LogInfo("in myCurlWriteBack");
     Aws::StringStream *str = (Aws::StringStream *) userdata;
     if (nitems > 0) {
       str->write(buffer, size * nitems);
@@ -151,7 +151,7 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
     return size * nitems;
   }
 
-  virtual void Write(const char* data, size_t size)
+  virtual void WritePresignedUrl(const char* data, size_t size)
   {
     // TODO: if the data is >5gb, we have to do a multipart upload
     std::string presigned_url = client_->GeneratePresignedUrl(
@@ -284,7 +284,7 @@ static size_t myCurlWriteBack(char *buffer, size_t size, size_t nitems, void *us
     }
   }
 
-  virtual void WriteOld(const char* data, size_t size)
+  virtual void Write(const char* data, size_t size)
   {
     OrthancPlugins::LogInfo("in DirectWriter.Write");
     Aws::S3::Model::PutObjectRequest putObjectRequest;
