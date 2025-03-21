@@ -118,7 +118,7 @@ RUN mv aws-crt-cpp aws-crt-cpp-0.24.1
 RUN tar zcf aws-crt-cpp-0.24.1.tar.gz aws-crt-cpp-0.24.1
 
 RUN git clone --recurse-submodules --depth 1 --branch v0.12.1 https://github.com/awslabs/aws-c-mqtt.git
-RUN mv aws-crt-cpp aws-c-mqtt-0.9.5
+RUN mv aws-c-mqtt aws-c-mqtt-0.9.5
 RUN tar zcf aws-c-mqtt-0.9.5.tar.gz aws-c-mqtt-0.9.5
 
 
