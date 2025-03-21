@@ -70,20 +70,50 @@ RUN mkdir -p /third-party-downloads
 # download most commonly used third-party files to avoid downloading too many files from UCLouvain servers when building
 WORKDIR /third-party-downloads
 
+# getting aws-sdk-cpp version 1.11.520 instead of 1.11.178, and the appropriate versions of
+# dependencies according to https://github.com/aws/aws-sdk-cpp/blob/1.11.520/prefetch_crt_dependency.sh
+
 RUN wget https://public-files.orthanc.team/third-party-downloads/VolView-4.1.1.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-auth-0.7.1.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-cal-0.6.1.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-common-0.9.3.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-compression-0.2.17.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-event-stream-0.3.1.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-http-0.7.11.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-io-0.13.31.tar.gz
+
+# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-auth-0.7.1.tar.gz
+RUN wget https://github.com/awslabs/aws-c-auth/archive/refs/tags/v0.8.4.tar.gz && mv v0.8.4.tar.gz aws-c-auth-0.8.4.tar.gz
+
+# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-cal-0.6.1.tar.gz
+RUN wget https://github.com/awslabs/aws-c-cal/archive/refs/tags/v0.8.3.tar.gz && mv v0.8.3.tar.gz aws-c-cal-0.8.3.tar.gz
+
+# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-common-0.9.3.tar.gz
+RUN wget https://github.com/awslabs/aws-c-common/archive/refs/tags/v0.11.0.tar.gz && mv v0.11.0.tar.gz aws-c-common-0.11.0.tar.gz
+
+# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-compression-0.2.17.tar.gz
+RUN wget https://github.com/awslabs/aws-c-compression/archive/refs/tags/v0.3.1.tar.gz && mv v0.3.1.tar.gz aws-c-compression-0.3.1.tar.gz
+
+# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-event-stream-0.3.1.tar.gz
+RUN wget https://github.com/awslabs/aws-c-event-stream/archive/refs/tags/v0.5.1.tar.gz && mv v0.5.1.tar.gz aws-c-event-stream-0.5.1.tar.gz
+
+# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-http-0.7.11.tar.gz
+RUN wget https://github.com/awslabs/aws-c-http/archive/refs/tags/v0.9.3.tar.gz && mv v0.9.3.tar.gz aws-c-http-0.9.3.tar.gz
+
+# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-io-0.13.31.tar.gz
+RUN wget https://github.com/awslabs/aws-c-io/archive/refs/tags/v0.15.4.tar.gz && mv v0.13.31.tar.gz aws-c-io-0.13.31.tar.gz
+
 # RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-mqtt-0.9.5.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-s3-0.3.14.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-sdkutils-0.1.11.tar.gz
-RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-checksums-0.1.17.tar.gz
+RUN wget https://github.com/awslabs/aws-c-mqtt/archive/refs/tags/v0.12.1.tar.gz && mv v0.12.1.tar.gz aws-c-mqtt-0.12.1.tar.gz
+
+# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-s3-0.3.14.tar.gz
+RUN wget https://github.com/awslabs/aws-c-s3/archive/refs/tags/v0.7.11.tar.gz && mv v0.7.11.tar.gz aws-c-s3-0.7.11.tar.gz
+
+# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-c-sdkutils-0.1.11.tar.gz
+RUN wget https://github.com/awslabs/aws-c-sdkutils/archive/refs/tags/v0.2.3.tar.gz && mv v0.2.3.tar.gz aws-c-sdkutils-0.2.3.tar.gz
+
+# RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-checksums-0.1.17.tar.gz
+RUN wget https://github.com/awslabs/aws-checksums/archive/refs/tags/v0.2.3.tar.gz && mv v0.2.3.tar.gz aws-checksums-0.2.3.tar.gz
+
 # RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-crt-cpp-0.24.1.tar.gz
+RUN wget https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.30.1.tar.gz && mv v0.30.1.tar.gz aws-crt-cpp-0.30.1.tar.gz
+
 # RUN wget https://public-files.orthanc.team/third-party-downloads/aws/aws-sdk-cpp-1.11.178.tar.gz
+RUN wget https://github.com/aws/aws-sdk-cpp/archive/refs/tags/1.11.520.tar.gz && mv 1.11.520.tar.gz aws-sdk-cpp-1.11.520.tar.gz
+
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_83_0_bcpdigest-1.12.2.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_84_0_bcpdigest-1.12.3.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/boost_1_85_0_bcpdigest-1.12.4.tar.gz
@@ -105,30 +135,6 @@ RUN wget https://public-files.orthanc.team/third-party-downloads/three.js-r154-s
 RUN wget https://public-files.orthanc.team/third-party-downloads/VolView-4.1.1.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/VTK-7.1.1.tar.gz
 RUN wget https://public-files.orthanc.team/third-party-downloads/zlib-1.3.1.tar.gz
-
-# getting aws-sdk-cpp version 1.11.520 and the appropriate versions of dependencies according
-# to https://github.com/aws/aws-sdk-cpp/blob/1.11.520/prefetch_crt_dependency.sh
-
-# RUN git clone --recurse-submodules --depth 1 --branch 1.11.520 https://github.com/aws/aws-sdk-cpp.git
-# # && cd aws-sdk-cpp && mkdir build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_ONLY="s3" && make -j$(nproc) && make install
-# RUN mv aws-sdk-cpp aws-sdk-cpp-1.11.178
-# RUN tar zcf aws-sdk-cpp-1.11.178.tar.gz aws-sdk-cpp-1.11.178
-RUN wget https://github.com/aws/aws-sdk-cpp/archive/refs/tags/1.11.520.tar.gz
-RUN mv 1.11.520.tar.gz aws-sdk-cpp-1.11.520.tar.gz
-
-# RUN git clone --recurse-submodules --depth 1 --branch v0.30.1 https://github.com/awslabs/aws-crt-cpp.git
-# RUN mv aws-crt-cpp aws-crt-cpp-0.24.1
-# RUN tar zcf aws-crt-cpp-0.24.1.tar.gz aws-crt-cpp-0.24.1
-RUN wget https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.30.1.tar.gz
-RUN mv v0.30.1.tar.gz aws-crt-cpp-0.30.1.tar.gz
-
-# RUN git clone --recurse-submodules --depth 1 --branch v0.12.1 https://github.com/awslabs/aws-c-mqtt.git
-# RUN sed -i 's|if (NOT is_exact_version)|message(FATAL_ERROR "is_exact_version = \${is_exact_version}")\n        if (NOT is_exact_version)|g' aws-c-mqtt/cmake/AwsGetVersion.cmake
-# RUN sed -i 's|if (git_success)|message(FATAL_ERROR "git_success = \${git_success}")\n        if (git_success)|g' aws-c-mqtt/cmake/AwsGetVersion.cmake
-# RUN mv aws-c-mqtt aws-c-mqtt-0.9.5
-# RUN tar zcf aws-c-mqtt-0.9.5.tar.gz aws-c-mqtt-0.9.5
-RUN wget https://github.com/awslabs/aws-c-mqtt/archive/refs/tags/v0.12.1.tar.gz
-RUN mv v0.12.1.tar.gz aws-c-mqtt-0.12.1.tar.gz
 
 
 COPY build-or-download.sh /scripts
@@ -365,8 +371,6 @@ RUN cp StoragePlugin.cpp /sources/orthanc-object-storage/Common/StoragePlugin.cp
 RUN cp AwsS3StoragePlugin.cpp /sources/orthanc-object-storage/Aws/AwsS3StoragePlugin.cpp
 RUN cp AwsStaticConfiguration.cmake /sources/orthanc-object-storage/Aws/AwsStaticConfiguration.cmake
 RUN cp DownloadOrthancFramework.cmake /sources/orthanc-object-storage/Common/Resources/Orthanc/CMake/DownloadOrthancFramework.cmake
-# RUN md5sum aws-sdk-cpp-1.11.178.tar.gz || (yum install -y coreutils && md5sum aws-sdk-cpp-1.11.178.tar.gz)
-# RUN cp DownloadPackage.cmake /sources/OrthancFramework/Resources/CMake/DownloadPackage.cmake
 
 RUN dnf -y update && \
     dnf -y install glibc glibc-devel libstdc++ libstdc++-devel && \
