@@ -17,19 +17,19 @@
 
 # version numbers can be obtained from https://github.com/aws/aws-sdk-cpp/blob/main/prefetch_crt_dependency.sh
 
-SET(AWS_C_COMMON_VERSION "0.11.1")
+SET(AWS_C_COMMON_VERSION "0.11.0")
 SET(AWS_CHECKSUMS_VERSION "0.2.3")
-SET(AWS_C_AUTH_VERSION "0.8.5")
+SET(AWS_C_AUTH_VERSION "0.8.4")
 SET(AWS_C_CAL_VERSION "0.8.3")
 SET(AWS_C_COMPRESSION_VERSION "0.3.1")
-SET(AWS_C_EVENT_STREAM_VERSION "0.5.2")
+SET(AWS_C_EVENT_STREAM_VERSION "0.5.1")
 SET(AWS_C_HTTP_VERSION "0.9.3")
-SET(AWS_C_IO_VERSION "0.16.0")
-SET(AWS_C_MQTT_VERSION "0.12.2")
+SET(AWS_C_IO_VERSION "0.15.4")
+SET(AWS_C_MQTT_VERSION "0.12.1")
 SET(AWS_C_S3_VERSION "0.7.11")
 SET(AWS_C_SDKUTILS_VERSION "0.2.3")
-SET(AWS_CRT_CPP_VERSION "0.31.0")
-SET(AWS_SDK_CPP_VERSION "1.11.522")
+SET(AWS_CRT_CPP_VERSION "0.30.1")
+SET(AWS_SDK_CPP_VERSION "1.11.520")
 
 SET(AWS_C_COMMON_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-c-common-${AWS_C_COMMON_VERSION})  # source =  https://github.com/awslabs/aws-c-common/archive/refs/tags/v0.9.3.tar.gz
 SET(AWS_C_COMMON_URL "https://github.com/awslabs/aws-c-common/archive/refs/tags/v${AWS_C_COMMON_VERSION}.tar.gz")
@@ -84,7 +84,6 @@ DownloadPackage(${AWS_C_S3_MD5} ${AWS_C_S3_URL} "${AWS_C_S3_SOURCES_DIR}")
 SET(AWS_C_SDKUTILS_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-c-sdkutils-${AWS_C_SDKUTILS_VERSION})  # source =  https://github.com/awslabs/aws-c-sdkutils/archive/refs/tags/v0.1.11.tar.gz
 SET(AWS_C_SDKUTILS_URL "https://github.com/awslabs/aws-c-sdkutils/archive/refs/tags/v${AWS_C_SDKUTILS_VERSION}.tar.gz")
 SET(AWS_C_SDKUTILS_MD5 "no-check")
-message("Downloading ${AWS_C_SDKUTILS_URL} to ${AWS_C_SDKUTILS_SOURCES_DIR}")
 DownloadPackage(${AWS_C_SDKUTILS_MD5} ${AWS_C_SDKUTILS_URL} "${AWS_C_SDKUTILS_SOURCES_DIR}")
 
 SET(AWS_CRT_CPP_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-crt-cpp-${AWS_CRT_CPP_VERSION})  # source =  https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.24.1.tar.gz
