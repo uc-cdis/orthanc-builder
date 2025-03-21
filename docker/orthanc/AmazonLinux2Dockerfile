@@ -114,11 +114,13 @@ RUN wget https://public-files.orthanc.team/third-party-downloads/zlib-1.3.1.tar.
 # RUN mv aws-sdk-cpp aws-sdk-cpp-1.11.178
 # RUN tar zcf aws-sdk-cpp-1.11.178.tar.gz aws-sdk-cpp-1.11.178
 RUN wget https://github.com/aws/aws-sdk-cpp/archive/refs/tags/1.11.520.tar.gz
+RUN mv 1.11.520.tar.gz aws-sdk-cpp-1.11.520.tar.gz
 
 # RUN git clone --recurse-submodules --depth 1 --branch v0.30.1 https://github.com/awslabs/aws-crt-cpp.git
 # RUN mv aws-crt-cpp aws-crt-cpp-0.24.1
 # RUN tar zcf aws-crt-cpp-0.24.1.tar.gz aws-crt-cpp-0.24.1
 RUN wget https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.30.1.tar.gz
+RUN mv v0.30.1.tar.gz aws-crt-cpp-0.30.1.tar.gz
 
 # RUN git clone --recurse-submodules --depth 1 --branch v0.12.1 https://github.com/awslabs/aws-c-mqtt.git
 # RUN sed -i 's|if (NOT is_exact_version)|message(FATAL_ERROR "is_exact_version = \${is_exact_version}")\n        if (NOT is_exact_version)|g' aws-c-mqtt/cmake/AwsGetVersion.cmake
@@ -126,6 +128,7 @@ RUN wget https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.30.1.tar.gz
 # RUN mv aws-c-mqtt aws-c-mqtt-0.9.5
 # RUN tar zcf aws-c-mqtt-0.9.5.tar.gz aws-c-mqtt-0.9.5
 RUN wget https://github.com/awslabs/aws-c-mqtt/archive/refs/tags/v0.12.1.tar.gz
+RUN mv v0.12.1.tar.gz aws-c-mqtt-0.12.1.tar.gz
 
 
 COPY build-or-download.sh /scripts
