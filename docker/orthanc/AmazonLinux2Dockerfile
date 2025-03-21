@@ -39,7 +39,7 @@ RUN dnf -y update && \
     tar python-pip \
     readline-devel libicu-devel openssl-devel \
     java-11-amazon-corretto \
-    patch gtest gtest-devel && \
+    patch gtest gtest-devel libcbor-devel && \
     dnf clean all
 
 RUN wget https://ftp.postgresql.org/pub/source/v16.5/postgresql-16.5.tar.gz && tar -zxvf postgresql-16.5.tar.gz && cd postgresql-16.5 && ./configure --bindir=/usr/bin --with-openssl && make -C src/bin install && make -C src/include install && make -C src/interfaces install
