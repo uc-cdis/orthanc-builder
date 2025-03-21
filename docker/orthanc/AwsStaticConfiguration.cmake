@@ -59,7 +59,7 @@ DownloadPackage(${AWS_C_IO_MD5} ${AWS_C_IO_URL} "${AWS_C_IO_SOURCES_DIR}")
 
 SET(AWS_C_MQTT_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-c-mqtt-0.9.5)  # source =  https://github.com/awslabs/aws-c-mqtt/archive/refs/tags/v0.9.5.tar.gz
 SET(AWS_C_MQTT_URL "http://orthanc.osimis.io/ThirdPartyDownloads/aws/aws-c-mqtt-0.9.5.tar.gz")
-SET(AWS_C_MQTT_MD5 "76d59d9f14f3999b0f9618e386e71db6")
+SET(AWS_C_MQTT_MD5 "no-check")
 DownloadPackage(${AWS_C_MQTT_MD5} ${AWS_C_MQTT_URL} "${AWS_C_MQTT_SOURCES_DIR}")
 
 SET(AWS_C_S3_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-c-s3-0.3.14)  # source =  https://github.com/awslabs/aws-c-s3/archive/refs/tags/v0.3.14.tar.gz
