@@ -388,7 +388,7 @@ elif [[ $target == "orthanc-s3" ]]; then
         cmake -DCMAKE_BUILD_TYPE:STRING=Debug -DALLOW_DOWNLOADS=ON -DUSE_VCPKG_PACKAGES=OFF -DSIMPLE_VERSION=0.30.1 $sourcesRootPath/orthanc-object-storage/Aws/
         # cp /third-party-downloads/DownloadPackage.cmake /$buildRootPath/Orthanc-1.12.2/OrthancFramework/Resources/CMake/DownloadPackage.cmake
         export SIMPLE_VERSION="0.30.1"  # fix missing AWS_CRT_CPP_VERSION_MAJOR, AWS_CRT_CPP_VERSION_MINOR, AWS_CRT_CPP_VERSION_PATCH in aws-crt-cpp
-        sed -i 's/***_CRT_CPP_VERSION_MAJOR/1/g' /build/aws-crt-cpp-0.30.1/source/Api.cpp
+        sed -i 's/\*\*\*_CRT_CPP_VERSION_MAJOR/1/g' /build/aws-crt-cpp-0.30.1/source/Api.cpp
         sed -i 's/AWS_CRT_CPP_VERSION_MAJOR/2/g' /build/aws-crt-cpp-0.30.1/source/Api.cpp
         echo DEBUG-HERE
         cat /build/aws-crt-cpp-0.30.1/source/Api.cpp
