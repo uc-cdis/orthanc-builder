@@ -24,7 +24,7 @@ SET(AWS_C_CAL_VERSION "0.8.3")
 SET(AWS_C_COMPRESSION_VERSION "0.3.1")
 SET(AWS_C_EVENT_STREAM_VERSION "0.5.1")
 SET(AWS_C_HTTP_VERSION "0.9.3")
-SET(AWS_C_IO_VERSION "0.15.3") # should be 0.15.4 but it throws an error
+SET(AWS_C_IO_VERSION "0.15.3") # should be 0.15.4 but the new event loop feature causes errors
 SET(AWS_C_MQTT_VERSION "0.12.1")
 SET(AWS_C_S3_VERSION "0.7.11")
 SET(AWS_C_SDKUTILS_VERSION "0.2.3")
@@ -96,6 +96,7 @@ DownloadPackage(${AWS_C_SDKUTILS_MD5} ${AWS_C_SDKUTILS_URL} "${AWS_C_SDKUTILS_SO
 SET(AWS_CRT_CPP_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-crt-cpp-${AWS_CRT_CPP_VERSION})  # source =  https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v0.24.1.tar.gz
 SET(AWS_CRT_CPP_URL "https://github.com/awslabs/aws-crt-cpp/archive/refs/tags/v${AWS_CRT_CPP_VERSION}.tar.gz")
 SET(AWS_CRT_CPP_MD5 "no-check")
+SET(SIMPLE_VERSION ${AWS_CRT_CPP_VERSION})  # fix missing AWS_CRT_CPP_VERSION_MAJOR, AWS_CRT_CPP_VERSION_MINOR, AWS_CRT_CPP_VERSION_PATCH in aws-crt-cpp
 DownloadPackage(${AWS_CRT_CPP_MD5} ${AWS_CRT_CPP_URL} "${AWS_CRT_CPP_SOURCES_DIR}")
 
 SET(AWS_SDK_CPP_SOURCES_DIR ${CMAKE_BINARY_DIR}/aws-sdk-cpp-${AWS_SDK_CPP_VERSION})  # source =  https://github.com/aws/aws-sdk-cpp/archive/refs/tags/1.11.178.tar.gz
