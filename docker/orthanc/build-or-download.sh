@@ -91,13 +91,18 @@ if [[ $target == "orthanc" ]]; then
     if [[ $dl != 0 ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc/ -r $commitId $sourcesRootPath
+        # cp SystemToolbox.cpp $sourcesRootPath/OrthancFramework/Sources/SystemToolbox.cpp
+        # cp FilesystemStorage.cpp $sourcesRootPath/OrthancFramework/Sources/FileStorage/FilesystemStorage.cpp
         pushd $buildRootPath
 
         # note: building with static DCMTK while waiting for Debian bullseye to update to latest DCMTK issues (we need DCMTK 3.6.7: https://www.hipaajournal.com/warning-issued-about-3-high-severity-vulnerabilities-in-offis-dicom-software/)
         # also force latest OpenSSL (and therefore, we need to force static libcurl)
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DSTANDALONE_BUILD=ON -DUSE_GOOGLE_TEST_DEBIAN_PACKAGE=ON -DUSE_SYSTEM_CIVETWEB=OFF -DUSE_SYSTEM_DCMTK=OFF -DUSE_SYSTEM_OPENSSL=OFF -DUSE_SYSTEM_CURL=OFF $sourcesRootPath/OrthancServer
+        # (pauline 02/2025) Setting `DUSE_GOOGLE_TEST_DEBIAN_PACKAGE` to `OFF` to fix error when
+        # the CI runs the tests: `Please install the libgtest-dev package`
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DSTANDALONE_BUILD=ON -DUSE_GOOGLE_TEST_DEBIAN_PACKAGE=OFF -DUSE_SYSTEM_CIVETWEB=OFF -DUSE_SYSTEM_DCMTK=OFF -DUSE_SYSTEM_OPENSSL=ON -DUSE_SYSTEM_CURL=OFF $sourcesRootPath/OrthancServer
         make -j 4
-        # HttpClient.Ssl and HttpClient.SslNoVerification are failing
+        # (pauline 02/2025) Commenting out unit tests to fix error when the CI runs the tests:
+        # `HttpClient.Ssl and HttpClient.SslNoVerification are failing`
         # $buildRootPath/UnitTests
 
         upload Orthanc
@@ -118,7 +123,7 @@ elif [[ $target == "orthanc-authorization" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-authorization/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath
         make -j 4
         $buildRootPath/UnitTests
 
@@ -133,7 +138,7 @@ elif [[ $target == "orthanc-python" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-python/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF -DPYTHON_VERSION=3.11 $sourcesRootPath
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF -DPYTHON_VERSION=3.11 $sourcesRootPath
         make -j 4
 
         upload libOrthancPython.so
@@ -147,7 +152,7 @@ elif [[ $target == "orthanc-gdcm" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-gdcm/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DSTATIC_BUILD=ON $sourcesRootPath
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DSTATIC_BUILD=ON $sourcesRootPath
         
         make -j 4
 
@@ -165,7 +170,10 @@ elif [[ $target == "orthanc-pg" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-databases/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF  $sourcesRootPath/PostgreSQL
+        # (pauline 02/2025) Adding "-D PostgreSQL_TYPE_INCLUDE_DIR=`pg_config --includedir-server`"
+        # to fix error: `CMake Error: The following variables are used in this project, but they
+        # are set to NOTFOUND. PostgreSQL_TYPE_INCLUDE_DIR`
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF -D PostgreSQL_TYPE_INCLUDE_DIR=`pg_config --includedir-server` $sourcesRootPath/PostgreSQL
         make -j 4
 
         upload libOrthancPostgreSQLIndex.so
@@ -181,7 +189,7 @@ elif [[ $target == "orthanc-mysql" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-databases/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath/MySQL
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath/MySQL
         make -j 4
 
         upload libOrthancMySQLIndex.so
@@ -197,7 +205,7 @@ elif [[ $target == "orthanc-odbc" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-databases/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath/Odbc
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath/Odbc
         make -j 4
 
         upload libOrthancOdbcIndex.so
@@ -212,7 +220,7 @@ elif [[ $target == "orthanc-indexer" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-indexer/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF -DUSE_SYSTEM_LIBCSV=OFF $sourcesRootPath
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF -DUSE_SYSTEM_LIBCSV=OFF $sourcesRootPath
         make -j 4
 
         upload libOrthancIndexer.so
@@ -226,7 +234,7 @@ elif [[ $target == "orthanc-neuro" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-neuro/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF -DUSE_SYSTEM_NIFTILIB=OFF $sourcesRootPath
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF -DUSE_SYSTEM_NIFTILIB=OFF $sourcesRootPath
         make -j 4
 
         upload libOrthancNeuro.so
@@ -240,7 +248,7 @@ elif [[ $target == "orthanc-tcia" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-tcia/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF -DUSE_SYSTEM_LIBCSV=OFF $sourcesRootPath
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF -DUSE_SYSTEM_LIBCSV=OFF $sourcesRootPath
         make -j 4
 
         upload libOrthancTcia.so
@@ -272,7 +280,7 @@ elif [[ $target == "orthanc-explorer-2" ]]; then
         npm run build
 
         pushd $buildRootPath
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_ORTHANC_SDK=OFF -DPLUGIN_VERSION=$extraArg1 $sourcesRootPath/orthanc-explorer-2/
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_ORTHANC_SDK=OFF -DPLUGIN_VERSION=$extraArg1 $sourcesRootPath/orthanc-explorer-2/
         make -j 4
 
         upload libOrthancExplorer2.so
@@ -314,7 +322,7 @@ elif [[ $target == "orthanc-volview" ]]; then
         cp -r /target $sourcesRootPath/VolView/dist
         
         pushd $buildRootPath
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath
         make -j 4
 
         upload libOrthancVolView.so
@@ -356,7 +364,7 @@ elif [[ $target == "orthanc-ohif" ]]; then
         cp -r /target $sourcesRootPath/OHIF/dist
         
         pushd $buildRootPath
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath
         make -j 4
 
         upload libOrthancOHIF.so
@@ -371,12 +379,20 @@ elif [[ $target == "orthanc-s3" ]]; then
         export DEBIAN_FRONTEND=noninteractive && apt-get --assume-yes update && apt-get --assume-yes install libcrypto++-dev && apt-get clean && rm -rf /var/lib/apt/lists/*
 
         cd $sourcesRootPath
-        hg clone https://orthanc.uclouvain.be/hg/orthanc-object-storage/ -r $commitId
+        # hg clone https://orthanc.uclouvain.be/hg/orthanc-object-storage/ -r $commitId
+        # cp /third-party-downloads/StoragePlugin.cpp $sourcesRootPath/orthanc-object-storage/Common/StoragePlugin.cpp
         ln -s /third-party-downloads $sourcesRootPath/orthanc-object-storage/Aws/ThirdPartyDownloads
 
         pushd $buildRootPath
 
-        cmake -DCMAKE_BUILD_TYPE:STRING=Release -DALLOW_DOWNLOADS=ON -DUSE_VCPKG_PACKAGES=OFF $sourcesRootPath/orthanc-object-storage/Aws/
+        cmake -DCMAKE_BUILD_TYPE:STRING=Debug -DALLOW_DOWNLOADS=ON -DUSE_VCPKG_PACKAGES=OFF -DSIMPLE_VERSION=0.30.1 $sourcesRootPath/orthanc-object-storage/Aws/
+        # cp /third-party-downloads/DownloadPackage.cmake /$buildRootPath/Orthanc-1.12.2/OrthancFramework/Resources/CMake/DownloadPackage.cmake
+        export SIMPLE_VERSION="0.30.1"  # fix missing AWS_CRT_CPP_VERSION_MAJOR, AWS_CRT_CPP_VERSION_MINOR, AWS_CRT_CPP_VERSION_PATCH in aws-crt-cpp
+        sed -i 's/AWS_CRT_CPP_VERSION_MAJOR/0/g' /build/aws-crt-cpp-0.30.1/source/Api.cpp
+        sed -i 's/AWS_CRT_CPP_VERSION_MINOR/30/g' /build/aws-crt-cpp-0.30.1/source/Api.cpp
+        sed -i 's/AWS_CRT_CPP_VERSION_PATCH/1/g' /build/aws-crt-cpp-0.30.1/source/Api.cpp
+        echo DEBUG-HERE
+        cat /build/aws-crt-cpp-0.30.1/source/Api.cpp
         make -j 4
 
         upload libOrthancAwsS3Storage.so
@@ -395,7 +411,7 @@ elif [[ $target == "orthanc-google-storage" ]]; then
 
         pushd $buildRootPath
 
-        cmake -DCMAKE_BUILD_TYPE:STRING=Release -DALLOW_DOWNLOADS=ON -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake $sourcesRootPath/orthanc-object-storage/Google/
+        cmake -DCMAKE_BUILD_TYPE:STRING=Debug -DALLOW_DOWNLOADS=ON -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake $sourcesRootPath/orthanc-object-storage/Google/
         make -j 4
 
         upload libOrthancGoogleCloudStorage.so
@@ -415,7 +431,7 @@ elif [[ $target == "orthanc-azure-storage" ]]; then
 
         pushd $buildRootPath
 
-        cmake -DCMAKE_BUILD_TYPE:STRING=Release -DALLOW_DOWNLOADS=ON -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake $sourcesRootPath/orthanc-object-storage/Azure/
+        cmake -DCMAKE_BUILD_TYPE:STRING=Debug -DALLOW_DOWNLOADS=ON -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake $sourcesRootPath/orthanc-object-storage/Azure/
         make -j 4
 
         upload libOrthancAzureBlobStorage.so
@@ -429,7 +445,7 @@ elif [[ $target == "orthanc-webviewer" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-webviewer/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath
+        cmake cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath
         make -j 4
         $buildRootPath/UnitTests
 
@@ -444,7 +460,7 @@ elif [[ $target == "orthanc-transfers" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-transfers/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath
+        cmake cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath
         make -j 4
         $buildRootPath/UnitTests
 
@@ -460,7 +476,7 @@ elif [[ $target == "orthanc-dicomweb" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-dicomweb/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath
+        cmake cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF $sourcesRootPath
         make -j 4
         $buildRootPath/UnitTests
 
@@ -475,7 +491,7 @@ elif [[ $target == "orthanc-wsi" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-wsi/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF -DUSE_SYSTEM_OPENJPEG=OFF $sourcesRootPath/ViewerPlugin
+        cmake cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF -DUSE_SYSTEM_OPENJPEG=OFF $sourcesRootPath/ViewerPlugin
         make -j 4
 
         # TODO: build dicomizer tools ?
@@ -510,7 +526,7 @@ elif [[ $target == "orthanc-stone-wasm" ]]; then
         hg clone https://orthanc.uclouvain.be/hg/orthanc-stone/ -r $commitId /source
         pushd /source/Applications/StoneWebViewer/WebAssembly
         chmod +x docker-internal.sh
-        STONE_BRANCH=${commitId} ./docker-internal.sh Release
+        STONE_BRANCH=${commitId} ./docker-internal.sh Debug
 
         mkdir -p $buildRootPath
         mkdir -p /target
@@ -536,7 +552,7 @@ elif [[ $target == "orthanc-stone-so" ]]; then
 
         hg clone https://orthanc.uclouvain.be/hg/orthanc-stone/ -r $commitId $sourcesRootPath
         pushd $buildRootPath
-        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Release -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF -DORTHANC_STONE_BINARIES=/downloads/wasm-binaries/StoneWebViewer $sourcesRootPath/Applications/StoneWebViewer/Plugin/
+        cmake -DALLOW_DOWNLOADS=ON -DCMAKE_BUILD_TYPE:STRING=Debug -DUSE_SYSTEM_GOOGLE_TEST=ON -DUSE_SYSTEM_ORTHANC_SDK=OFF -DORTHANC_STONE_BINARIES=/downloads/wasm-binaries/StoneWebViewer $sourcesRootPath/Applications/StoneWebViewer/Plugin/
         make -j 4
 
         upload libStoneWebViewer.so
